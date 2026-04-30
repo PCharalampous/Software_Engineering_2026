@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>592</x>
+      <y>32</y>
+      <w>152</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+Ανάκτηση κωδικού δωματίου
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>1056</x>
+      <y>176</y>
+      <w>144</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Υποψήφιος συγκάτοικος</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>248</x>
+      <y>184</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>138.0;12.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>264</x>
+      <y>160</y>
+      <w>105</w>
+      <h>41</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ο χρήστης εισέρχεται </panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>360</x>
+      <y>152</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα μενού δωματίου
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>928</x>
+      <y>304</y>
+      <w>121</w>
+      <h>57</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Εισάγει τον κωδικο στο αντίστοιχο πεδίο</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>592</x>
+      <y>160</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Προσθήκη νέου μέλους
+	     
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>192</y>
+      <w>120</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>136.0;12.0;18.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>752</x>
+      <y>160</y>
+      <w>136</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα κωδικού δωματίου
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>192</x>
+      <y>160</y>
+      <w>64</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Χρήστης</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>624</x>
+      <y>88</y>
+      <w>32</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>14.0;12.0;10.0;92.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>920</x>
+      <y>128</y>
+      <w>105</w>
+      <h>73</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ο χρήστης δίνει τον κωδικό του δωματίου 
+στον υποψληφιο συγκάτοικο</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printCenter(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>808</x>
+      <y>192</y>
+      <w>288</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>338.0;12.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>576</x>
+      <y>352</y>
+      <w>136</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα αρχικού μενού
+
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>248</y>
+      <w>464</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>16.0;176.0;560.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>456</x>
+      <y>200</y>
+      <w>121</w>
+      <h>57</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ο χρήστης προσθέτει νέο μέλος στο δωμάτιο</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>400</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>20.0;82.0;19.0;16.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>576</x>
+      <y>464</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Είναι ο κωδικός ορθός;
+	     
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>520</y>
+      <w>32</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;92.0;20.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>496</y>
+      <w>240</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>278.0;12.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>576</x>
+      <y>536</y>
+      <w>33</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+ΝΑΙ</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>704</x>
+      <y>488</y>
+      <w>33</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+ΟΧΙ</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>496</y>
+      <w>120</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;12.0;132.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>424</x>
+      <y>472</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+Έλεγχος ορθότητας
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>552</x>
+      <y>592</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα επιβεβαίωσης
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>640</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>62.0;124.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>632</x>
+      <y>648</y>
+      <w>81</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ο υποψήφιος συγκάτοικος επιβεβαιώνει </panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>536</y>
+      <w>232</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;12.0;270.0;112.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>400</x>
+      <y>600</y>
+      <w>97</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ο υποψήφιος συγκάτοικος 
+δεν επιβεβαιώνει </panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>624</x>
+      <y>736</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Προσθήκη συγκατοίκου
+
+	     
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>776</x>
+      <y>736</y>
+      <w>216</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>768</y>
+      <w>112</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>118.0;12.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>784</x>
+      <y>712</y>
+      <w>97</w>
+      <h>57</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ενημέρωση λίστα 
+συγκατοίκων δωματίου</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>768</y>
+      <w>192</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;12.0;220.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>408</x>
+      <y>736</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα μενού δωματίου
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>544</x>
+      <y>784</y>
+      <w>89</w>
+      <h>41</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανακατεύθυνση 
+χρήστη</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>720</y>
+      <w>104</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>11.0;12.0;110.0;62.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>248</x>
+      <y>664</y>
+      <w>121</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ειδοποίηση υπόλοιπων μελών μέσω use case NOTIFICATION???
+</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>856</x>
+      <y>464</y>
+      <w>136</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Σελίδα απόρριψης
+fg=red
+
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20, {bg: red})
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>392</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>11.0;12.0;140.0;32.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>784</x>
+      <y>432</y>
+      <w>96</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>11.0;12.0;100.0;72.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>296</x>
+      <y>488</y>
+      <w>96</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+
+fg=red
+
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20,{bg: red})
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>384</y>
+      <w>240</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>280.0;12.0;11.0;152.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>296</x>
+      <y>464</y>
+      <w>89</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανακατεύθυνση υποψήφιου συγκατοίκου
+fg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>736</x>
+      <y>384</y>
+      <w>96</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+
+fg=red
+
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20,{bg: red})
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>752</x>
+      <y>360</y>
+      <w>89</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανακατεύθυνση υποψήφιου συγκατοίκου
+fg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>416</x>
+      <y>184</y>
+      <w>208</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>238.0;12.0;10.0;12.0</additional_attributes>
+  </element>
+</diagram>
