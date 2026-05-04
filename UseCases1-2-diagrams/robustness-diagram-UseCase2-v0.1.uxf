@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>8</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>592</x>
-      <y>32</y>
-      <w>152</w>
-      <h>64</h>
+      <x>700</x>
+      <y>280</y>
+      <w>84</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Entity Element
-Ανάκτηση κωδικού δωματίου
+Δωμάτιο
 	      
 _umletcode=
 // Entity Symbol
@@ -22,10 +22,10 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>1056</x>
-      <y>176</y>
-      <w>144</w>
-      <h>88</h>
+      <x>1246</x>
+      <y>119</y>
+      <w>126</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Υποψήφιος συγκάτοικος</panel_attributes>
     <additional_attributes/>
@@ -33,21 +33,21 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>248</x>
-      <y>184</y>
-      <w>128</w>
-      <h>24</h>
+      <x>252</x>
+      <y>147</y>
+      <w>266</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>138.0;12.0;10.0;12.0</additional_attributes>
+    <additional_attributes>358.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>264</x>
-      <y>160</y>
-      <w>105</w>
-      <h>41</h>
+      <x>315</x>
+      <y>119</y>
+      <w>92</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -70,10 +70,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>360</x>
-      <y>152</y>
-      <w>128</w>
-      <h>64</h>
+      <x>504</x>
+      <y>119</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα μενού δωματίου
@@ -89,10 +89,10 @@ drawLine(20, 30, 20, 70)
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>928</x>
-      <y>304</y>
-      <w>121</w>
-      <h>57</h>
+      <x>1274</x>
+      <y>427</y>
+      <w>106</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -115,10 +115,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>592</x>
-      <y>160</y>
-      <w>128</w>
-      <h>64</h>
+      <x>707</x>
+      <y>126</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Προσθήκη νέου μέλους
@@ -134,21 +134,21 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>192</y>
-      <w>120</w>
-      <h>24</h>
+      <x>756</x>
+      <y>147</y>
+      <w>182</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>136.0;12.0;18.0;12.0</additional_attributes>
+    <additional_attributes>236.0;22.0;11.0;16.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>752</x>
-      <y>160</y>
-      <w>136</w>
-      <h>64</h>
+      <x>917</x>
+      <y>126</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα κωδικού δωματίου
@@ -164,10 +164,10 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>192</x>
-      <y>160</y>
-      <w>64</w>
-      <h>88</h>
+      <x>189</x>
+      <y>126</y>
+      <w>56</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Χρήστης</panel_attributes>
     <additional_attributes/>
@@ -175,21 +175,21 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>88</y>
-      <w>32</w>
-      <h>88</h>
+      <x>728</x>
+      <y>182</y>
+      <w>28</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>14.0;12.0;10.0;92.0</additional_attributes>
+    <additional_attributes>20.0;12.0;10.0;142.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>920</x>
-      <y>128</y>
-      <w>105</w>
-      <h>73</h>
+      <x>1078</x>
+      <y>98</y>
+      <w>92</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -213,21 +213,21 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>808</x>
-      <y>192</y>
-      <w>288</w>
-      <h>24</h>
+      <x>973</x>
+      <y>154</y>
+      <w>301</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>338.0;12.0;10.0;12.0</additional_attributes>
+    <additional_attributes>408.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>576</x>
-      <y>352</y>
-      <w>136</w>
-      <h>64</h>
+      <x>1162</x>
+      <y>623</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα αρχικού μενού
@@ -243,21 +243,21 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
-      <y>248</y>
-      <w>464</w>
-      <h>160</h>
+      <x>1204</x>
+      <y>196</y>
+      <w>119</w>
+      <h>441</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>16.0;176.0;560.0;12.0</additional_attributes>
+    <additional_attributes>16.0;606.0;150.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>456</x>
-      <y>200</y>
-      <w>121</w>
-      <h>57</h>
+      <x>588</x>
+      <y>161</y>
+      <w>106</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -280,21 +280,21 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>400</y>
-      <w>24</w>
-      <h>80</h>
+      <x>1057</x>
+      <y>469</y>
+      <w>119</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>20.0;82.0;19.0;16.0</additional_attributes>
+    <additional_attributes>10.0;12.0;149.0;216.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>576</x>
-      <y>464</y>
-      <w>128</w>
-      <h>64</h>
+      <x>1008</x>
+      <y>427</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Είναι ο κωδικός ορθός;
@@ -310,32 +310,33 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>512</y>
-      <w>248</w>
-      <h>96</h>
+      <x>630</x>
+      <y>455</y>
+      <w>399</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>288.0;102.0;10.0;12.0</additional_attributes>
+    <additional_attributes>15.0;82.0;550.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
-      <y>496</y>
-      <w>240</w>
-      <h>24</h>
+      <x>966</x>
+      <y>476</y>
+      <w>77</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>278.0;12.0;10.0;12.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;102.0;90.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>744</x>
-      <y>544</y>
-      <w>33</w>
-      <h>25</h>
+      <x>854</x>
+      <y>455</y>
+      <w>29</w>
+      <h>22</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -358,15 +359,16 @@ for(String textline : textlines) {
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>704</x>
-      <y>488</y>
-      <w>33</w>
-      <h>25</h>
+      <x>973</x>
+      <y>504</y>
+      <w>29</w>
+      <h>22</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
 
-ΟΧΙ</panel_attributes>
+ΟΧΙ
+fg=RED</panel_attributes>
     <additional_attributes/>
     <custom_code>//This is an element with activated wordwrap
 //If a line would exceed the elements border, instead
@@ -382,41 +384,12 @@ for(String textline : textlines) {
 }</custom_code>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>512</x>
-      <y>496</y>
-      <w>96</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>18.0;12.0;102.0;12.0</additional_attributes>
-  </element>
-  <element>
     <id>Text</id>
     <coordinates>
-      <x>472</x>
-      <y>472</y>
+      <x>567</x>
+      <y>483</y>
       <w>112</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>// Entity Element
-Έλεγχος ορθότητας
-	      
-_umletcode=
-// Entity Symbol
-drawCircle(50, 50, 20)
-drawLine(30, 70, 70, 70)
-	</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>856</x>
-      <y>568</y>
-      <w>128</w>
-      <h>64</h>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα επιβεβαίωσης
@@ -430,23 +403,12 @@ drawLine(20, 30, 20, 70)
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>888</x>
-      <y>616</y>
-      <w>32</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>12.0;114.0;10.0;12.0</additional_attributes>
-  </element>
-  <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>904</x>
-      <y>640</y>
-      <w>81</w>
-      <h>49</h>
+      <x>595</x>
+      <y>406</y>
+      <w>71</w>
+      <h>43</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -469,27 +431,29 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>288</x>
-      <y>584</y>
-      <w>584</w>
-      <h>40</h>
+      <x>616</x>
+      <y>525</y>
+      <w>252</w>
+      <h>175</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>18.0;12.0;710.0;32.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+fg=RED</panel_attributes>
+    <additional_attributes>338.0;232.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>496</x>
-      <y>608</y>
-      <w>97</w>
-      <h>49</h>
+      <x>651</x>
+      <y>588</y>
+      <w>85</w>
+      <h>43</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
 
 Ο υποψήφιος συγκάτοικος 
-δεν επιβεβαιώνει </panel_attributes>
+δεν επιβεβαιώνει 
+fg=RED</panel_attributes>
     <additional_attributes/>
     <custom_code>//This is an element with activated wordwrap
 //If a line would exceed the elements border, instead
@@ -507,10 +471,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>856</x>
-      <y>712</y>
-      <w>128</w>
-      <h>64</h>
+      <x>518</x>
+      <y>287</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Προσθήκη συγκατοίκου
@@ -525,79 +489,34 @@ drawLine(44, 31, 54, 41)
     <additional_attributes/>
   </element>
   <element>
-    <id>Text</id>
+    <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>712</y>
-      <w>216</w>
-      <h>64</h>
+      <x>574</x>
+      <y>308</y>
+      <w>140</w>
+      <h>21</h>
     </coordinates>
-    <panel_attributes>// Entity Element
-
-	      
-_umletcode=
-// Entity Symbol
-drawCircle(50, 50, 20)
-drawLine(30, 70, 70, 70)
-	</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>178.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
-      <y>744</y>
+      <x>448</x>
+      <y>336</y>
+      <w>98</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;72.0;120.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>189</x>
+      <y>385</y>
       <w>112</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>118.0;12.0;10.0;12.0</additional_attributes>
-  </element>
-  <element>
-    <type>CustomElementImpl</type>
-    <coordinates>
-      <x>1016</x>
-      <y>688</y>
-      <w>97</w>
-      <h>57</h>
-    </coordinates>
-    <panel_attributes>// Modify the text below and
-// observe the element preview.
-
-Ενημέρωση λίστα 
-συγκατοίκων δωματίου</panel_attributes>
-    <additional_attributes/>
-    <custom_code>//This is an element with activated wordwrap
-//If a line would exceed the elements border, instead
-//the exceeding part is written into the next line
-
-int y=textHeight();
-
-
-setWordWrap(true);
-
-for(String textline : textlines) {
-	y += printLeft(textline,y);
-}</custom_code>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>696</x>
-      <y>744</y>
-      <w>192</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>18.0;12.0;220.0;12.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>640</x>
-      <y>712</y>
-      <w>128</w>
-      <h>64</h>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα μενού δωματίου
@@ -611,77 +530,12 @@ drawLine(20, 30, 20, 70)
     <additional_attributes/>
   </element>
   <element>
-    <type>CustomElementImpl</type>
-    <coordinates>
-      <x>776</x>
-      <y>760</y>
-      <w>89</w>
-      <h>41</h>
-    </coordinates>
-    <panel_attributes>// Modify the text below and
-// observe the element preview.
-
-Ανακατεύθυνση 
-χρήστη</panel_attributes>
-    <additional_attributes/>
-    <custom_code>//This is an element with activated wordwrap
-//If a line would exceed the elements border, instead
-//the exceeding part is written into the next line
-
-int y=textHeight();
-
-
-setWordWrap(true);
-
-for(String textline : textlines) {
-	y += printLeft(textline,y);
-}</custom_code>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>512</x>
-      <y>728</y>
-      <w>144</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>11.0;12.0;160.0;22.0</additional_attributes>
-  </element>
-  <element>
-    <type>CustomElementImpl</type>
-    <coordinates>
-      <x>408</x>
-      <y>704</y>
-      <w>121</w>
-      <h>65</h>
-    </coordinates>
-    <panel_attributes>// Modify the text below and
-// observe the element preview.
-
-Ειδοποίηση υπόλοιπων μελών μέσω use case NOTIFICATION???
-</panel_attributes>
-    <additional_attributes/>
-    <custom_code>//This is an element with activated wordwrap
-//If a line would exceed the elements border, instead
-//the exceeding part is written into the next line
-
-int y=textHeight();
-
-
-setWordWrap(true);
-
-for(String textline : textlines) {
-	y += printLeft(textline,y);
-}</custom_code>
-  </element>
-  <element>
     <id>Text</id>
     <coordinates>
-      <x>856</x>
-      <y>464</y>
-      <w>136</w>
-      <h>64</h>
+      <x>924</x>
+      <y>546</y>
+      <w>98</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
 Σελίδα απόρριψης
@@ -698,90 +552,34 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
-      <y>392</y>
-      <w>128</w>
-      <h>40</h>
+      <x>896</x>
+      <y>595</y>
+      <w>63</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>11.0;12.0;140.0;32.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>784</x>
-      <y>432</y>
-      <w>96</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>11.0;12.0;100.0;72.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>232</x>
-      <y>552</y>
-      <w>96</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>// Control Element
-
-fg=red
-
-_umletcode=
-// Control Symbol
-drawCircle(50, 50, 20,{bg: red})
-drawLine(44, 31, 54, 21)
-drawLine(44, 31, 54, 41)
-	</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>288</x>
-      <y>384</y>
-      <w>304</w>
-      <h>200</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>360.0;12.0;11.0;232.0</additional_attributes>
-  </element>
-  <element>
-    <type>CustomElementImpl</type>
-    <coordinates>
-      <x>352</x>
-      <y>456</y>
-      <w>89</w>
-      <h>49</h>
-    </coordinates>
-    <panel_attributes>// Modify the text below and
-// observe the element preview.
-
-Ανακατεύθυνση υποψήφιου συγκατοίκου
+    <panel_attributes>lt=&lt;-
 fg=RED</panel_attributes>
-    <additional_attributes/>
-    <custom_code>//This is an element with activated wordwrap
-//If a line would exceed the elements border, instead
-//the exceeding part is written into the next line
-
-int y=textHeight();
-
-
-setWordWrap(true);
-
-for(String textline : textlines) {
-	y += printLeft(textline,y);
-}</custom_code>
+    <additional_attributes>11.0;102.0;70.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>903</x>
+      <y>651</y>
+      <w>273</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+fg=RED</panel_attributes>
+    <additional_attributes>370.0;12.0;16.0;99.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>736</x>
-      <y>384</y>
-      <w>96</w>
-      <h>64</h>
+      <x>854</x>
+      <y>686</y>
+      <w>84</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 
@@ -798,10 +596,10 @@ drawLine(44, 31, 54, 41)
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>752</x>
-      <y>360</y>
-      <w>89</w>
-      <h>49</h>
+      <x>861</x>
+      <y>665</y>
+      <w>78</w>
+      <h>43</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -825,10 +623,10 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>416</x>
-      <y>184</y>
-      <w>208</w>
-      <h>24</h>
+      <x>553</x>
+      <y>147</y>
+      <w>182</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>238.0;12.0;10.0;12.0</additional_attributes>
@@ -836,12 +634,204 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
-      <y>248</y>
-      <w>232</w>
-      <h>344</h>
+      <x>637</x>
+      <y>182</y>
+      <w>630</w>
+      <h>315</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>12.0;404.0;270.0;12.0</additional_attributes>
+    <additional_attributes>11.0;431.0;880.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>553</x>
+      <y>336</y>
+      <w>63</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>18.0;12.0;70.0;212.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>364</x>
+      <y>385</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Ανακατεύθυνση χρήστη
+
+	     
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>413</y>
+      <w>133</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>11.0;12.0;170.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>406</x>
+      <y>315</y>
+      <w>140</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;11.0;180.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>203</x>
+      <y>287</y>
+      <w>84</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+Ειδοποιήσεις
+
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>343</x>
+      <y>287</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Ειδοποίηση μελών
+
+	     
+_umletcode=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>315</y>
+      <w>112</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;12.0;140.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>315</y>
+      <w>273</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>370.0;162.0;10.0;12.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>742</x>
+      <y>224</y>
+      <w>106</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανάκτηση κωδικού δωματίου</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>595</x>
+      <y>322</y>
+      <w>106</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανανέωση λίστας μελών</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>812</x>
+      <y>315</y>
+      <w>106</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+Ανάκτηση κωδικού δωματίου</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+	y += printLeft(textline,y);
+}</custom_code>
   </element>
 </diagram>
