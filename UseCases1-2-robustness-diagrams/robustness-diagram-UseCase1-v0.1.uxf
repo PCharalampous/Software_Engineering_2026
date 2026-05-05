@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
   <help_text/>
-  <zoom_level>9</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>846</x>
-      <y>270</y>
-      <w>108</w>
-      <h>81</h>
+      <x>826</x>
+      <y>245</y>
+      <w>84</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα σύνδεσης
+Οθόνη σύνδεσης
 	  
 _umletcode=
 // Boundary Symbol
@@ -23,10 +23,10 @@ drawLine(20, 30, 20, 70)</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>747</x>
-      <y>531</y>
-      <w>162</w>
-      <h>72</h>
+      <x>749</x>
+      <y>448</y>
+      <w>126</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Βρέθηκαν αποτελέσματα;
@@ -42,10 +42,10 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>99</x>
-      <y>270</y>
-      <w>72</w>
-      <h>99</h>
+      <x>245</x>
+      <y>245</y>
+      <w>56</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Χρήστης
 fg=BLACK</panel_attributes>
@@ -54,22 +54,22 @@ fg=BLACK</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>648</y>
-      <w>162</w>
-      <h>261</h>
+      <x>287</x>
+      <y>539</y>
+      <w>126</w>
+      <h>203</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>158.0;270.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>324</x>
-      <y>270</y>
-      <w>118</w>
-      <h>46</h>
+      <x>420</x>
+      <y>245</y>
+      <w>92</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -93,21 +93,21 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>918</x>
-      <y>297</y>
-      <w>153</w>
-      <h>36</h>
+      <x>882</x>
+      <y>266</y>
+      <w>119</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>149.0;20.0;16.0;16.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1035</x>
-      <y>279</y>
-      <w>117</w>
-      <h>72</h>
+      <x>973</x>
+      <y>252</y>
+      <w>91</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Επιτυχής σύνδεση;
@@ -124,21 +124,21 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>333</y>
-      <w>72</w>
-      <h>108</h>
+      <x>952</x>
+      <y>294</y>
+      <w>56</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;100.0;60.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>1134</x>
-      <y>549</y>
-      <w>73</w>
-      <h>28</h>
+      <x>1050</x>
+      <y>462</y>
+      <w>57</w>
+      <h>22</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -161,10 +161,10 @@ for(String textline : textlines) {
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>1008</x>
-      <y>360</y>
-      <w>46</w>
-      <h>46</h>
+      <x>952</x>
+      <y>315</y>
+      <w>36</w>
+      <h>22</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -187,10 +187,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>738</x>
-      <y>333</y>
-      <w>99</w>
-      <h>72</h>
+      <x>742</x>
+      <y>294</y>
+      <w>77</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Entity Element
 Στοιχεία χρήστη
@@ -205,33 +205,33 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>801</x>
-      <y>324</y>
-      <w>270</w>
-      <h>72</h>
+      <x>791</x>
+      <y>287</y>
+      <w>210</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>280.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1071</x>
-      <y>117</y>
-      <w>72</w>
-      <h>171</h>
+      <x>1001</x>
+      <y>126</y>
+      <w>56</w>
+      <h>133</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>60.0;10.0;10.0;170.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>954</x>
-      <y>27</y>
-      <w>118</w>
-      <h>37</h>
+      <x>910</x>
+      <y>56</y>
+      <w>92</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -255,13 +255,13 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>945</x>
-      <y>423</y>
-      <w>153</w>
-      <h>90</h>
+      <x>903</x>
+      <y>364</y>
+      <w>119</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα αρχικού μενού
+Οθόνη αρχικού μενού
 	  
 _umletcode=
 // Boundary Symbol
@@ -274,32 +274,32 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>297</y>
-      <w>702</w>
-      <h>27</h>
+      <x>287</x>
+      <y>266</y>
+      <w>546</w>
+      <h>21</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>758.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>306</y>
-      <w>810</w>
-      <h>162</h>
+      <x>287</x>
+      <y>273</y>
+      <w>630</w>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>878.0;166.0;12.0;16.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>495</x>
-      <y>396</y>
-      <w>136</w>
-      <h>73</h>
+      <x>553</x>
+      <y>343</y>
+      <w>106</w>
+      <h>57</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -325,10 +325,10 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>972</x>
-      <y>486</y>
-      <w>27</w>
-      <h>72</h>
+      <x>924</x>
+      <y>413</y>
+      <w>21</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>18.0;60.0;17.0;10.0</additional_attributes>
@@ -336,10 +336,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>945</x>
-      <y>540</y>
-      <w>153</w>
-      <h>72</h>
+      <x>903</x>
+      <y>455</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Εκτελείται η αναζήτηση
@@ -355,21 +355,21 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>576</y>
-      <w>144</w>
-      <h>36</h>
+      <x>952</x>
+      <y>483</y>
+      <w>112</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;14.0;140.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1116</x>
-      <y>549</y>
-      <w>81</w>
-      <h>72</h>
+      <x>1036</x>
+      <y>462</y>
+      <w>63</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Entity Element
 
@@ -384,24 +384,24 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>603</x>
-      <y>576</y>
-      <w>171</w>
-      <h>63</h>
+      <x>637</x>
+      <y>483</y>
+      <w>133</w>
+      <h>49</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;48.0;178.0;14.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>522</x>
-      <y>621</y>
-      <w>180</w>
-      <h>72</h>
+      <x>574</x>
+      <y>518</y>
+      <w>140</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα αναζήτησης δωματίου
+Οθόνη αναζήτησης δωματίου
 	  
 _umletcode=
 // Boundary Symbol
@@ -414,13 +414,13 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>90</x>
-      <y>594</y>
-      <w>144</w>
-      <h>72</h>
+      <x>238</x>
+      <y>497</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα επιβεβαίωσης
+Οθόνη επιβεβαίωσης
 	  
 _umletcode=
 // Boundary Symbol
@@ -433,10 +433,10 @@ drawLine(20, 30, 20, 70)
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>657</x>
-      <y>558</y>
-      <w>100</w>
-      <h>46</h>
+      <x>679</x>
+      <y>469</y>
+      <w>78</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -459,21 +459,21 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>567</y>
-      <w>171</w>
-      <h>36</h>
+      <x>798</x>
+      <y>476</y>
+      <w>133</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>14.0;12.0;170.0;20.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>846</x>
-      <y>621</y>
-      <w>46</w>
-      <h>46</h>
+      <x>826</x>
+      <y>518</y>
+      <w>36</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -497,33 +497,33 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>585</y>
-      <w>279</w>
-      <h>117</h>
+      <x>798</x>
+      <y>490</y>
+      <w>217</w>
+      <h>91</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>288.0;110.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>162</x>
-      <y>342</y>
-      <w>414</w>
-      <h>297</h>
+      <x>294</x>
+      <y>301</y>
+      <w>322</w>
+      <h>231</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>438.0;310.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>261</x>
-      <y>477</y>
-      <w>109</w>
-      <h>46</h>
+      <x>371</x>
+      <y>406</y>
+      <w>85</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -547,10 +547,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>459</x>
-      <y>801</y>
-      <w>225</w>
-      <h>72</h>
+      <x>525</x>
+      <y>658</y>
+      <w>175</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Προβάλλονται σχετικές πληροφορίες
@@ -566,35 +566,35 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>513</x>
-      <y>684</y>
-      <w>63</w>
-      <h>135</h>
+      <x>567</x>
+      <y>567</y>
+      <w>49</w>
+      <h>105</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;130.0;50.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>486</x>
-      <y>864</y>
-      <w>36</w>
-      <h>81</h>
+      <x>546</x>
+      <y>707</y>
+      <w>28</w>
+      <h>63</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;70.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>459</x>
-      <y>927</y>
-      <w>207</w>
-      <h>72</h>
+      <x>525</x>
+      <y>756</y>
+      <w>161</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα με πληροφορίες αγγελίας
+Οθόνη με πληροφορίες αγγελίας
 	  
 _umletcode=
 // Boundary Symbol
@@ -607,21 +607,21 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>351</x>
-      <y>639</y>
-      <w>189</w>
-      <h>45</h>
+      <x>441</x>
+      <y>532</y>
+      <w>147</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>16.0;10.0;190.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>126</x>
-      <y>1125</y>
-      <w>144</w>
-      <h>72</h>
+      <x>266</x>
+      <y>910</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Entity Element
 Αιτήσεις μου
@@ -636,21 +636,21 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>657</y>
-      <w>36</w>
-      <h>333</h>
+      <x>266</x>
+      <y>546</y>
+      <w>28</w>
+      <h>259</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;350.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>63</x>
-      <y>801</y>
-      <w>91</w>
-      <h>37</h>
+      <x>217</x>
+      <y>658</y>
+      <w>71</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -672,10 +672,10 @@ for(String textline : textlines) {
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>207</x>
-      <y>711</y>
-      <w>100</w>
-      <h>46</h>
+      <x>329</x>
+      <y>588</y>
+      <w>78</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -699,10 +699,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>909</x>
-      <y>990</y>
-      <w>216</w>
-      <h>72</h>
+      <x>875</x>
+      <y>805</y>
+      <w>168</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ανανέωση περιεχομένων σελιδών
@@ -718,35 +718,35 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>972</x>
-      <y>1035</y>
-      <w>90</w>
-      <h>81</h>
+      <x>924</x>
+      <y>840</y>
+      <w>70</w>
+      <h>63</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>78.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>558</x>
-      <y>684</y>
-      <w>405</w>
-      <h>324</h>
+      <x>602</x>
+      <y>567</y>
+      <w>315</w>
+      <h>252</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;10.0;430.0;340.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1035</x>
-      <y>1062</y>
-      <w>144</w>
-      <h>72</h>
+      <x>973</x>
+      <y>861</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα προφίλ χρήστη
+Οθόνη προφίλ χρήστη
 	  
 _umletcode=
 // Boundary Symbol
@@ -759,10 +759,10 @@ drawLine(20, 30, 20, 70)
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>693</x>
-      <y>900</y>
-      <w>181</w>
-      <h>82</h>
+      <x>714</x>
+      <y>728</y>
+      <w>141</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -788,10 +788,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>297</x>
-      <y>603</y>
-      <w>117</w>
-      <h>72</h>
+      <x>399</x>
+      <y>504</y>
+      <w>91</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Εμφάνισε
@@ -808,21 +808,21 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>621</y>
-      <w>180</w>
-      <h>45</h>
+      <x>287</x>
+      <y>518</y>
+      <w>140</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;14.0;180.0;30.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>378</x>
-      <y>666</y>
-      <w>136</w>
-      <h>37</h>
+      <x>462</x>
+      <y>553</y>
+      <w>106</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -845,13 +845,13 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1062</x>
-      <y>648</y>
-      <w>207</w>
-      <h>72</h>
+      <x>994</x>
+      <y>539</y>
+      <w>161</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
-Εμφάνιση σελίδας σφάλματος
+Εμφάνιση οθόνης σφάλματος
 
 fg=red
 _umletcode=
@@ -869,25 +869,25 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1125</x>
-      <y>648</y>
-      <w>234</w>
-      <h>72</h>
+      <x>1043</x>
+      <y>539</y>
+      <w>182</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>240.0;10.0;10.0;52.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1332</x>
-      <y>612</y>
-      <w>117</w>
-      <h>81</h>
+      <x>1204</x>
+      <y>511</y>
+      <w>91</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα σφάλματος
+Οθόνη σφάλματος
 
 fg=red
 _umletcode=
@@ -900,22 +900,22 @@ drawLine(20, 30, 20, 70)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1008</x>
-      <y>459</y>
-      <w>144</w>
-      <h>36</h>
+      <x>952</x>
+      <y>392</y>
+      <w>112</w>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>12.0;16.0;137.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1116</x>
-      <y>432</y>
-      <w>153</w>
-      <h>72</h>
+      <x>1036</x>
+      <y>371</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ανακατεύθυνση χρήστη
@@ -933,25 +933,25 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>477</y>
-      <w>171</w>
-      <h>180</h>
+      <x>1092</x>
+      <y>406</y>
+      <w>133</w>
+      <h>140</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>18.0;10.0;170.0;180.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1098</x>
-      <y>45</y>
-      <w>225</w>
-      <h>81</h>
+      <x>1022</x>
+      <y>70</y>
+      <w>175</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα απόριψης στοιχείων χρήστη.
+Οθόνη απόριψης στοιχείων χρήστη.
 
 fg=red
 _umletcode=
@@ -964,13 +964,13 @@ drawLine(20, 30, 20, 70)</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>432</x>
-      <y>18</y>
-      <w>162</w>
-      <h>81</h>
+      <x>504</x>
+      <y>49</y>
+      <w>126</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα εγγραφής
+Οθόνη εγγραφής
 
 fg=red
 _umletcode=
@@ -983,22 +983,22 @@ drawLine(20, 30, 20, 70)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>72</y>
-      <w>324</w>
-      <h>216</h>
+      <x>273</x>
+      <y>91</y>
+      <w>252</w>
+      <h>168</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>338.0;12.0;10.0;222.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>729</x>
-      <y>144</y>
-      <w>118</w>
-      <h>73</h>
+      <x>735</x>
+      <y>147</y>
+      <w>92</w>
+      <h>57</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1023,22 +1023,22 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>819</x>
-      <y>54</y>
-      <w>81</w>
-      <h>234</h>
+      <x>805</x>
+      <y>77</y>
+      <w>63</w>
+      <h>182</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>68.0;240.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>432</x>
-      <y>81</y>
-      <w>63</w>
-      <h>108</h>
+      <x>504</x>
+      <y>98</y>
+      <w>49</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 fg=RED</panel_attributes>
@@ -1047,10 +1047,10 @@ fg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>396</x>
-      <y>171</y>
-      <w>153</w>
-      <h>72</h>
+      <x>476</x>
+      <y>168</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Δημιουργεία Λογαριασμού
@@ -1067,34 +1067,34 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>216</y>
-      <w>306</w>
-      <h>144</h>
+      <x>518</x>
+      <y>203</y>
+      <w>238</w>
+      <h>112</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>320.0;140.0;18.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>792</x>
-      <y>63</y>
-      <w>81</w>
-      <h>225</h>
+      <x>784</x>
+      <y>84</y>
+      <w>63</w>
+      <h>175</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>14.0;12.0;70.0;232.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>765</x>
-      <y>0</y>
-      <w>153</w>
-      <h>72</h>
+      <x>763</x>
+      <y>35</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ανακατεύθυνση χρήστη
@@ -1112,22 +1112,22 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>36</y>
-      <w>288</w>
-      <h>72</h>
+      <x>812</x>
+      <y>63</y>
+      <w>224</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>13.0;10.0;300.0;60.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>324</x>
-      <y>774</y>
-      <w>109</w>
-      <h>46</h>
+      <x>420</x>
+      <y>637</y>
+      <w>85</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1151,10 +1151,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>261</x>
-      <y>882</y>
-      <w>216</w>
-      <h>72</h>
+      <x>371</x>
+      <y>721</y>
+      <w>168</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Δεν αποθηκεύονται τα στοιχεία του
@@ -1171,45 +1171,45 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>324</x>
-      <y>684</y>
-      <w>234</w>
-      <h>216</h>
+      <x>420</x>
+      <y>567</y>
+      <w>182</w>
+      <h>168</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>238.0;10.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>171</x>
-      <y>1008</y>
-      <w>774</w>
-      <h>45</h>
+      <x>301</x>
+      <y>819</y>
+      <w>602</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>838.0;30.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>585</x>
-      <y>675</y>
-      <w>531</w>
-      <h>243</h>
+      <x>623</x>
+      <y>560</y>
+      <w>413</w>
+      <h>189</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>568.0;250.0;310.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>1206</x>
-      <y>1017</y>
-      <w>118</w>
-      <h>37</h>
+      <x>1106</x>
+      <y>826</y>
+      <w>92</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1233,10 +1233,10 @@ for(String textline : textlines) {
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1089</x>
-      <y>855</y>
-      <w>153</w>
-      <h>72</h>
+      <x>1015</x>
+      <y>700</y>
+      <w>119</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ανανέωση περιεχομένων
@@ -1254,54 +1254,34 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1125</x>
-      <y>909</y>
-      <w>135</w>
-      <h>261</h>
+      <x>1043</x>
+      <y>742</y>
+      <w>105</w>
+      <h>203</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>128.0;270.0;15.0;11.0</additional_attributes>
   </element>
   <element>
-    <id>Text</id>
-    <coordinates>
-      <x>1296</x>
-      <y>900</y>
-      <w>144</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>// Boundary Element
-Σελίδα προφίλ χρήστη
-fg=red
-	  
-_umletcode=
-// Boundary Symbol
-drawCircle(50, 50, 20,{bg: red})
-drawLine(20, 50, 30, 50)
-drawLine(20, 30, 20, 70)	 
-	</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>1161</x>
-      <y>891</y>
-      <w>162</w>
-      <h>63</h>
+      <x>1015</x>
+      <y>749</y>
+      <w>42</w>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
-    <additional_attributes>158.0;50.0;16.0;13.0</additional_attributes>
+    <additional_attributes>18.0;160.0;46.0;13.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>765</x>
-      <y>729</y>
-      <w>154</w>
-      <h>55</h>
+      <x>763</x>
+      <y>602</y>
+      <w>120</w>
+      <h>43</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1327,33 +1307,33 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>585</x>
-      <y>657</y>
-      <w>531</w>
-      <h>243</h>
+      <x>623</x>
+      <y>546</y>
+      <w>413</w>
+      <h>189</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>18.0;10.0;350.0;70.0;578.0;248.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>351</y>
-      <w>36</w>
-      <h>261</h>
+      <x>266</x>
+      <y>308</y>
+      <w>28</w>
+      <h>203</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;264.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>99</x>
-      <y>972</y>
-      <w>180</w>
-      <h>72</h>
+      <x>245</x>
+      <y>791</y>
+      <w>140</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Αποθήκευση στοιχείων χρήστη
@@ -1370,21 +1350,21 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>135</x>
-      <y>1035</y>
-      <w>36</w>
-      <h>108</h>
+      <x>273</x>
+      <y>840</y>
+      <w>28</w>
+      <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1215</x>
-      <y>1152</y>
-      <w>180</w>
-      <h>72</h>
+      <x>1113</x>
+      <y>931</y>
+      <w>140</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Διαγραφή στοιχείων χρήστη
@@ -1401,22 +1381,22 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>198</x>
-      <y>1161</y>
-      <w>1053</w>
-      <h>54</h>
+      <x>322</x>
+      <y>938</y>
+      <w>819</w>
+      <h>42</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>1148.0;40.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>333</x>
-      <y>1062</y>
-      <w>207</w>
-      <h>72</h>
+      <x>427</x>
+      <y>861</y>
+      <w>161</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ειδοποίηση δημιουργού αγγελείας
@@ -1432,21 +1412,21 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>162</x>
-      <y>1026</y>
-      <w>189</w>
-      <h>81</h>
+      <x>294</x>
+      <y>833</y>
+      <w>147</w>
+      <h>63</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>188.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>549</x>
-      <y>1080</y>
-      <w>144</w>
-      <h>72</h>
+      <x>595</x>
+      <y>875</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>// Entity Element
 Ειδοποιήσεις
@@ -1461,21 +1441,21 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>396</x>
-      <y>1098</y>
-      <w>189</w>
-      <h>45</h>
+      <x>476</x>
+      <y>889</y>
+      <w>147</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>188.0;30.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>927</x>
-      <y>882</y>
-      <w>127</w>
-      <h>55</h>
+      <x>889</x>
+      <y>721</y>
+      <w>99</w>
+      <h>43</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1499,34 +1479,34 @@ for(String textline : textlines) {
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>486</x>
-      <y>45</y>
-      <w>315</w>
-      <h>45</h>
+      <x>546</x>
+      <y>70</y>
+      <w>245</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>18.0;30.0;330.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>459</x>
-      <y>198</y>
-      <w>405</w>
-      <h>117</h>
+      <x>525</x>
+      <y>189</y>
+      <w>315</w>
+      <h>91</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>428.0;110.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>585</x>
-      <y>207</y>
-      <w>118</w>
-      <h>28</h>
+      <x>623</x>
+      <y>196</y>
+      <w>92</w>
+      <h>22</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1550,10 +1530,10 @@ for(String textline : textlines) {
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>1116</x>
-      <y>189</y>
-      <w>46</w>
-      <h>37</h>
+      <x>1036</x>
+      <y>182</y>
+      <w>36</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.
@@ -1577,10 +1557,10 @@ for(String textline : textlines) {
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
-      <x>855</x>
-      <y>108</y>
-      <w>118</w>
-      <h>37</h>
+      <x>833</x>
+      <y>119</y>
+      <w>92</w>
+      <h>29</h>
     </coordinates>
     <panel_attributes>// Modify the text below and
 // observe the element preview.

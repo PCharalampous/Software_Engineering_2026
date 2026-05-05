@@ -5,7 +5,7 @@
     <id>Text</id>
     <coordinates>
       <x>700</x>
-      <y>280</y>
+      <y>371</y>
       <w>84</w>
       <h>56</h>
     </coordinates>
@@ -23,7 +23,7 @@ drawLine(30, 70, 70, 70)
     <id>UMLActor</id>
     <coordinates>
       <x>1246</x>
-      <y>119</y>
+      <y>210</y>
       <w>126</w>
       <h>77</h>
     </coordinates>
@@ -34,18 +34,18 @@ drawLine(30, 70, 70, 70)
     <id>Relation</id>
     <coordinates>
       <x>252</x>
-      <y>147</y>
+      <y>238</y>
       <w>266</w>
       <h>21</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>358.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>315</x>
-      <y>119</y>
+      <y>210</y>
       <w>92</w>
       <h>36</h>
     </coordinates>
@@ -71,12 +71,12 @@ for(String textline : textlines) {
     <id>Text</id>
     <coordinates>
       <x>504</x>
-      <y>119</y>
+      <y>210</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα μενού δωματίου
+Οθόνη μενού δωματίου
 	  
 _umletcode=
 // Boundary Symbol
@@ -90,7 +90,7 @@ drawLine(20, 30, 20, 70)
     <type>CustomElementImpl</type>
     <coordinates>
       <x>1274</x>
-      <y>427</y>
+      <y>518</y>
       <w>106</w>
       <h>50</h>
     </coordinates>
@@ -116,7 +116,7 @@ for(String textline : textlines) {
     <id>Text</id>
     <coordinates>
       <x>707</x>
-      <y>126</y>
+      <y>217</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -135,23 +135,23 @@ drawLine(44, 31, 54, 41)
     <id>Relation</id>
     <coordinates>
       <x>756</x>
-      <y>147</y>
+      <y>238</y>
       <w>182</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>236.0;22.0;11.0;16.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>917</x>
-      <y>126</y>
+      <y>217</y>
       <w>119</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα κωδικού δωματίου
+Οθόνη κωδικού δωματίου
 	  
 _umletcode=
 // Boundary Symbol
@@ -165,7 +165,7 @@ drawLine(20, 30, 20, 70)
     <id>UMLActor</id>
     <coordinates>
       <x>189</x>
-      <y>126</y>
+      <y>217</y>
       <w>56</w>
       <h>77</h>
     </coordinates>
@@ -176,18 +176,18 @@ drawLine(20, 30, 20, 70)
     <id>Relation</id>
     <coordinates>
       <x>728</x>
-      <y>182</y>
+      <y>273</y>
       <w>28</w>
       <h>112</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>20.0;12.0;10.0;142.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>1078</x>
-      <y>98</y>
+      <y>189</y>
       <w>92</w>
       <h>64</h>
     </coordinates>
@@ -214,23 +214,23 @@ for(String textline : textlines) {
     <id>Relation</id>
     <coordinates>
       <x>973</x>
-      <y>154</y>
+      <y>245</y>
       <w>301</w>
       <h>21</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>408.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>1162</x>
-      <y>623</y>
+      <y>714</y>
       <w>119</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα αρχικού μενού
+Οθόνη αρχικού μενού
 
 _umletcode=
 // Boundary Symbol
@@ -244,18 +244,18 @@ drawLine(20, 30, 20, 70)
     <id>Relation</id>
     <coordinates>
       <x>1204</x>
-      <y>196</y>
+      <y>287</y>
       <w>119</w>
       <h>441</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>16.0;606.0;150.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>588</x>
-      <y>161</y>
+      <y>252</y>
       <w>106</w>
       <h>50</h>
     </coordinates>
@@ -281,18 +281,18 @@ for(String textline : textlines) {
     <id>Relation</id>
     <coordinates>
       <x>1057</x>
-      <y>469</y>
+      <y>560</y>
       <w>119</w>
       <h>168</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;12.0;149.0;216.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>1008</x>
-      <y>427</y>
+      <y>518</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -311,18 +311,18 @@ drawLine(44, 31, 54, 41)
     <id>Relation</id>
     <coordinates>
       <x>630</x>
-      <y>455</y>
+      <y>546</y>
       <w>399</w>
       <h>70</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>15.0;82.0;550.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>966</x>
-      <y>476</y>
+      <y>567</y>
       <w>77</w>
       <h>84</h>
     </coordinates>
@@ -334,7 +334,7 @@ fg=RED</panel_attributes>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>854</x>
-      <y>455</y>
+      <y>546</y>
       <w>29</w>
       <h>22</h>
     </coordinates>
@@ -360,7 +360,7 @@ for(String textline : textlines) {
     <type>CustomElementImpl</type>
     <coordinates>
       <x>973</x>
-      <y>504</y>
+      <y>595</y>
       <w>29</w>
       <h>22</h>
     </coordinates>
@@ -387,12 +387,12 @@ for(String textline : textlines) {
     <id>Text</id>
     <coordinates>
       <x>567</x>
-      <y>483</y>
+      <y>574</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα επιβεβαίωσης
+Οθόνη επιβεβαίωσης
 	  
 _umletcode=
 // Boundary Symbol
@@ -406,7 +406,7 @@ drawLine(20, 30, 20, 70)
     <type>CustomElementImpl</type>
     <coordinates>
       <x>595</x>
-      <y>406</y>
+      <y>497</y>
       <w>71</w>
       <h>43</h>
     </coordinates>
@@ -432,11 +432,11 @@ for(String textline : textlines) {
     <id>Relation</id>
     <coordinates>
       <x>616</x>
-      <y>525</y>
+      <y>616</y>
       <w>252</w>
       <h>175</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>338.0;232.0;10.0;12.0</additional_attributes>
   </element>
@@ -444,7 +444,7 @@ fg=RED</panel_attributes>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>651</x>
-      <y>588</y>
+      <y>679</y>
       <w>85</w>
       <h>43</h>
     </coordinates>
@@ -472,7 +472,7 @@ for(String textline : textlines) {
     <id>Text</id>
     <coordinates>
       <x>518</x>
-      <y>287</y>
+      <y>378</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -492,53 +492,34 @@ drawLine(44, 31, 54, 41)
     <id>Relation</id>
     <coordinates>
       <x>574</x>
-      <y>308</y>
+      <y>399</y>
       <w>140</w>
       <h>21</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>178.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>448</x>
-      <y>336</y>
+      <x>441</x>
+      <y>343</y>
       <w>98</w>
       <h>63</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>18.0;72.0;120.0;12.0</additional_attributes>
-  </element>
-  <element>
-    <id>Text</id>
-    <coordinates>
-      <x>189</x>
-      <y>385</y>
-      <w>112</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>// Boundary Element
-Σελίδα μενού δωματίου
-	  
-_umletcode=
-// Boundary Symbol
-drawCircle(50, 50, 20)
-drawLine(20, 50, 30, 50)
-drawLine(20, 30, 20, 70)	 
-	</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>18.0;12.0;120.0;72.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
       <x>924</x>
-      <y>546</y>
+      <y>637</y>
       <w>98</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>// Boundary Element
-Σελίδα απόρριψης
+Οθόνη απόρριψης
 fg=red
 
 _umletcode=
@@ -553,11 +534,11 @@ drawLine(20, 30, 20, 70)
     <id>Relation</id>
     <coordinates>
       <x>896</x>
-      <y>595</y>
+      <y>686</y>
       <w>63</w>
       <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>11.0;102.0;70.0;12.0</additional_attributes>
   </element>
@@ -565,11 +546,11 @@ fg=RED</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>903</x>
-      <y>651</y>
+      <y>742</y>
       <w>273</w>
       <h>84</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;&lt;-
 fg=RED</panel_attributes>
     <additional_attributes>370.0;12.0;16.0;99.0</additional_attributes>
   </element>
@@ -577,7 +558,7 @@ fg=RED</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>854</x>
-      <y>686</y>
+      <y>777</y>
       <w>84</w>
       <h>56</h>
     </coordinates>
@@ -597,7 +578,7 @@ drawLine(44, 31, 54, 41)
     <type>CustomElementImpl</type>
     <coordinates>
       <x>861</x>
-      <y>665</y>
+      <y>756</y>
       <w>78</w>
       <h>43</h>
     </coordinates>
@@ -624,40 +605,40 @@ for(String textline : textlines) {
     <id>Relation</id>
     <coordinates>
       <x>553</x>
-      <y>147</y>
+      <y>238</y>
       <w>182</w>
       <h>21</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>238.0;12.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>637</x>
-      <y>182</y>
+      <y>273</y>
       <w>630</w>
       <h>315</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>11.0;431.0;880.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>553</x>
-      <y>336</y>
+      <y>427</y>
       <w>63</w>
       <h>161</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>18.0;12.0;70.0;212.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>364</x>
-      <y>385</y>
+      <x>392</x>
+      <y>315</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -676,30 +657,30 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>252</x>
-      <y>413</y>
-      <w>133</w>
-      <h>21</h>
+      <x>434</x>
+      <y>259</y>
+      <w>98</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>11.0;12.0;170.0;12.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>121.0;12.0;10.0;82.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>406</x>
-      <y>315</y>
-      <w>140</w>
-      <h>21</h>
+      <x>385</x>
+      <y>406</y>
+      <w>161</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;11.0;180.0;12.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;81.0;210.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>203</x>
-      <y>287</y>
+      <x>182</x>
+      <y>441</y>
       <w>84</w>
       <h>56</h>
     </coordinates>
@@ -717,8 +698,8 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>343</x>
-      <y>287</y>
+      <x>322</x>
+      <y>434</y>
       <w>98</w>
       <h>56</h>
     </coordinates>
@@ -737,30 +718,30 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>259</x>
-      <y>315</y>
+      <x>238</x>
+      <y>462</y>
       <w>112</w>
-      <h>21</h>
+      <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;12.0;140.0;12.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;22.0;140.0;12.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>756</x>
-      <y>315</y>
+      <y>406</y>
       <w>273</w>
       <h>126</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>370.0;162.0;10.0;12.0</additional_attributes>
   </element>
   <element>
     <type>CustomElementImpl</type>
     <coordinates>
       <x>742</x>
-      <y>224</y>
+      <y>315</y>
       <w>106</w>
       <h>36</h>
     </coordinates>
@@ -786,7 +767,7 @@ for(String textline : textlines) {
     <type>CustomElementImpl</type>
     <coordinates>
       <x>595</x>
-      <y>322</y>
+      <y>413</y>
       <w>106</w>
       <h>36</h>
     </coordinates>
@@ -812,7 +793,7 @@ for(String textline : textlines) {
     <type>CustomElementImpl</type>
     <coordinates>
       <x>812</x>
-      <y>315</y>
+      <y>406</y>
       <w>106</w>
       <h>36</h>
     </coordinates>
