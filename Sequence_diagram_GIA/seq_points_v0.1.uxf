@@ -21,7 +21,7 @@ bg=TRANSPARENT</panel_attributes>
       <w>532</w>
       <h>161</h>
     </coordinates>
-    <panel_attributes>alt
+    <panel_attributes>alt2
 --
 [Confirm]
 
@@ -235,7 +235,7 @@ bg=BLUE</panel_attributes>
       <w>112</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;
 display()
 fg=BLACK
 bg=BLACK</panel_attributes>
@@ -377,7 +377,7 @@ bg=BLACK</panel_attributes>
       <w>644</w>
       <h>448</h>
     </coordinates>
-    <panel_attributes>alt
+    <panel_attributes>alt3
 --
 [Available]
 
@@ -449,7 +449,7 @@ bg=BLUE</panel_attributes>
       <w>581</w>
       <h>308</h>
     </coordinates>
-    <panel_attributes>alt
+    <panel_attributes>alt1
 --
 [Enough Points]
 
@@ -477,14 +477,14 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
+      <x>546</x>
       <y>287</y>
-      <w>210</w>
+      <w>357</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>280.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -601,14 +601,14 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>686</x>
+      <x>546</x>
       <y>525</y>
-      <w>287</w>
+      <w>427</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>390.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>590.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -626,9 +626,9 @@ bg=BLUE</panel_attributes>
     <id>UMLGeneric</id>
     <coordinates>
       <x>539</x>
-      <y>546</y>
+      <y>532</y>
       <w>14</w>
-      <h>35</h>
+      <h>49</h>
     </coordinates>
     <panel_attributes>
 bg=BLUE</panel_attributes>
