@@ -20,7 +20,31 @@
       <w>1015</w>
       <h>490</h>
     </coordinates>
-    <panel_attributes>alt 2&amp;2.1</panel_attributes>
+    <panel_attributes>alt 2&amp;2.1
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[DECLINE(2.1)]</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -201,7 +225,7 @@ display()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>434</x>
+      <x>441</x>
       <y>161</y>
       <w>168</w>
       <h>28</h>
@@ -751,7 +775,7 @@ chose "Request"</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>343</x>
+      <x>350</x>
       <y>175</y>
       <w>469</w>
       <h>203</h>
@@ -771,18 +795,6 @@ chose "Request"</panel_attributes>
 
 </panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>154</x>
-      <y>525</y>
-      <w>1029</w>
-      <h>28</h>
-    </coordinates>
-    <panel_attributes>lt=.
-DECLINE(2.1)</panel_attributes>
-    <additional_attributes>1450.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
