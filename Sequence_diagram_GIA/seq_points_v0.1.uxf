@@ -106,7 +106,7 @@ bg=TRANSPARENT</panel_attributes>
     <id>UMLGeneric</id>
     <coordinates>
       <x>791</x>
-      <y>119</y>
+      <y>84</y>
       <w>105</w>
       <h>21</h>
     </coordinates>
@@ -161,12 +161,12 @@ bg=TRANSPARENT</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>833</x>
-      <y>133</y>
+      <y>98</y>
       <w>21</w>
-      <h>567</h>
+      <h>602</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;790.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;840.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -283,23 +283,23 @@ bg=BLUE</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>686</x>
-      <y>112</y>
-      <w>119</w>
+      <y>119</y>
+      <w>161</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 getRewards()
 fg=BLACK
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
       <x>833</x>
-      <y>161</y>
+      <y>112</y>
       <w>14</w>
-      <h>42</h>
+      <h>91</h>
     </coordinates>
     <panel_attributes>
 bg=BLUE</panel_attributes>
@@ -609,18 +609,6 @@ bg=BLUE</panel_attributes>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>590.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>679</x>
-      <y>525</y>
-      <w>14</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes>
-bg=BLUE</panel_attributes>
-    <additional_attributes/>
   </element>
   <element>
     <id>UMLGeneric</id>
