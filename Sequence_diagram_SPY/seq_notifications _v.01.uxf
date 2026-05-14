@@ -31,10 +31,10 @@
       <x>343</x>
       <y>28</y>
       <w>21</w>
-      <h>84</h>
+      <h>413</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;100.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;570.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -87,10 +87,10 @@
       <x>777</x>
       <y>35</y>
       <w>21</w>
-      <h>63</h>
+      <h>217</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;70.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;290.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -134,7 +134,7 @@ init()</panel_attributes>
       <w>91</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -192,7 +192,7 @@ return pendingEvents()</panel_attributes>
       <w>371</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 getCount()</panel_attributes>
     <additional_attributes>10.0;20.0;510.0;20.0</additional_attributes>
   </element>
@@ -238,10 +238,10 @@ selectNotification()</panel_attributes>
       <x>245</x>
       <y>70</y>
       <w>21</w>
-      <h>644</h>
+      <h>819</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;900.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;1150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -261,10 +261,10 @@ markAsRead()</panel_attributes>
       <x>777</x>
       <y>231</y>
       <w>21</w>
-      <h>91</h>
+      <h>126</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;110.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;160.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -285,7 +285,7 @@ markAsRead()</panel_attributes>
       <w>287</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 update()</panel_attributes>
     <additional_attributes>10.0;20.0;390.0;20.0</additional_attributes>
   </element>
@@ -297,7 +297,7 @@ update()</panel_attributes>
       <w>371</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 decrement()</panel_attributes>
     <additional_attributes>10.0;20.0;510.0;20.0</additional_attributes>
   </element>
@@ -309,7 +309,7 @@ decrement()</panel_attributes>
       <w>56</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>60.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -344,7 +344,7 @@ selectGoTo()</panel_attributes>
       <w>518</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>720.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -365,10 +365,10 @@ selectGoTo()</panel_attributes>
       <x>777</x>
       <y>336</y>
       <w>21</w>
-      <h>140</h>
+      <h>203</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;180.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;270.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -399,7 +399,7 @@ mark AS read</panel_attributes>
       <x>336</x>
       <y>462</y>
       <w>28</w>
-      <h>434</h>
+      <h>420</h>
     </coordinates>
     <panel_attributes>bg=blue</panel_attributes>
     <additional_attributes/>
@@ -421,10 +421,10 @@ mark AS read</panel_attributes>
       <x>861</x>
       <y>301</y>
       <w>21</w>
-      <h>175</h>
+      <h>588</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;230.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;820.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -445,7 +445,7 @@ mark AS read</panel_attributes>
       <w>427</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 go to notifications</panel_attributes>
     <additional_attributes>10.0;20.0;590.0;20.0</additional_attributes>
   </element>
@@ -475,13 +475,13 @@ update counter</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>574</x>
+      <x>567</x>
       <y>378</y>
       <w>21</w>
-      <h>343</h>
+      <h>511</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;470.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;710.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -489,7 +489,7 @@ update counter</panel_attributes>
       <x>560</x>
       <y>707</y>
       <w>28</w>
-      <h>168</h>
+      <h>175</h>
     </coordinates>
     <panel_attributes>bg=blue</panel_attributes>
     <additional_attributes/>
@@ -502,7 +502,7 @@ update counter</panel_attributes>
       <w>63</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>70.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -525,7 +525,7 @@ update counter</panel_attributes>
       <w>315</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 cancel delete </panel_attributes>
     <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -537,7 +537,7 @@ cancel delete </panel_attributes>
       <w>112</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
+    <panel_attributes>lt=-&gt;&gt;&gt;
 confirm delete </panel_attributes>
     <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
   </element>
@@ -546,19 +546,19 @@ confirm delete </panel_attributes>
     <coordinates>
       <x>777</x>
       <y>518</y>
-      <w>21</w>
-      <h>203</h>
+      <w>28</w>
+      <h>371</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;270.0</additional_attributes>
+    <additional_attributes>11.0;11.0;20.0;510.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
       <x>777</x>
       <y>707</y>
-      <w>35</w>
-      <h>189</h>
+      <w>28</w>
+      <h>175</h>
     </coordinates>
     <panel_attributes>bg=blue</panel_attributes>
     <additional_attributes/>
@@ -592,7 +592,7 @@ confirm delete </panel_attributes>
       <w>168</w>
       <h>28</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;.
+    <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
     <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -614,10 +614,10 @@ confirm delete </panel_attributes>
       <x>861</x>
       <y>35</y>
       <w>21</w>
-      <h>182</h>
+      <h>287</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;240.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;390.0</additional_attributes>
   </element>
   <element>
     <id>UMLFrame</id>
@@ -660,10 +660,10 @@ confirm delete </panel_attributes>
       <x>665</x>
       <y>728</y>
       <w>21</w>
-      <h>196</h>
+      <h>161</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>11.0;11.0;10.0;260.0</additional_attributes>
+    <additional_attributes>11.0;11.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -687,5 +687,49 @@ confirm delete </panel_attributes>
     <panel_attributes>lt=&lt;.
 return()</panel_attributes>
     <additional_attributes>10.0;20.0;600.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>168</y>
+      <w>28</w>
+      <h>721</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>21.0;11.0;10.0;1010.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>966</x>
+      <y>252</y>
+      <w>35</w>
+      <h>644</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>11.0;11.0;30.0;900.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1050</x>
+      <y>413</y>
+      <w>28</w>
+      <h>483</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>11.0;11.0;20.0;670.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>343</x>
+      <y>462</y>
+      <w>21</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>11.0;11.0;10.0;580.0</additional_attributes>
   </element>
 </diagram>
