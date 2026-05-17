@@ -437,16 +437,16 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>176</x>
+      <x>184</x>
       <y>208</y>
-      <w>128</w>
-      <h>808</h>
+      <w>112</w>
+      <h>360</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 επιλέγει Αναφορά
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>110.0;10.0;20.0;170.0;30.0;430.0;10.0;990.0</additional_attributes>
+    <additional_attributes>100.0;10.0;10.0;170.0;20.0;430.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -862,5 +862,72 @@ drawLine(44, 31, 54, 21)
 drawLine(44, 31, 54, 41)
 	</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>152</x>
+      <y>552</y>
+      <w>88</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>184</x>
+      <y>600</y>
+      <w>96</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+συμπληρώνει
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>152</x>
+      <y>712</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Οθόνη Αναφοράς
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>184</x>
+      <y>768</y>
+      <w>40</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;280.0</additional_attributes>
   </element>
 </diagram>
