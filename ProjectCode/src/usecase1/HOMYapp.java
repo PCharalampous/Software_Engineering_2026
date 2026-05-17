@@ -1,10 +1,28 @@
 package usecase1;
 
-public class HOMYapp {
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public class HOMYapp extends Application{
 
-	}
+    
+	@SuppressWarnings("exports")
+	@Override
+    public void start(Stage primaryStage) {
+		
+		LogInScreen loginScr = new LogInScreen(primaryStage);
+		Authentication authScr = new Authentication();
+		
+		loginScr.createWindow();
+		authScr.createWindow();
+    }
+	
+    public static void main(String[] args) {
+    	launch(args); //call this only once in the entire program.
+    	
+    }
+    
+   
+
 
 }
