@@ -118,17 +118,6 @@
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>395</x>
-      <y>180</y>
-      <w>80</w>
-      <h>15</h>
-    </coordinates>
-    <panel_attributes>RenewedChoreScreen</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLActor</id>
     <coordinates>
       <x>105</x>
@@ -226,17 +215,6 @@
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;1770.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>430</x>
-      <y>195</y>
-      <w>15</w>
-      <h>715</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;1410.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -430,32 +408,6 @@ returnCheck()</panel_attributes>
     <additional_attributes>840.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>320</x>
-      <y>210</y>
-      <w>120</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-display()
-fg=BLACK
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>430</x>
-      <y>215</y>
-      <w>10</w>
-      <h>115</h>
-    </coordinates>
-    <panel_attributes>
-bg=BLUE</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLGeneric</id>
     <coordinates>
       <x>865</x>
@@ -471,66 +423,66 @@ bg=BLUE</panel_attributes>
     <coordinates>
       <x>115</x>
       <y>220</y>
-      <w>325</w>
+      <w>210</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 completeChore()
 fg=BLACK
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;630.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>320</x>
       <y>225</y>
-      <w>70</w>
+      <w>185</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 renewChoreStatus()</panel_attributes>
-    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>350.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>115</x>
       <y>245</y>
-      <w>325</w>
+      <w>210</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 vote()
 fg=BLACK
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;630.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>320</x>
       <y>295</y>
-      <w>230</w>
+      <w>345</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>440.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>670.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>320</x>
       <y>285</y>
-      <w>70</w>
+      <w>185</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 updateHistory()
 fg=BLACK
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -565,18 +517,6 @@ bg=BLACK</panel_attributes>
       <y>445</y>
       <w>10</w>
       <h>75</h>
-    </coordinates>
-    <panel_attributes>
-bg=BLUE</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>430</x>
-      <y>335</y>
-      <w>10</w>
-      <h>65</h>
     </coordinates>
     <panel_attributes>
 bg=BLUE</panel_attributes>
@@ -682,30 +622,18 @@ return()</panel_attributes>
     <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>430</x>
-      <y>595</y>
-      <w>10</w>
-      <h>55</h>
-    </coordinates>
-    <panel_attributes>
-bg=BLUE</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
       <x>115</x>
       <y>590</y>
-      <w>325</w>
+      <w>210</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 selectReportChore()
 fg=BLACK
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;630.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -770,26 +698,26 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>430</x>
+      <x>320</x>
       <y>345</y>
-      <w>80</w>
+      <w>185</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 completionRejection()</panel_attributes>
-    <additional_attributes>130.0;20.0;20.0;20.0</additional_attributes>
+    <additional_attributes>350.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>325</x>
       <y>600</y>
-      <w>70</w>
+      <w>180</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 renewChoreStatus()</panel_attributes>
-    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>340.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -806,15 +734,15 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>325</x>
       <y>625</y>
-      <w>530</w>
+      <w>640</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 reportIssue()
 bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;20.0;1040.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;1260.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -823,30 +751,6 @@ bg=BLACK</panel_attributes>
       <y>630</y>
       <w>10</w>
       <h>25</h>
-    </coordinates>
-    <panel_attributes>
-bg=BLUE</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>320</x>
-      <y>630</y>
-      <w>115</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-return()</panel_attributes>
-    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>315</x>
-      <y>630</y>
-      <w>10</w>
-      <h>15</h>
     </coordinates>
     <panel_attributes>
 bg=BLUE</panel_attributes>
@@ -1011,14 +915,14 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>320</x>
       <y>235</y>
-      <w>70</w>
+      <w>185</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 returnChore()</panel_attributes>
-    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -1035,26 +939,26 @@ bg=BLUE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>320</x>
       <y>355</y>
-      <w>75</w>
+      <w>190</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 returnChore()</panel_attributes>
-    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
+      <x>325</x>
       <y>610</y>
-      <w>70</w>
+      <w>180</w>
       <h>20</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 returnChore()</panel_attributes>
-    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
@@ -1081,5 +985,17 @@ addChore()
 fg=BLACK
 bg=BLACK</panel_attributes>
     <additional_attributes>760.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>315</x>
+      <y>600</y>
+      <w>15</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
