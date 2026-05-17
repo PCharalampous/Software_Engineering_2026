@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class LogInPanel extends GridPane {
-    private GridPane body;
+    private GridPane credenInput;
     private Label usernameLabel;
     private Label psswdLabel;
     private TextField username;
@@ -23,35 +23,69 @@ public class LogInPanel extends GridPane {
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
         //body
-        body = new GridPane();
-        body.setPadding(new Insets(15));
-        body.setVgap(10);
-        body.setHgap(10);
-        usernameLabel = new Label("User Name");
+        credenInput = new GridPane();
+        credenInput.setPadding(new Insets(15));
+        credenInput.setVgap(10);
+        credenInput.setHgap(10);
+        usernameLabel = new Label("User Email");
         psswdLabel = new Label("Password");
         username = new TextField();
         password = new TextField();
         login = new Button("log in");
         signup = new Button("sign up");
-        body.add(usernameLabel, 0, 0);
-        body.add(username, 1, 0);
-        body.add(psswdLabel, 0, 1);
-        body.add(password, 1, 1);
-        body.setAlignment(Pos.CENTER);
+        credenInput.add(usernameLabel, 0, 0);
+        credenInput.add(username, 1, 0);
+        credenInput.add(psswdLabel, 0, 1);
+        credenInput.add(password, 1, 1);
+        credenInput.setAlignment(Pos.CENTER);
+    }
+    
+    
+    
+    private GridPane credenInputStyling(GridPane obj) {
+    	obj.setStyle(
+    		    "-fx-padding: 20;" +
+    		    "-fx-background-color: #D9D9FF;" +
+    		    "-fx-border-color: #0000FF;" +
+    		    "-fx-border-width: 2;" +
+    		    "-fx-background-radius: 4;" +
+    		    "-fx-border-radius: 2;"
+    		    
+    		);
+    	
+    	return obj;
     }
     
     @SuppressWarnings("exports")
-	public GridPane getBody(){
-        return this.body;
+    public GridPane getCredenInput(){
+    	
+        return this.credenInputStyling(this.credenInput); 
     }
     
+    
+	private Button buttonStyling(Button btn) {
+		btn.setStyle(
+    		    "-fx-background-radius: 100; " +
+    		    "-fx-min-width: 100px; " +
+    		    "-fx-min-height: 25px; " +
+    		    "-fx-max-width: 100px; " +
+    		    "-fx-max-height: 50px; " +
+    		    "-fx-font-size: 15px;"
+    		);
+		
+		
+    	return btn;
+    }
+	
     @SuppressWarnings("exports")
 	public Button getLogInBtn(){
-        return this.login;
+    	
+        return this.buttonStyling(this.login);
     }
     
     public Button getSignUpBtn(){
-        return this.signup;
+    	
+        return this.buttonStyling(this.signup);
     }
     
 

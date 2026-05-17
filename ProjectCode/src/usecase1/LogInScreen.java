@@ -25,8 +25,10 @@ public class LogInScreen {
 	
 	public void createWindow(){
 		
+		Label label = new Label("Log In!");
         VBox root = new VBox(5);
         Scene loginScene = new Scene(root, 500, 400);
+        HBox hbox = new HBox(5);
         
         logINstage.setScene(loginScene);
         logINstage.setTitle("HOMY Login Page");
@@ -37,18 +39,20 @@ public class LogInScreen {
         
         root.setPadding(new Insets(5));
         root.getChildren().addAll(
-                innerPanel.getBody(),
+        		
+        		label,
+                innerPanel.getCredenInput(),
                 innerPanel.getLogInBtn(),
                 innerPanel.getSignUpBtn()
         );        
         
         logINstage.setResizable(false);
         
-        HBox hbox = new HBox(5);
+        
 
         hbox.getChildren().addAll(innerPanel.getLogInBtn(), innerPanel.getSignUpBtn());
         hbox.setAlignment(Pos.CENTER);
-
+        
         root.getChildren().add(hbox);
         root.setAlignment(Pos.CENTER);
         // Show window

@@ -11,10 +11,14 @@ public class HOMYapp extends Application{
     public void start(Stage primaryStage) {
 		
 		LogInScreen loginScr = new LogInScreen(primaryStage);
-		Authentication authScr = new Authentication();
+		//Authentication authScr = new Authentication();
+		SignUpScreen signupScr = new SignUpScreen();
+		HomeScreen homeScr = new HomeScreen();
 		
 		loginScr.createWindow();
-		authScr.createWindow();
+		signupScr.createWindow();
+		homeScr.createWindow();
+		//authScr.createWindow();
     }
 	
     public static void main(String[] args) {
