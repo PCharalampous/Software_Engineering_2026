@@ -2,10 +2,12 @@ package usecase1;
 
 
 import javafx.application.Application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -24,10 +26,10 @@ public class LogInScreen {
 	public void createWindow(){
 		
         VBox root = new VBox(5);
-        Scene loginScene = new Scene(root, 500, 500);
+        Scene loginScene = new Scene(root, 500, 400);
         
         logINstage.setScene(loginScene);
-        logINstage.setTitle("Login Page");
+        logINstage.setTitle("HOMY Login Page");
         
         
         LogInPanel innerPanel = new LogInPanel(logINstage);
@@ -36,8 +38,18 @@ public class LogInScreen {
         root.setPadding(new Insets(5));
         root.getChildren().addAll(
                 innerPanel.getBody(),
-                innerPanel.getLogInBtn()
+                innerPanel.getLogInBtn(),
+                innerPanel.getSignUpBtn()
         );        
+        
+        logINstage.setResizable(false);
+        
+        HBox hbox = new HBox(5);
+
+        hbox.getChildren().addAll(innerPanel.getLogInBtn(), innerPanel.getSignUpBtn());
+        hbox.setAlignment(Pos.CENTER);
+
+        root.getChildren().add(hbox);
         root.setAlignment(Pos.CENTER);
         // Show window
         logINstage.show();

@@ -1,6 +1,7 @@
 package usecase1;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,7 +18,7 @@ public class LogInPanel extends GridPane {
     private Label psswdLabel;
     private TextField username;
     private TextField password;
-    private Button login;
+    private Button login, signup;
 
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
@@ -31,10 +32,12 @@ public class LogInPanel extends GridPane {
         username = new TextField();
         password = new TextField();
         login = new Button("log in");
+        signup = new Button("sign up");
         body.add(usernameLabel, 0, 0);
         body.add(username, 1, 0);
         body.add(psswdLabel, 0, 1);
         body.add(password, 1, 1);
+        body.setAlignment(Pos.CENTER);
     }
     
     @SuppressWarnings("exports")
@@ -48,7 +51,7 @@ public class LogInPanel extends GridPane {
     }
     
     public Button getSignUpBtn(){
-        return this.login;
+        return this.signup;
     }
     
 
