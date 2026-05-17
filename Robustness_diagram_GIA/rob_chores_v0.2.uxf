@@ -4,7 +4,7 @@
   <element>
     <id>Text</id>
     <coordinates>
-      <x>192</x>
+      <x>240</x>
       <y>160</y>
       <w>104</w>
       <h>64</h>
@@ -22,7 +22,7 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>0</x>
+      <x>48</x>
       <y>160</y>
       <w>56</w>
       <h>88</h>
@@ -31,27 +31,9 @@ drawLine(20, 30, 20, 70)
     <additional_attributes/>
   </element>
   <element>
-    <id>Text</id>
-    <coordinates>
-      <x>200</x>
-      <y>384</y>
-      <w>168</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>// Boundary Element
-	  Ανανεωμένη Οθόνη Αγγαρειών
-customelement=
-// Boundary Symbol
-drawCircle(50, 50, 20)
-drawLine(20, 50, 30, 50)
-drawLine(20, 30, 20, 70)
-	</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>256</x>
+      <x>304</x>
       <y>152</y>
       <w>128</w>
       <h>48</h>
@@ -62,7 +44,7 @@ drawLine(20, 30, 20, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>272</y>
       <w>216</w>
       <h>88</h>
@@ -80,7 +62,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>832</x>
+      <x>880</x>
       <y>600</y>
       <w>112</w>
       <h>64</h>
@@ -98,7 +80,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>424</x>
+      <x>472</x>
       <y>160</y>
       <w>160</w>
       <h>72</h>
@@ -109,7 +91,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>976</x>
+      <x>1024</x>
       <y>808</y>
       <w>112</w>
       <h>80</h>
@@ -127,7 +109,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
+      <x>448</x>
       <y>176</y>
       <w>24</w>
       <h>104</h>
@@ -138,7 +120,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>416</y>
       <w>296</w>
       <h>96</h>
@@ -157,7 +139,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
+      <x>440</x>
       <y>336</y>
       <w>32</w>
       <h>96</h>
@@ -168,7 +150,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>320</x>
+      <x>368</x>
       <y>536</y>
       <w>200</w>
       <h>88</h>
@@ -186,7 +168,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>424</x>
+      <x>472</x>
       <y>232</y>
       <w>200</w>
       <h>200</h>
@@ -197,7 +179,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>472</y>
       <w>48</w>
       <h>80</h>
@@ -208,7 +190,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>616</y>
       <w>216</w>
       <h>88</h>
@@ -226,7 +208,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>248</x>
+      <x>296</x>
       <y>440</y>
       <w>104</w>
       <h>144</h>
@@ -237,19 +219,19 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>56</x>
-      <y>224</y>
-      <w>296</w>
-      <h>216</h>
+      <x>216</x>
+      <y>216</y>
+      <w>248</w>
+      <h>224</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 εκτελεί την  εργασία και επιλέγει Complete</panel_attributes>
-    <additional_attributes>10.0;10.0;150.0;240.0;190.0;250.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;250.0;50.0;260.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
+      <x>288</x>
       <y>448</y>
       <w>152</w>
       <h>224</h>
@@ -261,7 +243,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>800</y>
       <w>200</w>
       <h>88</h>
@@ -279,7 +261,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
+      <x>440</x>
       <y>672</y>
       <w>32</w>
       <h>144</h>
@@ -290,7 +272,7 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>576</x>
+      <x>624</x>
       <y>800</y>
       <w>376</w>
       <h>88</h>
@@ -308,8 +290,8 @@ drawLine(44, 31, 54, 41)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>208</x>
-      <y>272</y>
+      <x>288</x>
+      <y>264</y>
       <w>112</w>
       <h>64</h>
     </coordinates>
@@ -328,20 +310,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>216</x>
-      <y>456</y>
-      <w>160</w>
-      <h>368</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;
-fg=RED
-bg=RED</panel_attributes>
-    <additional_attributes>10.0;10.0;180.0;440.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>432</x>
+      <x>480</x>
       <y>824</y>
       <w>176</w>
       <h>32</h>
@@ -353,7 +322,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
+      <x>680</x>
       <y>832</y>
       <w>368</w>
       <h>32</h>
@@ -364,7 +333,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>576</x>
+      <x>624</x>
       <y>288</y>
       <w>112</w>
       <h>80</h>
@@ -382,7 +351,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
+      <x>672</x>
       <y>216</y>
       <w>128</w>
       <h>616</h>
@@ -393,7 +362,7 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>272</x>
+      <x>320</x>
       <y>424</y>
       <w>344</w>
       <h>384</h>
@@ -404,21 +373,21 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>56</x>
+      <x>104</x>
       <y>216</y>
-      <w>168</w>
-      <h>112</h>
+      <w>200</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 συμπληρώνει τη φόρμα
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>10.0;10.0;190.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;230.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>120</x>
+      <x>168</x>
       <y>1000</y>
       <w>200</w>
       <h>88</h>
@@ -438,7 +407,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>424</x>
+      <x>472</x>
       <y>184</y>
       <w>176</w>
       <h>144</h>
@@ -450,7 +419,7 @@ fg=BLACK</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>816</x>
+      <x>864</x>
       <y>1008</y>
       <w>112</w>
       <h>80</h>
@@ -468,21 +437,21 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>128</x>
-      <y>432</y>
-      <w>120</w>
-      <h>584</h>
+      <x>176</x>
+      <y>208</y>
+      <w>128</w>
+      <h>808</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 επιλέγει Αναφορά
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>90.0;10.0;30.0;150.0;10.0;710.0</additional_attributes>
+    <additional_attributes>110.0;10.0;20.0;170.0;30.0;430.0;10.0;990.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>192</x>
+      <x>240</x>
       <y>1032</y>
       <w>632</w>
       <h>24</h>
@@ -495,7 +464,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>184</x>
+      <x>232</x>
       <y>472</y>
       <w>456</w>
       <h>568</h>
@@ -509,10 +478,10 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>424</x>
+      <x>472</x>
       <y>848</y>
-      <w>104</w>
-      <h>248</h>
+      <w>96</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 
@@ -523,13 +492,13 @@ bg=RED</panel_attributes>
 όχι
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;290.0</additional_attributes>
+    <additional_attributes>10.0;10.0;100.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>496</x>
-      <y>1080</y>
+      <x>536</x>
+      <y>944</y>
       <w>264</w>
       <h>88</h>
     </coordinates>
@@ -548,10 +517,10 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>424</x>
+      <x>472</x>
       <y>456</y>
-      <w>312</w>
-      <h>640</h>
+      <w>296</w>
+      <h>504</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 
@@ -571,12 +540,12 @@ bg=RED</panel_attributes>
 συνεχίζει
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>170.0;780.0;230.0;670.0;300.0;450.0;320.0;320.0;250.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>180.0;610.0;300.0;450.0;320.0;320.0;250.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
+      <x>440</x>
       <y>576</y>
       <w>440</w>
       <h>72</h>
@@ -587,20 +556,20 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
+      <x>608</x>
       <y>664</y>
       <w>296</w>
-      <h>472</h>
+      <h>336</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>10.0;570.0;170.0;530.0;250.0;370.0;240.0;150.0;350.0;10.0</additional_attributes>
+    <additional_attributes>10.0;400.0;240.0;150.0;350.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>568</x>
+      <x>616</x>
       <y>176</y>
       <w>112</w>
       <h>64</h>
@@ -618,8 +587,8 @@ drawLine(30, 70, 70, 70)
   <element>
     <id>Text</id>
     <coordinates>
-      <x>296</x>
-      <y>232</y>
+      <x>368</x>
+      <y>200</y>
       <w>64</w>
       <h>88</h>
     </coordinates>
@@ -638,49 +607,49 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>232</x>
-      <y>216</y>
-      <w>96</w>
-      <h>56</h>
+      <x>280</x>
+      <y>208</y>
+      <w>120</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 επιλέγει (+)
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;50.0</additional_attributes>
+    <additional_attributes>10.0;20.0;130.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>256</x>
-      <y>280</y>
-      <w>88</w>
-      <h>48</h>
+      <x>336</x>
+      <y>248</y>
+      <w>72</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>90.0;10.0;10.0;40.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>256</x>
-      <y>304</y>
-      <w>144</w>
-      <h>40</h>
+      <x>336</x>
+      <y>296</y>
+      <w>112</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
 συνεχίζει
 fg=RED
 bg=RED</panel_attributes>
-    <additional_attributes>10.0;30.0;160.0;10.0</additional_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>48</x>
+      <x>96</x>
       <y>184</y>
       <w>160</w>
       <h>40</h>
@@ -692,7 +661,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>408</x>
+      <x>456</x>
       <y>224</y>
       <w>192</w>
       <h>424</h>
@@ -703,7 +672,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>384</x>
+      <x>432</x>
       <y>0</y>
       <w>184</w>
       <h>64</h>
@@ -723,7 +692,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>128</x>
+      <x>176</x>
       <y>88</y>
       <w>200</w>
       <h>88</h>
@@ -737,7 +706,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>264</x>
+      <x>312</x>
       <y>32</y>
       <w>64</w>
       <h>88</h>
@@ -757,7 +726,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
+      <x>368</x>
       <y>32</y>
       <w>80</w>
       <h>56</h>
@@ -771,7 +740,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
+      <x>488</x>
       <y>40</y>
       <w>336</w>
       <h>72</h>
@@ -785,7 +754,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>248</x>
+      <x>296</x>
       <y>56</y>
       <w>184</w>
       <h>120</h>
@@ -799,7 +768,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>752</x>
+      <x>800</x>
       <y>72</y>
       <w>64</w>
       <h>88</h>
@@ -819,7 +788,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
+      <x>672</x>
       <y>120</y>
       <w>168</w>
       <h>96</h>
@@ -833,7 +802,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
+      <x>328</x>
       <y>80</y>
       <w>496</w>
       <h>104</h>
@@ -847,7 +816,7 @@ bg=RED</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>32</x>
+      <x>80</x>
       <y>16</y>
       <w>368</w>
       <h>152</h>
@@ -861,13 +830,31 @@ bg=RED</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>368</x>
+      <x>416</x>
       <y>112</y>
       <w>232</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>// Control Element
 Ανακτά εργασίες,μέλη, προνόμια, ιστορικό
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>248</x>
+      <y>392</y>
+      <w>144</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Δίνεται η δυνατότητα ψήφου
 customelement=
 // Control Symbol
 drawCircle(50, 50, 20)
