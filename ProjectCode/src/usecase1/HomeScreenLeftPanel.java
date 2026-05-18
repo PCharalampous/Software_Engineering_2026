@@ -35,10 +35,25 @@ public class HomeScreenLeftPanel {
 		Label joinRoomLbl = new Label("JOIN ROOM");
 		TextField roomIdSect = new TextField("Enter room id...");
 		Button joinBtn = new Button("JOIN");
-//		Separator joinRoomSeparator = new Separator();
 		joinRoom.getChildren().addAll(joinRoomLbl,roomIdSect,joinBtn);
 		joinRoom.setAlignment(Pos.CENTER);
+		
+		//action listener for buttons
+		joinBtn.setOnAction(e -> {
+			
+			ConfirmationScreen confirScr = new ConfirmationScreen (
+						"Confirm your actions", 
+						"You will be transfered to the room",
+						"confirm",
+						"-fx-background-color: #22C55E; -fx-text-fill: white;"+
+						"-fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;",
+						()->System.out.println("button clicked")
+					);
+			
+			confirScr.show();
+		});
 
+		    
 		return joinRoom;
 	}
 	
@@ -50,12 +65,12 @@ public class HomeScreenLeftPanel {
 	    );
 		
 		joinObj.setStyle(
-				"-fx-background-color: white;" +
-				"-fx-border-color: #0000FF;" +
-			    "-fx-border-width: 1;" +
-			    "-fx-border-radius: 12;" +
-			    "-fx-background-radius: 12;" +
-			    "-fx-padding: 20;"
+			"-fx-background-color: white;" +
+			"-fx-border-color: #0000FF;" +
+			"-fx-border-width: 1;" +
+			"-fx-border-radius: 12;" +
+			"-fx-background-radius: 12;" +
+			"-fx-padding: 20;"
 		);
 	}
 	

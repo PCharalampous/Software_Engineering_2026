@@ -43,22 +43,49 @@ public class HomeScreenMiddlePanel {
         
 	}
 	
-	private VBox selectGuestsComponent(){
-		VBox guestSelect = new VBox(5);
-		Label guestsSpinLabel = new Label("Choose number of roomates");
+	private HBox selectGuestsComponent(){
+		HBox guestSelect = new HBox(5);
+		Label guestsSpinLabel = new Label("Number of roomates:");
 		Spinner<Integer> guestsSpin = new Spinner<>(1, 10, 1);
 		
 		guestSelect.getChildren().addAll(guestsSpinLabel, guestsSpin);
 		guestSelect.setAlignment(Pos.CENTER);
+		selectGuestsStyling(guestsSpinLabel, guestsSpin);
 		return guestSelect;
 	}
 	
+	private void selectGuestsStyling(Label guestsLb, Spinner<Integer> guestSel) {
+		
+		guestsLb.setStyle(
+			    "-fx-font-size: 14px;" +
+			    "-fx-font-weight: bold;" +
+			    "-fx-text-fill: #2563eb;"
+			);
+		
+		guestSel.setStyle(
+			    "-fx-background-color: #f8fbff;" +
+			    "-fx-background-radius: 10;" +
+			    "-fx-border-radius: 8;" +
+			    "-fx-border-color: #93c5fd;" +
+			    "-fx-border-width: 1;"
+			);
+		
+		guestSel.getEditor().setStyle(
+			    "-fx-background-color: transparent;" +
+			    "-fx-font-size: 14px;" +
+			    "-fx-text-fill: #2563eb;" +
+			    "-fx-font-weight: bold;"
+			);
+		
+		
+		guestSel.setEditable(false);
+	}
 	
 	private HBox rentRangeComponent(){
 		
 		HBox rentRange = new HBox(10);
-		Label lmin = new Label("Rent range min value ");
-		Label lmax = new Label("Rent range max value ");
+		Label lmin = new Label("Rent range min value:");
+		Label lmax = new Label("Rent range max value:");
 		VBox minRentRange = new VBox(5);
 		VBox maxRentRange = new VBox(5);
 		Slider minVal = new Slider(0, 1000, 100);
@@ -89,13 +116,13 @@ public class HomeScreenMiddlePanel {
 		rentRange.getChildren().addAll(lmin, minRentRange, lmax, maxRentRange);
 		rentRange.setAlignment(Pos.CENTER);
 		
-		rentRangeCompStyling(rentRange, minVal, maxVal, minValText, maxValText, lmin, lmax);
+		rentRangeCompStyling(minVal, maxVal, minValText, maxValText, lmin, lmax);
 		
 		return rentRange;
 	}
 	
 	
-	private void rentRangeCompStyling(HBox rentRange, Slider minSlider, Slider maxSlider, 
+	private void rentRangeCompStyling(Slider minSlider, Slider maxSlider, 
 			TextField minField, TextField maxField, Label lmin,Label lmax) {
 
 	    minSlider.setStyle(
@@ -121,13 +148,15 @@ public class HomeScreenMiddlePanel {
 	    );
 
 	    lmin.setStyle(
-	        "-fx-font-weight: bold;" +
-	        "-fx-text-fill: #2563eb;"
+	    		"-fx-font-size: 14px;" +
+	    		"-fx-font-weight: bold;" +
+	    		"-fx-text-fill: #2563eb;"
 	    );
 
 	    lmax.setStyle(
-	        "-fx-font-weight: bold;" +
-	        "-fx-text-fill: #0891b2;"
+	    		"-fx-font-size: 14px;" +
+	    		"-fx-font-weight: bold;" +
+	    		"-fx-text-fill: #2563eb;"
 	    );
 	    
 	    
