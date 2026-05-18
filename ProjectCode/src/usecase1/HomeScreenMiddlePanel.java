@@ -44,6 +44,31 @@ public class HomeScreenMiddlePanel {
         
 	}
 	
+	private void middlePanelStyling() {
+		centerBox.setStyle(
+	        	"-fx-background-color: #D9D9FF;"+
+	        	"-fx-border-color: #0000FF;" +
+	        	"-fx-border-width: 2;"
+	        );
+		
+		searchBar.setStyle(
+				"-fx-pref-width: 300px;" +
+				"-fx-pref-height: 40px;"
+			);
+		
+		filterComp.setStyle(
+		        "-fx-background-color: white;" +
+		        "-fx-background-radius: 18;" +
+		        "-fx-border-radius: 18;" +
+		        "-fx-border-color: #c7d2fe;" +
+		        "-fx-border-width: 2;" +
+		        "-fx-padding: 20;"
+		    );
+		
+		filterComp.setAlignment(Pos.CENTER);
+		
+	}
+	
 	private HBox selectGuestsComponent(){
 		HBox guestSelect = new HBox(5);
 		Label guestsSpinLabel = new Label("Number of roomates:");
@@ -160,36 +185,12 @@ public class HomeScreenMiddlePanel {
 	    		"-fx-text-fill: #2563eb;"
 	    );
 	    
-	    
 	}
 	
-	private void middlePanelStyling(VBox vbx, TextField sbar, HBox filters) {
-		vbx.setStyle(
-	        	"-fx-background-color: #D9D9FF;"+
-	        	"-fx-border-color: #0000FF;" +
-	        	"-fx-border-width: 2;"
-	        );
-		
-		sbar.setStyle(
-				"-fx-pref-width: 300px;" +
-				"-fx-pref-height: 40px;"
-			);
-		
-		filters.setStyle(
-		        "-fx-background-color: white;" +
-		        "-fx-background-radius: 18;" +
-		        "-fx-border-radius: 18;" +
-		        "-fx-border-color: #c7d2fe;" +
-		        "-fx-border-width: 2;" +
-		        "-fx-padding: 20;"
-		    );
-		
-		filters.setAlignment(Pos.CENTER);
-		
-	}
+	
 	
 	public VBox getMiddlePanel() {
-		middlePanelStyling(this.centerBox, this.searchBar, this.filterComp);
+		middlePanelStyling();
 		return this.centerBox;
 	}
 }

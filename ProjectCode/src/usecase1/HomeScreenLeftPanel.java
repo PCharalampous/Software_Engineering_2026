@@ -41,6 +41,14 @@ public class HomeScreenLeftPanel {
 		joinRoom.setAlignment(Pos.CENTER);
 		
 		//action listener for buttons
+		buttonsFunctiability();
+
+		    
+		return joinRoom;
+	}
+	
+	private void buttonsFunctiability() {
+		
 		joinBtn.setOnAction(e -> {
 			
 			ConfirmationScreen confirScr = new ConfirmationScreen (
@@ -55,19 +63,17 @@ public class HomeScreenLeftPanel {
 			
 			confirScr.show();
 		});
-
-		    
-		return joinRoom;
 	}
 	
-	private void leftPanelStyling(VBox obj, VBox joinObj, Button btn) {
-		obj.setStyle(
+	
+	private void leftPanelStyling() {
+		leftBox.setStyle(
 			"-fx-background-color: #D9D9FF;"+
 	        "-fx-border-color: #0000FF;" +
 	        "-fx-border-width: 2;"
 	    );
 		
-		joinObj.setStyle(
+		joinRoom.setStyle(
 			"-fx-background-color: white;" +
 			"-fx-border-color: #0000FF;" +
 			"-fx-border-width: 1;" +
@@ -76,7 +82,7 @@ public class HomeScreenLeftPanel {
 			"-fx-padding: 20;"
 		);
 		
-		btn.setStyle(
+		joinBtn.setStyle(
 			"-fx-background-radius: 20;" +
 		    "-fx-background-color: #0000FF;" +
 		    "-fx-text-fill: white;"
@@ -84,7 +90,7 @@ public class HomeScreenLeftPanel {
 	}
 	
 	public VBox getLeftPanel() {
-		leftPanelStyling(this.leftBox, this.joinRoom, this.joinBtn);
+		leftPanelStyling();
 		return this.leftBox;
 	} 
 }

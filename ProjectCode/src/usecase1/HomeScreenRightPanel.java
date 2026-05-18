@@ -18,7 +18,7 @@ public class HomeScreenRightPanel {
 	private Separator separator;
 	private Label headerLbl;
 	private Region spacer;
-	private Button[] btnArr;
+//	private Button[] btnArr;
 	private TextField userNameField;
 	private String userName;
 	private Stage homeScrStage;
@@ -34,12 +34,12 @@ public class HomeScreenRightPanel {
 		userNameField = new TextField(userName);
 		
 		logoutBtn = new Button("Log Out");
-		btnArr = new Button[] {profileButton,logoutBtn};
+//		btnArr = new Button[] {profileButton,logoutBtn};
 		
 		spacer = new Region();
 		
         rightBox = new VBox(10);
-        rightBox.getChildren().addAll(headerLbl ,separator ,btnArr[0] ,userNameField ,spacer ,btnArr[1]);
+        rightBox.getChildren().addAll(headerLbl ,separator ,profileButton ,userNameField ,spacer ,logoutBtn);
                 
         rightBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(spacer, Priority.ALWAYS);
@@ -50,23 +50,22 @@ public class HomeScreenRightPanel {
         
 	}
 	
-	private void rightPanelStyling(VBox vbx, Button[] btn, TextField txtFiel) {
+	private void rightPanelStyling() {
 		int i=0;
-		vbx.setStyle(
+		rightBox.setStyle(
 	       "-fx-background-color: #D9D9FF;"+
 	       "-fx-border-color: #0000FF;" +
 	       "-fx-border-width: 2;"
 	    );
-		//btn[0].setStyle("-fx-background-radius: 100;" +"-fx-font-size: 20px;");
-		for (i=0; i<btn.length; i++) {
-			btn[i].setStyle(
-				"-fx-background-radius: 20;" +
-		        "-fx-background-color: #0000FF;" +
-		        "-fx-text-fill: white;"
-		    );
-		}
 		
-		btn[0].setStyle(
+		logoutBtn.setStyle(
+			"-fx-background-radius: 20;" +
+		    "-fx-background-color: #0000FF;" +
+		    "-fx-text-fill: white;"
+		);
+		
+		
+		profileButton.setStyle(
 			"-fx-background-color: #f8fbff;" +
 			"-fx-background-radius: 12;" +
 			"-fx-border-radius: 12;" +
@@ -82,7 +81,7 @@ public class HomeScreenRightPanel {
 		);
 		
 		
-		txtFiel.setStyle(
+		userNameField.setStyle(
 			"-fx-background-color: #D9D9FF;" +
 		    "-fx-border-color: transparent;" +
 		    "-fx-font-size: 15px;" +
@@ -93,14 +92,14 @@ public class HomeScreenRightPanel {
 			"-fx-pref-height: 40px;"
 		);
 		
-		txtFiel.setEditable(false);
+		userNameField.setEditable(false);
 		
 	}
 	
-	private void buttonsFunctiability(Button[] btns) {
-		//btns[0] -> profile, btns[1] -> logout
+	private void buttonsFunctiability() {
 		
-		btns[1].setOnAction(e -> {
+		
+		this.logoutBtn.setOnAction(e -> {
 				LogInScreen logInScr = new LogInScreen(homeScrStage);
 				logInScr.createWindow();
 				
@@ -109,8 +108,8 @@ public class HomeScreenRightPanel {
 	}
 	
 	public VBox getRightPanel() {
-		rightPanelStyling(rightBox, btnArr, userNameField);
-		buttonsFunctiability(btnArr);
+		rightPanelStyling();
+		buttonsFunctiability();
 		return this.rightBox;
 		
 	}
