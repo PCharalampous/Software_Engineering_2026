@@ -13,46 +13,40 @@ import javafx.stage.Stage;
 
 public class HomeScreen {
 	
-private Stage primaryStage;
+private Stage homeScrStage;
 	
 	public void createWindow() {
         
 		//border pane config
 		BorderPane root = new BorderPane();
-        root.setPadding(new Insets(20));
+		
+        root.setPadding(new Insets(10));
         
         // LEFT SECTION
-        HomeScreenLeftPanel leftPanel = new HomeScreenLeftPanel();
         
-        root.setLeft(leftPanel.getLeftPanel());
+        HomeScreenLeftPanel leftSection = new HomeScreenLeftPanel();
+        
+        root.setLeft(leftSection.getLeftPanel());
+        
         
         // CENTER SECTION
-        TextField searchBar = new TextField();
-
-        searchBar.setPromptText("Search...");
-
-        //searchBar.setPrefWidth(300);
-
-        VBox centerBox = new VBox(searchBar);
-
-        centerBox.setAlignment(Pos.TOP_CENTER);
-        
-        root.setCenter(centerBox);
+        HomeScreenMiddlePanel middleSection = new HomeScreenMiddlePanel();
+        root.setCenter(middleSection.getMiddlePanel());
         
         // RIGHT SECTION
         
-        HomeScreenRightPanel rightPanel = new HomeScreenRightPanel();
+        HomeScreenRightPanel rightSection = new HomeScreenRightPanel();
         
-        root.setRight(rightPanel.getRightPanel());
+        root.setRight(rightSection.getRightPanel());
         
         //scene config
-        Scene loginScene = new Scene(root, 1280, 720);
-        primaryStage = new Stage();
-        primaryStage.setScene(loginScene);
-        primaryStage.setTitle("HOMY-Home Screen");
+        Scene homeScene = new Scene(root, 1500, 800);
+        homeScrStage = new Stage();
+        homeScrStage.setScene(homeScene);
+        homeScrStage.setTitle("HOMY-Home Screen");
         
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        homeScrStage.setResizable(false);
+        homeScrStage.show();
         
     }
 
