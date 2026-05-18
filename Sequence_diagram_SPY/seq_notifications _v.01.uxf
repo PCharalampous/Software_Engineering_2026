@@ -21,8 +21,7 @@
       <w>105</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>
-:NotificationsScreen</panel_attributes>
+    <panel_attributes>NotificationsScreen</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -44,7 +43,7 @@
       <w>119</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:ManageNotificationsClass</panel_attributes>
+    <panel_attributes>ManageNotificationsClass</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -55,7 +54,7 @@
       <w>77</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:Notification</panel_attributes>
+    <panel_attributes>Notification</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -66,7 +65,7 @@
       <w>84</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:Unread Counter
+    <panel_attributes>Unread Counter
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -321,7 +320,7 @@ decrement()</panel_attributes>
       <w>133</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:NotificationDetailsScreen</panel_attributes>
+    <panel_attributes>NotificationDetailsScreen</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -356,7 +355,7 @@ selectGoTo()</panel_attributes>
       <w>133</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:TargetSectionScreen</panel_attributes>
+    <panel_attributes>TargetSectionScreen</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -589,22 +588,22 @@ confirm delete </panel_attributes>
     <coordinates>
       <x>672</x>
       <y>217</y>
-      <w>168</w>
+      <w>154</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;</panel_attributes>
-    <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>819</x>
+      <x>812</x>
       <y>224</y>
-      <w>105</w>
+      <w>112</w>
       <h>35</h>
     </coordinates>
-    <panel_attributes>:Show message 
+    <panel_attributes>Show message 
 "no pending notifications "</panel_attributes>
     <additional_attributes/>
   </element>
