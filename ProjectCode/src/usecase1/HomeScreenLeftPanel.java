@@ -8,14 +8,16 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class HomeScreenLeftPanel {
 	
 	private Label leftBoxLabel, headerLbl;
 	private VBox leftBox, joinRoom;
 	private Separator separator;
+	private Button joinBtn;
 	
-	HomeScreenLeftPanel(){
+	HomeScreenLeftPanel(Stage homeScreenStage){
 		headerLbl = new Label("USERS SECTION");
 		separator = new Separator();
         leftBoxLabel = new Label("Not in room yet");
@@ -34,7 +36,7 @@ public class HomeScreenLeftPanel {
 		VBox joinRoom = new VBox(10);
 		Label joinRoomLbl = new Label("JOIN ROOM");
 		TextField roomIdSect = new TextField("Enter room id...");
-		Button joinBtn = new Button("JOIN");
+		joinBtn = new Button("JOIN");
 		joinRoom.getChildren().addAll(joinRoomLbl,roomIdSect,joinBtn);
 		joinRoom.setAlignment(Pos.CENTER);
 		
@@ -42,13 +44,14 @@ public class HomeScreenLeftPanel {
 		joinBtn.setOnAction(e -> {
 			
 			ConfirmationScreen confirScr = new ConfirmationScreen (
-						"Confirm your actions", 
-						"You will be transfered to the room",
-						"confirm",
-						"-fx-background-color: #22C55E; -fx-text-fill: white;"+
-						"-fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;",
-						()->System.out.println("button clicked")
-					);
+				"Confirm your actions", 
+				"You will be transfered to the room",
+				"confirm",
+				"-fx-background-color: #22C55E; -fx-text-fill: white;"+
+				"-fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;",
+				()->System.out.println("button clicked")
+				
+			);
 			
 			confirScr.show();
 		});
@@ -57,7 +60,7 @@ public class HomeScreenLeftPanel {
 		return joinRoom;
 	}
 	
-	private void leftPanelStyling(VBox obj, VBox joinObj) {
+	private void leftPanelStyling(VBox obj, VBox joinObj, Button btn) {
 		obj.setStyle(
 			"-fx-background-color: #D9D9FF;"+
 	        "-fx-border-color: #0000FF;" +
@@ -72,10 +75,16 @@ public class HomeScreenLeftPanel {
 			"-fx-background-radius: 12;" +
 			"-fx-padding: 20;"
 		);
+		
+		btn.setStyle(
+			"-fx-background-radius: 20;" +
+		    "-fx-background-color: #0000FF;" +
+		    "-fx-text-fill: white;"
+		);
 	}
 	
 	public VBox getLeftPanel() {
-		leftPanelStyling(this.leftBox, this.joinRoom);
+		leftPanelStyling(this.leftBox, this.joinRoom, this.joinBtn);
 		return this.leftBox;
 	} 
 }

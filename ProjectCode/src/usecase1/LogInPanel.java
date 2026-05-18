@@ -19,10 +19,12 @@ public class LogInPanel extends GridPane {
     private TextField username;
     private TextField password;
     private Button login, signup;
+    private Stage stage;
 
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
         //body
+    	this.stage = stage;
         credenInput = new GridPane();
         credenInput.setPadding(new Insets(15));
         credenInput.setVgap(10);
@@ -39,6 +41,21 @@ public class LogInPanel extends GridPane {
         credenInput.add(password, 1, 1);
         credenInput.setAlignment(Pos.CENTER);
     }
+    
+    private void buttonsFunctiability() {
+		
+    	login.setOnAction(e -> {
+				HomeScreen homeScr = new HomeScreen(this.stage);
+				homeScr.createWindow();
+			}
+		);
+		
+		signup.setOnAction(e -> {
+				SignUpScreen signUpScr = new SignUpScreen(this.stage);
+				signUpScr.createWindow();
+			}
+		);
+	}
     
     
     
@@ -79,12 +96,12 @@ public class LogInPanel extends GridPane {
 	
     @SuppressWarnings("exports")
 	public Button getLogInBtn(){
-    	
+    	this.buttonsFunctiability();
         return this.buttonStyling(this.login);
     }
     
     public Button getSignUpBtn(){
-    	
+    	this.buttonsFunctiability();
         return this.buttonStyling(this.signup);
     }
     

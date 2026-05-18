@@ -14,9 +14,13 @@ import javafx.stage.Stage;
 public class HomeScreen {
 	
 private Stage homeScrStage;
+
+	@SuppressWarnings("exports")
+	public HomeScreen(Stage stage) {
+		this.homeScrStage = stage;
+	}
 	
 	public void createWindow() {
-        
 		//border pane config
 		BorderPane root = new BorderPane();
 		
@@ -24,24 +28,24 @@ private Stage homeScrStage;
         
         // LEFT SECTION
         
-        HomeScreenLeftPanel leftSection = new HomeScreenLeftPanel();
+        HomeScreenLeftPanel leftSection = new HomeScreenLeftPanel(this.homeScrStage);
         
         root.setLeft(leftSection.getLeftPanel());
         
         
         // CENTER SECTION
-        HomeScreenMiddlePanel middleSection = new HomeScreenMiddlePanel();
+        HomeScreenMiddlePanel middleSection = new HomeScreenMiddlePanel(this.homeScrStage);
         root.setCenter(middleSection.getMiddlePanel());
         
         // RIGHT SECTION
         
-        HomeScreenRightPanel rightSection = new HomeScreenRightPanel();
+        HomeScreenRightPanel rightSection = new HomeScreenRightPanel(this.homeScrStage);
         
         root.setRight(rightSection.getRightPanel());
         
         //scene config
         Scene homeScene = new Scene(root, 1500, 800);
-        homeScrStage = new Stage();
+        
         homeScrStage.setScene(homeScene);
         homeScrStage.setTitle("HOMY-Home Screen");
         

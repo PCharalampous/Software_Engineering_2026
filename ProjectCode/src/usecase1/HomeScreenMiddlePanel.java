@@ -10,6 +10,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class HomeScreenMiddlePanel {
 	
@@ -20,7 +21,7 @@ public class HomeScreenMiddlePanel {
 
 	private HBox filterComp;
 	
-	HomeScreenMiddlePanel(){
+	HomeScreenMiddlePanel(Stage homeScreenStage){
 		
 		headerLbl = new Label("HOMY APP - home management");
 		separator = new Separator();
@@ -96,14 +97,14 @@ public class HomeScreenMiddlePanel {
 		//slider add listener
 		minVal.valueProperty().addListener(
 				(observable, oldValue, newValue) -> {
-						minValText.setText(String.valueOf(newValue.intValue()));
-					}
+					minValText.setText(String.valueOf(newValue.intValue()));
+				}
 		);
 		
 		maxVal.valueProperty().addListener(
 				(observable, oldValue, newValue) -> {
-						maxValText.setText(String.valueOf(newValue.intValue()));
-					}
+					maxValText.setText(String.valueOf(newValue.intValue()));
+				}
 		);
 		
 		//TextField properties

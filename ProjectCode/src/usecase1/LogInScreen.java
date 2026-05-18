@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -38,12 +39,11 @@ public class LogInScreen {
 
         
         root.setPadding(new Insets(5));
-        root.getChildren().addAll(
-        		
-        		label,
-                innerPanel.getCredenInput(),
-                innerPanel.getLogInBtn(),
-                innerPanel.getSignUpBtn()
+        root.getChildren().addAll(	
+        	label,
+            innerPanel.getCredenInput(),
+            innerPanel.getLogInBtn(),
+            innerPanel.getSignUpBtn()
         );        
         
         logINstage.setResizable(false);
@@ -57,32 +57,8 @@ public class LogInScreen {
         root.setAlignment(Pos.CENTER);
         // Show window
         logINstage.show();
-
-        
-        
-       //-0-------------------------------------------
-      
-        
-        
-
-//        register.setOnMouseClicked(event -> {
-//            RegPane regPane = new RegPane(stage,loginScene);
-//            VBox reg = new VBox(5);
-//            reg.setPadding(new Insets(5));
-//            info.setText("Registration page");
-//            reg.getChildren().addAll(
-//                    info,
-//                    regPane.getBody(),
-//                    regPane.getRegister()
-//                    );
-//            reg.setAlignment(Pos.CENTER);
-//            Scene registrationScene =  new Scene(reg,300,200);
-//            primaryStage.setScene(registrationScene);
-//            primaryStage.setTitle("Registration Page");
-//
-//        });
-
-        
     }
+	
+	
 	
 }

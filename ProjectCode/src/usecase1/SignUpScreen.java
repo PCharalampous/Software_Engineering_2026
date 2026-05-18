@@ -14,14 +14,16 @@ public class SignUpScreen {
 	
 private Stage primaryStage;
 	
+	public SignUpScreen(Stage stage) {
+		this.primaryStage = stage;
+	}
+	
 	public void createWindow() {
         Label label = new Label("Create Account!");
 
         VBox root = new VBox(5);
         Scene loginScene = new Scene(root, 500, 400);
         HBox hbox = new HBox(5);
-        
-        primaryStage = new Stage();
         
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("HOMY Sign Up Page");

@@ -12,12 +12,12 @@ public class HOMYapp extends Application{
 		
 		LogInScreen loginScr = new LogInScreen(primaryStage);
 		//Authentication authScr = new Authentication();
-		SignUpScreen signupScr = new SignUpScreen();
-		HomeScreen homeScr = new HomeScreen();
+//		SignUpScreen signupScr = new SignUpScreen();
+//		HomeScreen homeScr = new HomeScreen();
 		
 		loginScr.createWindow();
-		signupScr.createWindow();
-		homeScr.createWindow();
+//		signupScr.createWindow();
+//		homeScr.createWindow();
 		//authScr.createWindow();
     }
 	

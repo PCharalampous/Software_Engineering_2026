@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class HomeScreenRightPanel {
 	
@@ -18,14 +19,19 @@ public class HomeScreenRightPanel {
 	private Label headerLbl;
 	private Region spacer;
 	private Button[] btnArr;
+	private TextField userNameField;
+	private String userName;
+	private Stage homeScrStage;
 	
-	HomeScreenRightPanel(){
+	HomeScreenRightPanel(Stage homeScreenStage){
+		this.homeScrStage = homeScreenStage;
 		headerLbl = new Label("PROFILE SECTION");
 		separator = new Separator();
 		profileButton = new Button("Profile");
 		
-		profileButton.setPrefSize(100, 50);
-		profileButton.setStyle("-fx-background-radius: 100;" +"-fx-font-size: 20px;");
+		//for testing purposes: (delete after)
+		userName = "Makis";
+		userNameField = new TextField(userName);
 		
 		logoutBtn = new Button("Log Out");
 		btnArr = new Button[] {profileButton,logoutBtn};
@@ -33,7 +39,7 @@ public class HomeScreenRightPanel {
 		spacer = new Region();
 		
         rightBox = new VBox(10);
-        rightBox.getChildren().addAll(headerLbl,separator,btnArr[0],spacer ,btnArr[1]);
+        rightBox.getChildren().addAll(headerLbl ,separator ,btnArr[0] ,userNameField ,spacer ,btnArr[1]);
                 
         rightBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(spacer, Priority.ALWAYS);
@@ -42,16 +48,16 @@ public class HomeScreenRightPanel {
         rightBox.setPrefWidth(200);
         
         
-        
 	}
 	
-	private void rightPanelStyling(VBox vbx, Button[] btn) {
+	private void rightPanelStyling(VBox vbx, Button[] btn, TextField txtFiel) {
 		int i=0;
 		vbx.setStyle(
-	        	"-fx-background-color: #D9D9FF;"+
-	        	"-fx-border-color: #0000FF;" +
-	        	"-fx-border-width: 2;"
-	        );
+	       "-fx-background-color: #D9D9FF;"+
+	       "-fx-border-color: #0000FF;" +
+	       "-fx-border-width: 2;"
+	    );
+		//btn[0].setStyle("-fx-background-radius: 100;" +"-fx-font-size: 20px;");
 		for (i=0; i<btn.length; i++) {
 			btn[i].setStyle(
 				"-fx-background-radius: 20;" +
@@ -60,11 +66,51 @@ public class HomeScreenRightPanel {
 		    );
 		}
 		
+		btn[0].setStyle(
+			"-fx-background-color: #f8fbff;" +
+			"-fx-background-radius: 12;" +
+			"-fx-border-radius: 12;" +
+			"-fx-border-color: #93c5fd;" +
+			"-fx-border-width: 2;" +
+			"-fx-font-size: 15px;" +
+			"-fx-font-weight: bold;" +
+			"-fx-text-fill: #2563eb;" +
+		   	"-fx-alignment: center;" +
+			"-fx-padding: 8;"+
+			"-fx-pref-width: 300px;" +
+			"-fx-pref-height: 40px;"
+		);
+		
+		
+		txtFiel.setStyle(
+			"-fx-background-color: #D9D9FF;" +
+		    "-fx-border-color: transparent;" +
+		    "-fx-font-size: 15px;" +
+		    "-fx-font-weight: bold;" +
+		    "-fx-text-fill: #2563eb;" +
+	   	    "-fx-alignment: center;" +
+		    "-fx-pref-width: 300px;" +
+			"-fx-pref-height: 40px;"
+		);
+		
+		txtFiel.setEditable(false);
 		
 	}
 	
+	private void buttonsFunctiability(Button[] btns) {
+		//btns[0] -> profile, btns[1] -> logout
+		
+		btns[1].setOnAction(e -> {
+				LogInScreen logInScr = new LogInScreen(homeScrStage);
+				logInScr.createWindow();
+				
+			}
+		);
+	}
+	
 	public VBox getRightPanel() {
-		rightPanelStyling(rightBox, btnArr);
+		rightPanelStyling(rightBox, btnArr, userNameField);
+		buttonsFunctiability(btnArr);
 		return this.rightBox;
 		
 	}
