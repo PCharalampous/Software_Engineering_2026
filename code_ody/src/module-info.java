@@ -4,8 +4,7 @@
 /**
  * 
  */
-
-module HOMY_project_software_engeneering {
+module Homy_project {
 	requires javafx.graphics;
 	requires javafx.controls;
     
