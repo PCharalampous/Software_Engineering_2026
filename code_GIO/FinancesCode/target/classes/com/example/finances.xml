@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.example.FinancesController"
+            style="-fx-background-color: #f1f5f9; -fx-font-family: 'Segoe UI', system-ui, sans-serif;">
+    
+    <top>
+        <HBox style="-fx-background-color: #1e293b; -fx-padding: 18 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);" alignment="CENTER">
+            <Label text="Finances" style="-fx-text-fill: #f8fafc; -fx-font-size: 20px; -fx-font-weight: bold; -fx-letter-spacing: 0.5px;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <content>
+                <HBox spacing="25" style="-fx-padding: 30;" alignment="TOP_CENTER">
+                    
+                    <VBox spacing="25" HBox.hgrow="ALWAYS" maxWidth="850">
+                        
+                        <VBox spacing="12" alignment="CENTER_LEFT" 
+                              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 1;">
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Region style="-fx-background-color: #f97316; -fx-pref-width: 8; -fx-pref-height: 8; -fx-background-radius: 4;"/>
+                                <Label text="Pending Bills" style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #334155;"/>
+                            </HBox>
+                            
+                            <TableView fx:id="pendingBillsTable" VBox.vgrow="SOMETIMES" minHeight="150" prefHeight="200" maxHeight="280"
+                                       style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="pendTypeCol">
+                                        <graphic><Label text="Type" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="pendAmountCol" style="-fx-alignment: CENTER;">
+                                        <graphic><Label text="Amount (€)" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="pendDateCol" style="-fx-alignment: CENTER;">
+                                        <graphic><Label text="Due Date" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="pendPayersCol">
+                                        <graphic><Label text="Payers" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <VBox spacing="12" alignment="CENTER_LEFT" 
+                              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 1;">
+                            
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Region style="-fx-background-color: #10b981; -fx-pref-width: 8; -fx-pref-height: 8; -fx-background-radius: 4;"/>
+                                <Label text="Finances History" style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #334155;"/>
+                            </HBox>
+                            
+                            <TableView fx:id="paidBillsTable" VBox.vgrow="SOMETIMES" minHeight="150" prefHeight="200" maxHeight="280"
+                                       style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="paidTypeCol">
+                                        <graphic><Label text="Type" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="paidAmountCol" style="-fx-alignment: CENTER;">
+                                        <graphic><Label text="Amount (€)" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="paidDateCol" style="-fx-alignment: CENTER;">
+                                        <graphic><Label text="Payment Date" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                    <TableColumn fx:id="paidPayersCol">
+                                        <graphic><Label text="Paid By" style="-fx-text-fill: #000000; -fx-font-weight: bold;" /></graphic>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+
+                    <VBox spacing="15" minWidth="260" maxWidth="300"
+                          style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-border-width: 1;">
+                        
+                        <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-padding: 0 0 5 0;">
+                            <Region style="-fx-background-color: #3b82f6; -fx-pref-width: 8; -fx-pref-height: 8; -fx-background-radius: 4;"/>
+                            <Label text="Finances Insights" style="-fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #334155;"/>
+                        </HBox>
+                        
+                        <Separator style="-fx-opacity: 0.6;"/>
+                        
+                        <VBox spacing="4" style="-fx-background-color: #f8fafc; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #e2e8f0; -fx-border-radius: 6;">
+                            <Label text="Bills Paid This Month" style="-fx-font-size: 12px; -fx-text-fill: #64748b; -fx-font-weight: 600;"/>
+                            <Label fx:id="billsPaidCountLabel" text="0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                        </VBox>
+                        
+                        <VBox spacing="4" style="-fx-background-color: #f8fafc; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #e2e8f0; -fx-border-radius: 6;">
+                            <Label text="Next Urgent Due Date" style="-fx-font-size: 12px; -fx-text-fill: #64748b; -fx-font-weight: 600;"/>
+                            <Label fx:id="nextDueDateLabel" text="None" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #f97316;"/>
+                        </VBox>
+                    </VBox>
+                    
+                </HBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT" 
+              style="-fx-background-color: #f8fafc; -fx-padding: 15 30; -fx-border-color: #e2e8f0 transparent transparent transparent; -fx-border-width: 1;">
+            <Button text="Pay Selected Bill" onAction="#handlePayBill"
+                    style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 22; -fx-background-radius: 6; -fx-cursor: hand; -fx-transition: 0.2s;" />
+            
+            <Button text="+ Create New Bill" onAction="#handleNavigateToCreate"
+                    style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 22; -fx-background-radius: 6; -fx-cursor: hand; -fx-transition: 0.2s;" />
+        </HBox>
+    </bottom>
+</BorderPane>
