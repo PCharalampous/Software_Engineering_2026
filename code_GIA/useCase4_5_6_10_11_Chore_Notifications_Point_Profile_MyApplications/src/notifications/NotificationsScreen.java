@@ -1,7 +1,10 @@
 package notifications;
+
 import entities.Notification;
+import ui.ConfirmationScreen;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -24,14 +27,19 @@ public class NotificationsScreen {
     private Button btnUnread;
     private Runnable backAction; 
 
-    public NotificationsScreen(Stage stage, ManageNotificationsClass manager, Runnable backAction) {
-        this.primaryStage = stage;
+    public NotificationsScreen(ManageNotificationsClass manager, Runnable backAction) {
         this.manager = manager;
         this.backAction = backAction;
         this.container = new BorderPane();
     }
 
-    public Node getView() {
+    // Μετονομάστηκε σε display() καθώς πλέον αναλαμβάνει όλο το χτίσιμο και την εμφάνιση του Stage
+    public void display() {
+        this.primaryStage = new Stage();
+        this.primaryStage.setTitle("HOMY - Notifications");
+        this.primaryStage.setResizable(false);
+
+        // 1. ΑΡΧΙΚΟΠΟΙΗΣΗ ΠΡΩΤΑ: Δημιουργούμε το VBox πριν το βάλουμε στο Scene/Scroll
         notifListVBox = new VBox(6);
         notifListVBox.setStyle("-fx-padding:10; -fx-background-color:" + BG + ";");
         
@@ -43,23 +51,39 @@ public class NotificationsScreen {
         btnUnread.setOnAction(e -> { showUnreadOnly = true; refreshList(); });
         btnMarkAll.setOnAction(e -> { manager.markAllAsRead(); refreshList(); });
 
-        HBox tabs = new HBox(btnAll, btnUnread); HBox.setHgrow(btnAll, Priority.ALWAYS); HBox.setHgrow(btnUnread, Priority.ALWAYS);
-        btnAll.setMaxWidth(Double.MAX_VALUE); btnUnread.setMaxWidth(Double.MAX_VALUE);
+        HBox tabs = new HBox(btnAll, btnUnread); 
+        HBox.setHgrow(btnAll, Priority.ALWAYS); 
+        HBox.setHgrow(btnUnread, Priority.ALWAYS);
+        btnAll.setMaxWidth(Double.MAX_VALUE); 
+        btnUnread.setMaxWidth(Double.MAX_VALUE);
         btnAll.setStyle("-fx-background-color: white; -fx-font-weight: bold; -fx-padding: 10;");
         btnUnread.setStyle("-fx-background-color: white; -fx-font-weight: bold; -fx-padding: 10;");
         
-        // Αφαιρέθηκε το btnSettings από το actionRow
-        HBox actionRow = new HBox(8, btnMarkAll); actionRow.setStyle("-fx-padding: 5 10;");
+        HBox actionRow = new HBox(8, btnMarkAll); 
+        actionRow.setStyle("-fx-padding: 5 10;");
         VBox topCtrl = new VBox(tabs, actionRow);
         
-        container.setTop(titleBar("NOTIFICATIONS", backAction));
+        // Φτιάχνουμε τη δομή του κεντρικού container
+        container.setTop(titleBar("NOTIFICATIONS", () -> {
+            primaryStage.close(); // Κλείνει το τρέχον παράθυρο ειδοποιήσεων
+            if (backAction != null) {
+                backAction.run(); // Εκτελεί την επιστροφή (π.χ. εμφάνιση του κεντρικού Hub)
+            }
+        }));
         container.setCenter(new BorderPane(styledScroll(notifListVBox), topCtrl, null, null, null));
         
+        // Γεμίζουμε τη λίστα με τις ειδοποιήσεις
         refreshList();
-        return container;
+
+        // 2. Δημιουργία Scene με ρίζα τον έτοιμο container
+        Scene notifScene = new Scene(container, 420, 800);
+        primaryStage.setScene(notifScene);
+        primaryStage.show();
     }
 
     public void refreshList() {
+        if (notifListVBox == null) return;
+        
         notifListVBox.getChildren().clear();
         btnUnread.setText("UNREAD (" + manager.getCount() + ")");
         
@@ -68,17 +92,21 @@ public class NotificationsScreen {
             : manager.queryPendingEvents();
 
         if (shown.isEmpty()) {
-            Label lblEmpty = new Label("Show message 'no pending notifications'");
+            Label lblEmpty = new Label("No pending notifications");
             lblEmpty.setStyle("-fx-text-fill:" + MUTED + "; -fx-padding: 20; -fx-font-style: italic;");
             notifListVBox.getChildren().add(lblEmpty);
         } else {
             shown.forEach(n -> {
-                HBox row = new HBox(10); row.setAlignment(Pos.CENTER_LEFT);
+                HBox row = new HBox(10); 
+                row.setAlignment(Pos.CENTER_LEFT);
                 row.setStyle("-fx-padding:12; -fx-border-color:" + BORDER + "; -fx-background-color:" + (n.read ? CARD : UNREAD) + "; -fx-cursor:hand;");
                 
-                VBox info = new VBox(4); HBox.setHgrow(info, Priority.ALWAYS);
-                Label tag = new Label(n.category); tag.setStyle("-fx-background-color:" + n.tagColor + "; -fx-padding:2 6; -fx-font-size:10px; -fx-font-weight:bold;");
-                Label txt = new Label(n.text); txt.setStyle("-fx-font-size:13px;");
+                VBox info = new VBox(4); 
+                HBox.setHgrow(info, Priority.ALWAYS);
+                Label tag = new Label(n.category); 
+                tag.setStyle("-fx-background-color:" + n.tagColor + "; -fx-padding:2 6; -fx-font-size:10px; -fx-font-weight:bold;");
+                Label txt = new Label(n.text); 
+                txt.setStyle("-fx-font-size:13px;");
                 info.getChildren().addAll(tag, txt);
                 
                 row.getChildren().addAll(info, new Label("›"));
@@ -96,22 +124,32 @@ public class NotificationsScreen {
     }
 
     private HBox titleBar(String title, Runnable backAction) {
-        HBox bar = new HBox(10); bar.setAlignment(Pos.CENTER_LEFT);
+        HBox bar = new HBox(10); 
+        bar.setAlignment(Pos.CENTER_LEFT);
         bar.setStyle("-fx-background-color:" + ACCENT + "; -fx-padding:14 20;");
         if (backAction != null) {
-            Button b = new Button("←"); b.setStyle("-fx-background-color:transparent; -fx-text-fill:white; -fx-font-size:18px; -fx-cursor:hand; -fx-padding:0 10 0 0;");
-            b.setOnAction(e -> backAction.run()); bar.getChildren().add(b);
+            Button b = new Button("←"); 
+            b.setStyle("-fx-background-color:transparent; -fx-text-fill:white; -fx-font-size:18px; -fx-cursor:hand; -fx-padding:0 10 0 0;");
+            b.setOnAction(e -> backAction.run()); 
+            bar.getChildren().add(b);
         }
-        Label lbl = new Label(title); lbl.setStyle("-fx-font-size:17px; -fx-font-weight:bold; -fx-text-fill:white;");
-        bar.getChildren().add(lbl); return bar;
+        Label lbl = new Label(title); 
+        lbl.setStyle("-fx-font-size:17px; -fx-font-weight:bold; -fx-text-fill:white;");
+        bar.getChildren().add(lbl); 
+        return bar;
     }
 
     private ScrollPane styledScroll(Node content) {
-        ScrollPane sp = new ScrollPane(content); sp.setFitToWidth(true); sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        sp.setStyle("-fx-background-color:" + BG + "; -fx-background:" + BG + ";"); return sp;
+        ScrollPane sp = new ScrollPane(content); 
+        sp.setFitToWidth(true); 
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setStyle("-fx-background-color:" + BG + "; -fx-background:" + BG + ";"); 
+        return sp;
     }
 
     private Button smallBtn(String txt) {
-        Button b = new Button(txt); b.setStyle("-fx-background-color:#EEEEEE; -fx-text-fill:" + ACCENT + "; -fx-font-size:10px; -fx-font-weight:bold; -fx-padding:4 8; -fx-cursor:hand;"); return b;
+        Button b = new Button(txt); 
+        b.setStyle("-fx-background-color:#EEEEEE; -fx-text-fill:" + ACCENT + "; -fx-font-size:10px; -fx-font-weight:bold; -fx-padding:4 8; -fx-cursor:hand;"); 
+        return b;
     }
 }

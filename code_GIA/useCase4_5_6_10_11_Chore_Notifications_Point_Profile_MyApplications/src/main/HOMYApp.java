@@ -114,16 +114,15 @@ public class HOMYApp {
                 "View pending household events, system alerts, and track unread room updates.",
                 "#EF4444", 
                 () -> {
-                    try {
-                        // Δημιουργία της οθόνης ειδοποιήσεων με επιστροφή στο hubScene
-                        NotificationsScreen notifScreen = new NotificationsScreen(primaryStage, notificationManager, () -> {
-                            primaryStage.setScene(hubScene);
-                            primaryStage.setTitle("HOMY - Central Hub");
+                	try {
+                        // Δημιουργούμε την οθόνη και περνάμε τι θέλουμε να γίνει όταν πατηθεί το πίσω βέλος (←)
+                        NotificationsScreen notifScreen = new NotificationsScreen(notificationManager, () -> {
+                            // Επανεμφάνιση ή εστίαση στο κεντρικό hub παράθυρο αν χρειάζεται
+                            primaryStage.show(); 
                         });
                         
-                        Scene notifScene = new Scene((javafx.scene.Parent) notifScreen.getView(), 420, 800);
-                        primaryStage.setScene(notifScene);
-                        primaryStage.setTitle("HOMY - Notifications");
+                        // Κρύβουμε προαιρετικά το κεντρικό hub και αφήνουμε τη screen να ανοίξει το δικό της Stage
+                        notifScreen.display(); // <--- ΕΔΩ ΓΙΝΕΤΑΙ Η ΑΥΤΟΝΟΜΗ ΕΚΚΙΝΗΣΗ ΤΟΥ STAGE!
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
