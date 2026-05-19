@@ -16,6 +16,7 @@ public class SignUpScreen {
 private Stage primaryStage;
 	
 	private Button createAcc;
+	private LogInPanel innerPanel;
 
 	public SignUpScreen(Stage stage) {
 		this.primaryStage = stage;
@@ -33,7 +34,7 @@ private Stage primaryStage;
         primaryStage.setTitle("HOMY Sign Up Page");
         
         
-        LogInPanel innerPanel = new LogInPanel(primaryStage);
+        innerPanel = new LogInPanel(primaryStage);
 
         
         root.setPadding(new Insets(5));
@@ -57,6 +58,16 @@ private Stage primaryStage;
 	private void buttonsFunctiability() {
 		
 		createAcc.setOnAction(e -> {
+				Authentication auth = new Authentication();
+				try {
+					auth.createAcc(innerPanel.getUserEmail(), innerPanel.getUserPassword());
+				} catch (Exception e1) {
+					
+					e1.printStackTrace();
+					ErrorScreen errScr = new ErrorScreen("Error", "Sign Up Failed");
+    		    	errScr.show();
+				}
+				
 				LogInScreen logINsc = new LogInScreen(this.primaryStage);
 				logINsc.createWindow();
 			}

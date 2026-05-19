@@ -20,7 +20,9 @@ public class LogInPanel extends GridPane {
     private TextField password;
     private Button login, signup;
     private Stage stage;
-
+    private String userEmail;
+    private String userPass;
+    
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
         //body
@@ -42,11 +44,33 @@ public class LogInPanel extends GridPane {
         credenInput.setAlignment(Pos.CENTER);
     }
     
+//    private void textFieldFunctiability() {
+//    	
+//    }
+    
     private void buttonsFunctiability() {
 		
     	login.setOnAction(e -> {
-				HomeScreen homeScr = new HomeScreen(this.stage);
-				homeScr.createWindow();
+    			userEmail = username.getText();
+
+    		    userPass = password.getText();
+    		    
+    		    Authentication auth = new Authentication();
+    		    auth.setUserEmail(userEmail);
+    		    auth.setUserPassword(userPass);
+    		    
+    		    if(auth.userLogIn() == true) {
+    		    	HomeScreen homeScr = new HomeScreen(this.stage);
+    				homeScr.createWindow();
+    		    }
+    		    
+    		    else {
+    		    	ErrorScreen errScr = new ErrorScreen("Log In Failed" , 
+    		    			"Ensure that the credentials are correct, otherwise create account");
+    		    	errScr.show();
+    		    }
+    		    
+				
 			}
 		);
 		
@@ -57,7 +81,13 @@ public class LogInPanel extends GridPane {
 		);
 	}
     
-    
+    public String getUserEmail() {
+		return this.userEmail; 
+	}
+	
+	public String getUserPassword() {
+		return this.userPass ;
+	}
     
     private GridPane credenInputStyling(GridPane obj) {
     	obj.setStyle(
