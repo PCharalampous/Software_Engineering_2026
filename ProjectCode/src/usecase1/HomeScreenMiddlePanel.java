@@ -115,7 +115,7 @@ public class HomeScreenMiddlePanel {
 		VBox minRentRange = new VBox(5);
 		VBox maxRentRange = new VBox(5);
 		Slider minVal = new Slider(0, 1000, 100);
-		Slider maxVal = new Slider(0, 1000, 400);
+		Slider maxVal = new Slider(100, 2000, 400);
 		TextField minValText = new TextField("100");
 		TextField maxValText = new TextField("400");
 		
