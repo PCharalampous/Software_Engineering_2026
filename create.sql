@@ -1,11 +1,4 @@
--- -----------------------------------------------------
--- Database Setup
--- -----------------------------------------------------
-SET FOREIGN_KEY_CHECKS = 0;
-DROP DATABASE IF EXISTS homy_db;
-CREATE DATABASE homy_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE homy_db;
-SET FOREIGN_KEY_CHECKS = 1;
+USE u4ezo6ujbhl2ltqc;
 
 -- -----------------------------------------------------
 -- Table: rooms
@@ -328,6 +321,3 @@ CREATE TABLE notifications (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-
-INSERT INTO rooms (room_id, room_code, room_flat_name, max_roommates, rent_value) 
-VALUES (1, 'TEST1234', 'Δοκιμαστικό Διαμέρισμα', 3, 350.00);
