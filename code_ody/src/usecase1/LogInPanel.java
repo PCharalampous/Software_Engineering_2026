@@ -20,8 +20,8 @@ public class LogInPanel extends GridPane {
     private TextField password;
     private Button login, signup;
     private Stage stage;
-    private String userEmail;
-    private String userPass;
+    private String userEmailBuffer;
+    private String userPassBuffer;
     
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
@@ -51,13 +51,13 @@ public class LogInPanel extends GridPane {
     private void buttonsFunctiability() {
 		
     	login.setOnAction(e -> {
-    			userEmail = username.getText();
+    			userEmailBuffer = username.getText();
 
-    		    userPass = password.getText();
-//    		    System.out.println(": "+userEmail+": " + userPass);
+    		    userPassBuffer = password.getText();
+    		    System.out.println(": "+userEmailBuffer+": " + userPassBuffer);
     		    Authentication auth = new Authentication();
-    		    auth.setUserEmail(userEmail);
-    		    auth.setUserPassword(userPass);
+    		    auth.setUserEmail(userEmailBuffer);
+    		    auth.setUserPassword(userPassBuffer);
     		    
     		    if(auth.userLogIn() == true) {
     		    	HomeScreen homeScr = new HomeScreen(this.stage);
@@ -82,11 +82,11 @@ public class LogInPanel extends GridPane {
 	}
     
     public String getUserEmail() {
-		return this.userEmail; 
+		return this.userEmailBuffer; 
 	}
 	
 	public String getUserPassword() {
-		return this.userPass ;
+		return this.userPassBuffer ;
 	}
     
     private GridPane credenInputStyling(GridPane obj) {

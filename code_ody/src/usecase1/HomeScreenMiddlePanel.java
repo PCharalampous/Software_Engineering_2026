@@ -18,6 +18,7 @@ public class HomeScreenMiddlePanel {
 	private VBox centerBox;
 	private Label headerLbl;
 	private Separator separator;
+	private String searchBarBuffer;
 
 	private HBox filterComp;
 	
@@ -42,6 +43,16 @@ public class HomeScreenMiddlePanel {
 
         centerBox.setAlignment(Pos.TOP_CENTER);
         
+        middleScreenComponentsFunctiability();
+        
+	}
+	
+	private void middleScreenComponentsFunctiability() {
+		
+		searchBar.setOnAction(event -> {
+			searchBarBuffer = searchBar.getText();
+			System.out.println("Search: " + searchBarBuffer);
+		});
 	}
 	
 	private void middlePanelStyling() {
