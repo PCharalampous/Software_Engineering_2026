@@ -395,8 +395,6 @@ public class ShoppingListScreen {
             
             stage.sizeToScene();
             stage.show();
-            
-        // ΔΙΟΡΘΩΣΗ ΣΦΑΛΜΑΤΟΣ: ex.printStackTrace(); αντί για e.printStackTrace();
         } catch (Exception ex) { ex.printStackTrace(); } 
     }
 
@@ -547,13 +545,60 @@ public class ShoppingListScreen {
         }
     }
 
+    // ΔΙΟΡΘΩΣΗ: Πλέον γίνεται UPDATE της υπάρχουσας εγγραφής στη βάση αντί για σβήσιμο και επανεισαγωγή!
     public void selectEdit(Allocation alloc) {
         if (alloc != null) {
             SplitScreen splitScreen = new SplitScreen();
-            Allocation newAlloc = splitScreen.insertAllocationStatus(primaryStage, alloc.getImageFile(), alloc);
-            if (newAlloc != null) {
-                selectDeleteAllocation(alloc); 
-                returnAllocation(newAlloc);    
+            
+            // Ανοίγουμε το SplitScreen δίνοντας το τρέχον alloc (Edit Mode)
+            Allocation updatedAlloc = splitScreen.insertAllocationStatus(primaryStage, alloc.getImageFile(), alloc);
+            
+            if (updatedAlloc != null) {
+                // Αν ο χρήστης πάτησε Confirm, εκτελούμε UPDATE στη βάση δεδομένων κρατώντας το ΙΔΙΟ ID
+                String updateAllocQuery = "UPDATE allocations SET total_amount = ?, receiver_username = ?, allocation_date = ? WHERE allocation_id = ?";
+                String deleteSharesQuery = "DELETE FROM allocation_shares WHERE allocation_id = ?";
+                String insertShareQuery = "INSERT INTO allocation_shares (allocation_id, roommate_username, amount_owed) VALUES (?, ?, ?)";
+
+                try (Connection conn = DatabaseManager.getConnection()) {
+                    // 1. Update των γενικών στοιχείων του Allocation
+                    try (PreparedStatement ps = conn.prepareStatement(updateAllocQuery)) {
+                        ps.setDouble(1, updatedAlloc.getTotalAmount());
+                        ps.setString(2, updatedAlloc.getReceiver());
+                        ps.setDate(3, Date.valueOf(updatedAlloc.getDate()));
+                        ps.setInt(4, alloc.getAllocationId()); // Κρατάμε το αρχικό allocation_id!
+                        ps.executeUpdate();
+                    }
+
+                    // 2. Διαγραφή των παλιών μεριδίων (shares)
+                    try (PreparedStatement psDel = conn.prepareStatement(deleteSharesQuery)) {
+                        psDel.setInt(1, alloc.getAllocationId());
+                        psDel.executeUpdate();
+                    }
+
+                    // 3. Εισαγωγή των νέων μεριδίων για το ίδιο allocation_id
+                    try (PreparedStatement psShare = conn.prepareStatement(insertShareQuery)) {
+                        for (Map.Entry<String, Double> entry : updatedAlloc.getMemberAmounts().entrySet()) {
+                            psShare.setInt(1, alloc.getAllocationId());
+                            psShare.setString(2, entry.getKey());
+                            psShare.setDouble(3, entry.getValue());
+                            psShare.addBatch();
+                        }
+                        psShare.executeBatch();
+                    }
+
+                } catch (SQLException e) {
+                    System.err.println("Σφάλμα κατά το real-time update του allocation:");
+                    e.printStackTrace();
+                }
+
+                // Ανανέωση των τοπικών λιστών στη μνήμη της εφαρμογής για να δείξει αμέσως τις αλλαγές
+                int index = historyList.indexOf(alloc);
+                if (index != -1) {
+                    // Θέτουμε το σωστό ID και στο νέο αντικείμενο της μνήμης
+                    updatedAlloc.setAllocationId(alloc.getAllocationId());
+                    historyList.set(index, updatedAlloc);
+                }
+                updateUI();
             }
         }
     }
