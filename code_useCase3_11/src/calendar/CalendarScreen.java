@@ -15,6 +15,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
+// ΔΙΟΡΘΩΘΗΚΕ: Εισαγωγή του DatabaseManager για τη σωστή σύνδεση με το project σου
+import util.DatabaseManager; 
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
@@ -33,28 +37,83 @@ public class CalendarScreen {
     private Label monthTitle; 
     
     private LocalDate prefilledDateForForm = null;
-    private Runnable backAction; // Για τη διαχείριση της επιστροφής στο Hub
+    private Runnable backAction; 
     private Stage primaryStage;
 
-    // Constructor που δέχεται το backAction
     public CalendarScreen(Runnable backAction) {
         this.calendar = new Calendar(); 
         this.currentLocalDate = LocalDate.now(); 
         this.selectedDay = currentLocalDate.getDayOfMonth(); 
         this.backAction = backAction;
         createUI();
+        loadEventsFromDatabase(); // Αυτόματη ανάγνωση από Clever Cloud κατά την εκκίνηση
     }
 
-    // Η μέθοδος αναλαμβάνει πλέον εξολοκλήρου το χτίσιμο και την εμφάνιση του Stage
     public void display() {
         this.primaryStage = new Stage();
-        Scene scene = new Scene(root, 420, 580); // Ελαφρώς αυξημένο ύψος για να χωράει και το back button
+        Scene scene = new Scene(root, 420, 550); 
         primaryStage.setTitle("HOMY - Calendar");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
         
         returnCalendar();
+    }
+
+    // ΔΙΟΡΘΩΘΗΚΕ: Φόρτωση των δεδομένων με χρήση του DatabaseManager.getConnection()
+    public void loadEventsFromDatabase() {
+        calendar.getEvents().clear();
+        String query = "SELECT event_id, event_name, event_description, event_date, event_time, event_type, is_accepted FROM calendar_events";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                int id = rs.getInt("event_id");
+                String name = rs.getString("event_name");
+                String desc = rs.getString("event_description");
+                Date sqlDate = rs.getDate("event_date");
+                int time = rs.getInt("event_time");
+                String type = rs.getString("event_type");
+                int isAccepted = rs.getInt("is_accepted");
+                
+                if (sqlDate != null) {
+                    LocalDate ld = sqlDate.toLocalDate();
+                    Event ev = new Event(id, ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear(), time, name, type, isAccepted, desc);
+                    calendar.addEvent(ev);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database loading error: " + e.getMessage());
+        }
+    }
+
+    // ΔΙΟΡΘΩΘΗΚΕ: 𝚲ειτουργία SQL Update (Ψήφος/Έγκριση) μέσω DatabaseManager
+    public void updateEventStatusInDatabase(Event ev, int newStatus) {
+        String query = "UPDATE calendar_events SET is_accepted = ? WHERE event_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, newStatus);
+            stmt.setInt(2, ev.getEventId());
+            stmt.executeUpdate();
+            ev.setIsAccepted(newStatus);
+        } catch (SQLException e) {
+            System.err.println("Database update error: " + e.getMessage());
+        }
+    }
+
+    // ΔΙΟΡΘΩΘΗΚΕ: 𝚲ειτουργία SQL Delete (Διαγραφή) μέσω DatabaseManager
+    public void deleteEventFromDatabase(Event ev) {
+        String query = "DELETE FROM calendar_events WHERE event_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, ev.getEventId());
+            stmt.executeUpdate();
+            calendar.removeEvent(ev);
+        } catch (SQLException e) {
+            System.err.println("Database delete error: " + e.getMessage());
+        }
     }
 
     private void createUI() {
@@ -65,7 +124,6 @@ public class CalendarScreen {
         VBox headerBox = new VBox(5);
         headerBox.setAlignment(Pos.CENTER);
         
-        // Προσθήκη κουμπιού επιστροφής στην κορυφή του Calendar
         Button backBtn = new Button("← Back to Hub");
         backBtn.setStyle("-fx-background-color: transparent; -fx-font-weight: bold; -fx-text-fill: #1E3A5F; -fx-cursor: hand;");
         backBtn.setOnAction(e -> {
@@ -186,7 +244,6 @@ public class CalendarScreen {
         YearMonth yearMonth = YearMonth.of(currentLocalDate.getYear(), currentLocalDate.getMonth());
         int daysInMonth = yearMonth.lengthOfMonth();
         LocalDate firstOfMonth = yearMonth.atDay(1);
-        
         int startColumn = firstOfMonth.getDayOfWeek().getValue() - 1; 
         int currentDay = 1;
 
@@ -215,7 +272,6 @@ public class CalendarScreen {
                     
                     Label dayNum = new Label(String.valueOf(day));
                     dayNum.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 11));
-                    
                     HBox dotsBox = new HBox(2);
                     dotsBox.setAlignment(Pos.CENTER_LEFT);
                     
@@ -257,7 +313,6 @@ public class CalendarScreen {
         }
 
         eventsContainer.getChildren().clear();
-        
         List<Event> dayEvents = calendar.getEvents().stream()
                 .filter(e -> e.getDate() == selectedDay 
                           && e.getMonth() == currentLocalDate.getMonthValue() 
@@ -296,16 +351,12 @@ public class CalendarScreen {
                 Button voteNoBtn = new Button("✕");
                 
                 voteYesBtn.setOnAction(e -> {
-                    ev.setIsAccepted(1);
-                    ev.update();
-                    calendar.update();
+                    updateEventStatusInDatabase(ev, 1);
                     returnCalendar();
                 });
                 
                 voteNoBtn.setOnAction(e -> {
-                    ev.delete();
-                    calendar.delete();
-                    calendar.removeEvent(ev);
+                    deleteEventFromDatabase(ev);
                     returnCalendar();
                 });
                 
@@ -313,6 +364,10 @@ public class CalendarScreen {
                 deleteBtn.setOnAction(e -> deleteEvent(ev));
 
                 eventRow.getChildren().addAll(voteYesBtn, voteNoBtn, deleteBtn);
+            } else {
+                Button deleteBtn = new Button("Delete");
+                deleteBtn.setOnAction(e -> deleteEvent(ev));
+                eventRow.getChildren().add(deleteBtn);
             }
 
             eventsContainer.getChildren().add(eventRow);
@@ -336,9 +391,7 @@ public class CalendarScreen {
     public void deleteEvent(Event event) {
         ConfirmationScreen confirmationScreen = new ConfirmationScreen(
             () -> {
-                event.delete();
-                calendar.delete();
-                calendar.removeEvent(event);
+                deleteEventFromDatabase(event); 
                 returnCalendar();
             },
             () -> {

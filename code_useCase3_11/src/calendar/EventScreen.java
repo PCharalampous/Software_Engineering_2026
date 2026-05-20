@@ -15,6 +15,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+
+// ΔΙΟΡΘΩΘΗΚΕ: Εισαγωγή του DatabaseManager για τη σωστή σύνδεση με το project σου
+import util.DatabaseManager; 
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -32,7 +36,6 @@ public class EventScreen {
     
     private Event eventToView = null;
 
-    // Κατασκευαστής για Προσθήκη Συμβάντος
     public EventScreen(Calendar calendar, CalendarScreen calendarScreen, LocalDate prefilledDate) {
         this.calendar = calendar;
         this.calendarScreen = calendarScreen;
@@ -40,7 +43,6 @@ public class EventScreen {
         createUI();
     }
 
-    // Κατασκευαστής για Προβολή Συμβάντος (Read-Only Mode)
     public EventScreen(Event eventToView, CalendarScreen calendarScreen) {
         this.eventToView = eventToView;
         this.calendarScreen = calendarScreen;
@@ -66,7 +68,6 @@ public class EventScreen {
 
         int row = 0;
 
-        // 1. Τίτλος Συμβάντος
         grid.add(new Label(isViewMode ? "Title:" : "Title (Name):"), 0, row);
         if (isViewMode) {
             Label titleLabel = new Label(eventToView.getName());
@@ -78,10 +79,8 @@ public class EventScreen {
         }
         row++;
         
-        // 2. Ημερομηνία Συμβάντος
         grid.add(new Label(isViewMode ? "Day:" : "Day (DD/MM/YYYY):"), 0, row);
         if (isViewMode) {
-            // ΔΙΟΡΘΩΘΗΚΕ: Ανάκτηση και εμφάνιση του σωστού Μήνα και Έτους του αντικειμένου
             String formattedDate = String.format("%02d/%02d/%04d", eventToView.getDate(), eventToView.getMonth(), eventToView.getYear());
             Label dayLabel = new Label(formattedDate);
             dayLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 13));
@@ -157,7 +156,6 @@ public class EventScreen {
         }
         row++;
 
-        // 3. Ώρα Συμβάντος
         grid.add(new Label(isViewMode ? "Time:" : "Time (HH:mm):"), 0, row);
         if (isViewMode) {
             Label timeLabel = new Label(eventToView.getTimeFormatted());
@@ -191,7 +189,6 @@ public class EventScreen {
         }
         row++;
 
-        // 4. Τύπος Συμβάντος
         if (isViewMode) {
             grid.add(new Label("Event Type:"), 0, row);
             Label typeLabel = new Label(eventToView.getType());
@@ -200,7 +197,6 @@ public class EventScreen {
             row++;
         }
 
-        // 5. Περιγραφή / Σχόλια
         if (isViewMode) {
             String description = eventToView.getDescription();
             if (description != null && !description.trim().isEmpty()) {
@@ -221,7 +217,6 @@ public class EventScreen {
             row++;
         }
 
-        // 6. Κουμπί Επιβεβαίωσης
         if (!isViewMode) {
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setOnAction(e -> insertEventStatus()); 
@@ -242,10 +237,10 @@ public class EventScreen {
         }
     }
 
+    // ΔΙΟΡΘΩΘΗΚΕ: SQL INSERT query μέσω του DatabaseManager.getConnection() για Clever Cloud συγχρονισμό
     public void insertEventStatus() {
         try {
             String name = titleField.getText();
-            
             LocalDate selectedDate = null;
             String dateText = dayField.getEditor().getText();
             if (dateText != null && !dateText.trim().isEmpty()) {
@@ -260,24 +255,40 @@ public class EventScreen {
                 throw new Exception("Validation Error");
             }
 
-            // ΔΙΟΡΘΩΘΗΚΕ: Εξαγωγή Ημέρας, Μήνας και Έτους από το DatePicker για αποθήκευση
             int date = selectedDate.getDayOfMonth();
             int month = selectedDate.getMonthValue();
             int year = selectedDate.getYear();
             String optionalDesc = descField.getText();
 
-            // Δημιουργία με αποθήκευση και των 3 στοιχείων ημερομηνίας
             Event newEvent = new Event(date, month, year, time, name, "GENERAL", 0, optionalDesc);
-            calendar.addEvent(newEvent);
             
-            calendar.update();
-            newEvent.update();
+            // SQL Query εκτέλεσης στον σωστό Clever Cloud πίνακα `calendar_events`
+            String query = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type, is_accepted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                
+                stmt.setInt(1, 1); // Default room_id = 1
+                stmt.setString(2, newEvent.getName());
+                stmt.setString(3, newEvent.getDescription());
+                stmt.setDate(4, Date.valueOf(selectedDate)); 
+                stmt.setInt(5, newEvent.getTime());
+                stmt.setString(6, newEvent.getType());
+                stmt.setInt(7, newEvent.getIsAccepted());
+                
+                stmt.executeUpdate();
+                
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        newEvent.setEventId(generatedKeys.getInt(1)); // Συγχρονισμός ID
+                    }
+                }
+                calendar.addEvent(newEvent);
+            }
 
             calendarScreen.returnCalendar();
             goBack(); 
 
         } catch (Exception ex) {
-            // ΔΙΟΡΘΩΣΗ: Περνάμε το goBack() ως Runnable λάμδα για να εκτελεστεί όταν πατηθεί το OK
             ErrorScreen errorScreen = new ErrorScreen("Λανθασμένα στοιχεία εισαγωγής συμβάντος!", () -> goBack());
             errorScreen.show();
         }

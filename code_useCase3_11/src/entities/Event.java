@@ -1,17 +1,31 @@
 package entities;
 
 public class Event {
+    private int eventId;      // Το ID από τη βάση δεδομένων για το sync
     private int date;         // Ημέρα του μήνα (1-31)
-    private int month;        // ΔΙΟΡΘΩΘΗΚΕ: Προσθήκη συγκεκριμένου μήνα (1-12)
-    private int year;         // ΔΙΟΡΘΩΘΗΚΕ: Προσθήκη συγκεκριμένου έτους (π.χ. 2026)
-    private int time;         // Ώρα ως 4ψήφιος ακέραιος (π.χ., 2000 για 20:00)
+    private int month;        // Μήνας (1-12)
+    private int year;         // Έτος (π.χ. 2026)
+    private int time;         // Ώρα ως 4ψήφιος ακέραιος (π.χ., 1615)
     private String name;      // Όνομα/Τίτλος συμβάντος
     private String type;      // Τύπος: "BILL", "ISSUE", ή "GENERAL"
     private int isAccepted;   // 0 = Εκκρεμότητα, 1 = Εγκρίθηκε
     private String description; // Περιγραφή
 
-    // Κατασκευαστής με πλήρη υποστήριξη ημερομηνίας (Ημέρα, Μήνας, Έτος)
+    // Constructor για νέα συμβάντα (πριν μπουν στη βάση)
     public Event(int date, int month, int year, int time, String name, String type, int isAccepted, String description) {
+        this.date = date;
+        this.month = month;
+        this.year = year;
+        this.time = time;
+        this.name = name;
+        this.type = type;
+        this.isAccepted = isAccepted;
+        this.description = description;
+    }
+
+    // Constructor για συμβάντα που έρχονται έτοιμα από τη βάση με το ID τους
+    public Event(int eventId, int date, int month, int year, int time, String name, String type, int isAccepted, String description) {
+        this.eventId = eventId;
         this.date = date;
         this.month = month;
         this.year = year;
@@ -31,6 +45,9 @@ public class Event {
     }
 
     // Getters και Setters
+    public int getEventId() { return eventId; }
+    public void setEventId(int eventId) { this.eventId = eventId; }
+
     public int getDate() { return date; }
     public void setDate(int date) { this.date = date; }
 
