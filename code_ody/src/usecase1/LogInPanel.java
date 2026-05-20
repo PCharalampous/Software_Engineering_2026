@@ -118,7 +118,7 @@ public class LogInPanel extends GridPane {
     		    
     		    try {
 					if(auth.userLogIn(useremail.getText(),password.getText()) == true) {
-						HomeScreen homeScr = new HomeScreen(this.stage);
+						HomeScreen homeScr = new HomeScreen(this.stage, this.conn);
 						homeScr.createWindow();
 					}
 					

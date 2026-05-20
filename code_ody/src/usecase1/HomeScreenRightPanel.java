@@ -1,5 +1,7 @@
 package usecase1;
 
+import java.sql.Connection;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,15 +24,17 @@ public class HomeScreenRightPanel {
 	private TextField userNameField;
 	private String userName;
 	private Stage homeScrStage;
-	
-	HomeScreenRightPanel(Stage homeScreenStage){
+	private Authentication authen;
+	private Connection conn;
+	HomeScreenRightPanel(Stage homeScreenStage, Connection conn){
+		this.conn = conn;
 		this.homeScrStage = homeScreenStage;
 		headerLbl = new Label("PROFILE SECTION");
 		separator = new Separator();
 		profileButton = new Button("Profile");
 		
 		//for testing purposes: (delete after)
-		userName = "Makis";
+		userName = Authentication.getCurrentUser().getUsername();
 		userNameField = new TextField(userName);
 		
 		logoutBtn = new Button("Log Out");
@@ -47,6 +51,7 @@ public class HomeScreenRightPanel {
 
         rightBox.setPrefWidth(200);
         
+        authen = new Authentication(this.conn);
         
 	}
 	
@@ -100,6 +105,9 @@ public class HomeScreenRightPanel {
 		
 		
 		this.logoutBtn.setOnAction(e -> {
+				System.out.println("User: "+Authentication.getCurrentUser().getUsername()+" log out");
+				authen.userLogOut();
+				
 				LogInScreen logInScr = new LogInScreen(homeScrStage);
 				logInScr.createWindow();
 				

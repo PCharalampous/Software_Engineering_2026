@@ -13,7 +13,9 @@ public class Authentication  {
 	private Integer id;
 	private DatabaseManager dataBaseMng;
 	private Connection conn;
-//	private User currentUser;
+	
+	// current logged in user
+    private static User currentUser;
 
 	
 	public Authentication(Connection conn) {
@@ -33,13 +35,19 @@ public class Authentication  {
 			if((rs.getString(4).compareTo(usrEmail) == 0 ) && (rs.getString(5).compareTo(usrPass) == 0)) {
 				System.out.println("user found");
 				isCorrect = true;
+				currentUser = new User(rs.getInt(1), rs.getString(2), rs.getString(4));
 				break;
 				
-			}
+			}else
+				System.out.println("user NOT found");
 			
         }
-		System.out.println("user NOT found");
 		
+		// create logged in user
+        
+		
+		rs.close();
+		dataBaseMng.closeConnection();
 		//dataBaseMng.showTable("users");
 		return isCorrect;
 	}
@@ -80,17 +88,25 @@ public class Authentication  {
 	    
 //			System.out.println("Inserted rows: " + 0+"apla einai se sxolia olo to method gia auto!");
 	    System.out.println("usrEmail: " +usrEmail+"\nusrPass: "+usrPass+"\nuserName: "+userName+"\ndispFirstName: "+dispFirstName+"\ndispSecondName: "+dispSecondName);
-				
+	    dataBaseMng.closeConnection();		
 	}
 	
-	private void authenticateUser() {
-		
-	}
+//	private void authenticateUser() {
+//		
+//	}
 	
 	public void userLogOut() {
-	
+		currentUser = null;
+		
+        System.out.println("User logged out");
 		
 	}
+	
+	// GET CURRENT USER
+    public static User getCurrentUser() {
+
+        return currentUser;
+    }
 	
 	public void setUserEmail(String email) {
 		this.email = email; 

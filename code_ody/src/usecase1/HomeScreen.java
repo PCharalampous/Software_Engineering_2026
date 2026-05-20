@@ -1,5 +1,7 @@
 package usecase1;
 
+import java.sql.Connection;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,10 +16,12 @@ import javafx.stage.Stage;
 public class HomeScreen {
 	
 private Stage homeScrStage;
-
+	
+	private Connection conn;
 	@SuppressWarnings("exports")
-	public HomeScreen(Stage stage) {
+	public HomeScreen(Stage stage, Connection conn) {
 		this.homeScrStage = stage;
+		this.conn = conn;
 	}
 	
 	public void createWindow() {
@@ -39,7 +43,7 @@ private Stage homeScrStage;
         
         // RIGHT SECTION
         
-        HomeScreenRightPanel rightSection = new HomeScreenRightPanel(this.homeScrStage);
+        HomeScreenRightPanel rightSection = new HomeScreenRightPanel(this.homeScrStage, this.conn);
         
         root.setRight(rightSection.getRightPanel());
         
