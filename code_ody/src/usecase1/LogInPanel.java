@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LogInPanel extends GridPane {
@@ -56,27 +57,35 @@ public class LogInPanel extends GridPane {
     }
     
     private void buttonsFunctiability() {
-		
+    	Authentication auth = new Authentication(this.conn);
+    	
     	login.setOnAction(e -> {
     			userEmailBuffer = username.getText();
 
     		    userPassBuffer = password.getText();
-    		    System.out.println(": "+userEmailBuffer+": " + userPassBuffer);
-    		    Authentication auth = new Authentication(this.conn);
+    		    System.out.println("from login gui "+userEmailBuffer+": " + userPassBuffer);
     		    
-    		    auth.setUserEmail(userEmailBuffer);
-    		    auth.setUserPassword(userPassBuffer);
     		    
-    		    if(auth.userLogIn() == true) {
-    		    	HomeScreen homeScr = new HomeScreen(this.stage);
-    				homeScr.createWindow();
-    		    }
+//    		    auth.setUserEmail(userEmailBuffer);
+//    		    auth.setUserPassword(userPassBuffer);
     		    
-    		    else {
-    		    	ErrorScreen errScr = new ErrorScreen("Log In Failed" , 
-    		    			"Ensure that the credentials are correct, otherwise create account");
-    		    	errScr.show();
-    		    }
+    		    try {
+					if(auth.userLogIn(userEmailBuffer,userPassBuffer) == true) {
+						HomeScreen homeScr = new HomeScreen(this.stage);
+						homeScr.createWindow();
+					}
+					
+					else {
+						ErrorScreen errScr = new ErrorScreen("Log In Failed" , 
+								"Ensure that the credentials are correct, otherwise create account");
+						errScr.show();
+					}
+				} catch (SQLException e1) {
+					ErrorScreen errScr = new ErrorScreen("Log In Failed" , 
+							"Database couldnt respond properly");
+					errScr.show();
+					e1.printStackTrace();
+				}
     		    
 				
 			}

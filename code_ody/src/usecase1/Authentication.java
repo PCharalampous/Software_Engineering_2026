@@ -21,18 +21,28 @@ public class Authentication  {
 		this.conn = conn;
 	}
 	
-	public Boolean userLogIn() {
-		isCorrect = true;
+	public Boolean userLogIn(String usrEmail, String usrPass) throws SQLException {
+		isCorrect = false;
 		
 		ResultSet rs = dataBaseMng.getTable("users");
-//		while (rs.next()) {
-//        	for (int i = 1; i <= columnCount; i++) {
-//
-//                System.out.print(rs.getString(i) + " | ");
-//            }
-//
-//            System.out.println();
-//        }
+		
+		while (rs.next()) {
+			//in collumn: 4 is stored each user email and in collumn 5 the password
+			System.out.println("!!!!!!user ftrom database: "+rs.getString(4)+" and user from log in ui: "+usrEmail+"");
+			System.out.println("!!!!!!password ftrom database: "+rs.getString(5)+" and password from log in ui: "+usrPass+"");
+			if((rs.getString(4).compareTo(usrEmail) == 0 ) && (rs.getString(5).compareTo(usrPass) == 0)) {
+				System.out.println("user found");
+				isCorrect = true;
+				break;
+				
+			}
+			else {
+				System.out.println("user NOT found");
+				isCorrect = false;
+				break;
+			}
+			
+        }
 		
 		return isCorrect;
 	}

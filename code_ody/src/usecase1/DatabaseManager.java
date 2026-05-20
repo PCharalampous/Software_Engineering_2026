@@ -101,17 +101,6 @@ public class DatabaseManager {
                 rs = stmt.executeQuery();
                 ResultSetMetaData metaData = rs.getMetaData();
                 columnCount = metaData.getColumnCount();
-
-                System.out.println("===== DATABASE TABLE:"+tableName+"=====");
-
-                while (rs.next()) {
-                	for (int i = 1; i <= columnCount; i++) {
-
-                        System.out.print(rs.getString(i) + " | ");
-                    }
-
-                    System.out.println();
-                }
                     
                 
     	}
