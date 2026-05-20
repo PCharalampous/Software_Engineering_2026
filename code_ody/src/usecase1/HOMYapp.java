@@ -35,8 +35,8 @@ public class HOMYapp extends Application{
          if (conn != null) {
              System.out.println("Η σύνδεση με το Clever Cloud πέτυχε.");
              dataB.showTables();
-             launch(args); //call this only once in the entire program.
              
+             launch(args); //call this only once in the entire program.
              dataB.closeConnection();
          } else {
              System.err.println("Αποτυχία σύνδεσης! Σιγουρέψου ότι το αρχείο config.properties βρίσκεται στον φάκελο src.");

@@ -36,35 +36,50 @@ public class Authentication  {
 				break;
 				
 			}
-			else {
-				System.out.println("user NOT found");
-				isCorrect = false;
-				break;
-			}
 			
         }
+		System.out.println("user NOT found");
 		
+		//dataBaseMng.showTable("users");
 		return isCorrect;
 	}
 	
-	public void createAcc(String usrEmail, String usrPass) throws Exception {
+	public void createAcc(String usrEmail, String usrPass, String userName, String dispFirstName, String dispSecondName) throws Exception {
 		
-//		String sql = "INSERT INTO users"
-//				+ "(email, password_hash)\r\n"
-//				+ "VALUES";
-//		
-//		try 
-//		{
-//			this.conn = dataBaseMng.getConnection();
-//			PreparedStatement stmt = this.conn.prepareStatement(sql);
-//			int rows = stmt.executeUpdate();
-//			System.out.println("Inserted rows: " + rows);
-//			dataBaseMng.getTable("users");
-//		}
-//		catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-			System.out.println("Inserted rows: " + 0+"apla einai se sxolia olo to method gia auto!");
+		String sql = "INSERT INTO users " +
+                 "(username, display_name, email, password_hash) " +
+                 "VALUES (?, ?, ?, ?)";
+
+	    try {
+	        this.conn = dataBaseMng.getConnection();
+	
+	        PreparedStatement stmt = this.conn.prepareStatement(sql);
+	
+	        // combine first + second name
+	        String displayName = dispFirstName + " " + dispSecondName;
+	
+	        // set values into SQL query
+	        stmt.setString(1, userName);
+	        stmt.setString(2, displayName);
+	        stmt.setString(3, usrEmail);
+	        stmt.setString(4, usrPass);
+	
+	        int rows = stmt.executeUpdate();
+	
+	        System.out.println("Inserted rows: " + rows);
+	
+	        dataBaseMng.getTable("users");
+	
+	        stmt.close();
+	
+	    }catch (SQLException e) {
+	
+	    	e.printStackTrace();
+	
+	    }
+	    
+//			System.out.println("Inserted rows: " + 0+"apla einai se sxolia olo to method gia auto!");
+	    System.out.println("usrEmail: " +usrEmail+"\nusrPass: "+usrPass+"\nuserName: "+userName+"\ndispFirstName: "+dispFirstName+"\ndispSecondName: "+dispSecondName);
 				
 	}
 	

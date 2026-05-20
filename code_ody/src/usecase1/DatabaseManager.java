@@ -93,10 +93,10 @@ public class DatabaseManager {
     	String sql = "SELECT * FROM "+tableName+"";
     	ResultSet rs = null;
     	int columnCount =0;
-    	
+    	Connection conn = getConnection();
     	
     	try { 
-                Connection conn = getConnection();
+                
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 rs = stmt.executeQuery();
                 ResultSetMetaData metaData = rs.getMetaData();
@@ -107,32 +107,56 @@ public class DatabaseManager {
             catch (SQLException e) {
                 e.printStackTrace();
             }
+    	
+    	
     	return rs;
     }
     
-//    public void showTable(String tableName) {
-//    	String sql = "SELECT * FROM "+tableName+"";
-//    	ResultSet rs = null;
-//    	int columnCount =0;
-//
-//        try {
-//
-//            ResultSetMetaData metaData = rs.getMetaData();
-//            columnCount = metaData.getColumnCount();
-//
-//            while (rs.next()) {
-//
-//                for (int i = 1; i <= columnCount; i++) {
-//                    System.out.print(rs.getString(i) + " ");
-//                }
-//
-//                System.out.println();
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void showTable(String tableName) {
+
+        String sql = "SELECT * FROM " + tableName;
+
+        Connection conn = getConnection();
+
+        try {
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            // get metadata
+            ResultSetMetaData metaData = rs.getMetaData();
+
+            // number of columns
+            int columnCount = metaData.getColumnCount();
+
+            // print column names
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(metaData.getColumnName(i) + "\t");
+            }
+
+            System.out.println();
+
+            // print rows
+            while (rs.next()) {
+
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+
+                System.out.println();
+            }
+
+            rs.close();
+            stmt.close();
+
+        }
+        catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+    }
 
     
 }

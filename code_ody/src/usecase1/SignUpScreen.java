@@ -64,7 +64,8 @@ private Stage primaryStage;
 		createAcc.setOnAction(e -> {
 				Authentication auth = new Authentication(this.conn);
 				try {
-					auth.createAcc(innerPanel.getUserEmail(), innerPanel.getUserPassword());
+					auth.createAcc(innerPanel.getUserEmailBuffer(), innerPanel.getUserPasswordBuffer(), 
+							innerPanel.getUserNameBuffer(), innerPanel.getDispFirstnameBuffer(), innerPanel.getDispSecondnameBuffer());
 				} catch (Exception e1) {
 					
 					e1.printStackTrace();
