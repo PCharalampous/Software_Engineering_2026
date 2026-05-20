@@ -2,6 +2,7 @@ package shoppinglist;
 
 import entities.Item;
 import entities.Allocation;
+import util.DatabaseManager; 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;           
@@ -16,12 +17,18 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser; 
 import javafx.stage.Modality;         
 import javafx.stage.Stage;
+
 import java.io.File; 
+import java.sql.*; 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap; 
 import java.util.List;
+import java.util.Map;
 
-public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς extends Application!
+public class ShoppingListScreen { 
 
     private List<Item> mainList = new ArrayList<>();
     private List<Item> checkedList = new ArrayList<>();
@@ -36,19 +43,21 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
     private ScrollPane historyScrollPane = new ScrollPane();
 
     private Stage primaryStage;
-    private Runnable backAction; // Για τη διαχείριση της επιστροφής στο Hub
+    private Runnable backAction; 
+    
+    private final int currentRoomId = 1;
 
-    // Constructor που δέχεται το backAction
     public ShoppingListScreen(Runnable backAction) {
         this.backAction = backAction;
     }
 
-    // Η μέθοδος αναλαμβάνει πλέον εξολοκλήρου το χτίσιμο και την εμφάνιση του Stage
     public void display() {
         this.primaryStage = new Stage();
         primaryStage.setTitle("HOMY - Shopping List");
 
-        // --- ΚΕΦΑΛΙΔΑ (Shopping List με κουμπί πίσω) ---
+        loadItemsFromDatabase();
+
+        // --- ΚΕΦΑΛΙΔΑ ---
         Button backBtn = new Button("←");
         backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 18px; -fx-cursor: hand;");
         backBtn.setOnAction(e -> {
@@ -103,11 +112,13 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
 
         // --- ΔΕΞΙΑ ΣΤΗΛΗ (Receipt & History) ---
         VBox rightColumn = new VBox(10); 
-        rightColumn.setPadding(new Insets(10));
-        rightColumn.setMinWidth(280);
+        
+        // Μηδενίζουμε πλήρως το δεξί εσωτερικό περιθώριο της στήλης
+        rightColumn.setPadding(new Insets(10, 0, 10, 10));
 
         Label addReceiptLabel = new Label("Add receipt:");
         addReceiptLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        VBox.setMargin(addReceiptLabel, new Insets(0, 10, 0, 0)); 
 
         StackPane receiptBox = new StackPane();
         receiptBox.setPrefHeight(60); 
@@ -115,7 +126,8 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
         receiptBox.setMaxHeight(60);
         receiptBox.setMaxWidth(Double.MAX_VALUE);
         receiptBox.setStyle("-fx-border-color: #CBD5E1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #ffffff; -fx-cursor: hand;");
-        
+        VBox.setMargin(receiptBox, new Insets(0, 10, 0, 0)); 
+
         Label bigPlus = new Label("+");
         bigPlus.setFont(Font.font("Segoe UI", 28)); 
         receiptBox.getChildren().add(bigPlus);
@@ -126,18 +138,33 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
         HBox historyHeader = new HBox(historyTitle);
         historyHeader.setAlignment(Pos.CENTER);
         historyHeader.setStyle("-fx-border-color: #E2E8F0; -fx-border-width: 1px 0 1px 0; -fx-padding: 5px;");
+        VBox.setMargin(historyHeader, new Insets(0, 10, 0, 0)); 
 
         historyScrollPane.setContent(historyContainer);
+        
+        // Εξαναγκάζουμε το ScrollPane και το περιεχόμενό του να γεμίσουν όλο το πλάτος
         historyScrollPane.setFitToWidth(true);
+        historyScrollPane.setFitToHeight(true); 
         historyScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        historyScrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent;");
+        historyScrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;");
 
+        // Το Container του ιστορικού απλώνει αυτόματα σε όλο το διαθέσιμο πλάτος
+        historyContainer.setMaxWidth(Double.MAX_VALUE);
+        historyContainer.setPadding(new Insets(0, 10, 0, 0));
+        historyContainer.setStyle("-fx-background-color: transparent;");
+        
+        VBox.setVgrow(historyContainer, Priority.ALWAYS);
         VBox.setVgrow(historyScrollPane, Priority.ALWAYS);
+        
         rightColumn.getChildren().addAll(addReceiptLabel, receiptBox, historyHeader, historyScrollPane);
 
         // --- ΚΥΡΙΟ LAYOUT ---
         BorderPane root = new BorderPane();
         root.setTop(headerBox);
+        
+        // ΔΙΟΡΘΩΣΗ: Επιτρέπουμε στη δεξιά στήλη να μεγαλώσει οριζόντια και να "σπρώξει" το scrollbar τέρμα δεξιά
+        HBox.setHgrow(rightColumn, Priority.ALWAYS);
+        
         HBox centerLayout = new HBox(leftColumn, rightColumn);
         root.setStyle("-fx-background-color: #F8FAF9;");
         
@@ -152,12 +179,75 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
         primaryStage.show();
     }
 
+    private void loadItemsFromDatabase() {
+        mainList.clear();
+        checkedList.clear();
+        historyList.clear();
+
+        String itemQuery = "SELECT item_id, item_name, quantity, is_checked FROM shopping_list WHERE room_id = ? ORDER BY created_at DESC";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(itemQuery)) {
+            ps.setInt(1, currentRoomId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item(rs.getInt("item_id"), rs.getString("item_name"), rs.getInt("quantity"), rs.getBoolean("is_checked"));
+                    if (item.isChecked()) checkedList.add(item);
+                    else mainList.add(item);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        String allocQuery = "SELECT a.allocation_id, a.allocation_date, a.total_amount, a.receiver_username, a.image_path, a.is_done, " +
+                             "s.roommate_username, s.amount_owed FROM allocations a " +
+                             "LEFT JOIN allocation_shares s ON a.allocation_id = s.allocation_id " +
+                             "WHERE a.room_id = ? ORDER BY a.allocation_id DESC";
+        
+        Map<Integer, Allocation> allocMap = new LinkedHashMap<>();
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(allocQuery)) {
+            ps.setInt(1, currentRoomId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int allocId = rs.getInt("allocation_id");
+                    
+                    if (!allocMap.containsKey(allocId)) {
+                        Date sqlDate = rs.getDate("allocation_date");
+                        LocalDate localDate = (sqlDate != null) ? sqlDate.toLocalDate() : LocalDate.now();
+                        
+                        String imgPath = rs.getString("image_path");
+                        File imgFile = (imgPath != null && !imgPath.isEmpty()) ? new File(imgPath) : null;
+
+                        Map<String, Double> sharesMap = new HashMap<>();
+
+                        Allocation alloc = new Allocation(
+                            allocId,
+                            localDate,
+                            sharesMap,
+                            imgFile,
+                            rs.getDouble("total_amount"),
+                            rs.getString("receiver_username"),
+                            rs.getBoolean("is_done")
+                        );
+                        allocMap.put(allocId, alloc);
+                    }
+                    
+                    String roommate = rs.getString("roommate_username");
+                    if (roommate != null) {
+                        allocMap.get(allocId).getMemberAmounts().put(roommate, rs.getDouble("amount_owed"));
+                    }
+                }
+                historyList.addAll(allocMap.values());
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
     private void updateUI() {
         mainListContainer.getChildren().clear();
         checkedListContainer.getChildren().clear();
         historyContainer.getChildren().clear();
 
-        // 1. Σχεδίαση Main List
         for (Item item : mainList) {
             HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER_LEFT);
@@ -174,7 +264,6 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
             mainListContainer.getChildren().add(row);
         }
 
-        // 2. Σχεδίαση Checked Items
         for (Item item : checkedList) {
             HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER_LEFT);
@@ -196,9 +285,10 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
                 
                 if (updated != null) {
                     item.setQuantity(updated.getQuantity());
-                    item.swap();
+                    item.swap(); 
                     checkedList.remove(item);
                     mainList.add(0, item); 
+                    updateItemInDatabase(item);
                 } else {
                     cb.setSelected(true); 
                 }
@@ -211,20 +301,22 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
             checkedListContainer.getChildren().add(row);
         }
 
-        // 3. Σχεδίαση Ιστορικού (History)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (Allocation alloc : historyList) {
             VBox allocBox = new VBox(3);
             allocBox.setPadding(new Insets(5));
             allocBox.setStyle("-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1px 0;"); 
             
+            // Κάνουμε ολόκληρο το box του allocation να πιάνει όλο το οριζόντιο πλάτος
+            allocBox.setMaxWidth(Double.MAX_VALUE);
+            
             if (alloc.getImageFile() != null) {
                 allocBox.setCursor(Cursor.HAND);
-                allocBox.setOnMouseClicked(e -> showReceiptPopup(alloc.getImageFile()));
+                allocBox.setOnMouseClicked(e -> showReceiptPopup(alloc));
             }
             
             String dateStr = alloc.getDate().format(formatter);
-            Label dateLabel = new Label(dateStr + " - Total: €" + alloc.getTotalAmount());
+            Label dateLabel = new Label(dateStr + " - Total: €" + String.format("%.2f", alloc.getTotalAmount()));
             dateLabel.setStyle(alloc.isDone() ? "-fx-text-fill: black; -fx-font-weight: bold;" : "-fx-text-fill: gray;");
 
             GridPane membersGrid = new GridPane();
@@ -232,7 +324,7 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
             int rowIdx = 0;
             for (String member : alloc.getMemberAmounts().keySet()) {
                 Label nameL = new Label(member);
-                Label amtL = new Label("€" + alloc.getMemberAmounts().get(member));
+                Label amtL = new Label("€" + String.format("%.2f", alloc.getMemberAmounts().get(member)));
                 
                 if (!alloc.isDone()) {
                     nameL.setStyle("-fx-text-fill: gray;");
@@ -267,31 +359,53 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
         }
     }
 
-    public void showReceiptPopup(File imageFile) {
-        if (imageFile == null) return;
-        
+    private void updateItemInDatabase(Item item) {
+        String query = "UPDATE shopping_list SET quantity = ?, is_checked = ? WHERE item_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, item.getQuantity());
+            ps.setBoolean(2, item.isChecked());
+            ps.setInt(3, item.getItemId());
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void showReceiptPopup(Allocation alloc) {
+        if (alloc == null || alloc.getImageFile() == null) return;
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(primaryStage);
         stage.setTitle("Προβολή Απόδειξης");
 
         try {
-            Image img = new Image(imageFile.toURI().toString());
+            Image img = new Image(alloc.getImageFile().toURI().toString());
             ImageView imageView = new ImageView(img);
             imageView.setFitWidth(380); 
             imageView.setPreserveRatio(true);
 
-            ScrollPane scrollPane = new ScrollPane(imageView);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent;");
+            VBox container = new VBox(0);
+            
+            Label receiverInfoLabel = new Label("Paid by: " + alloc.getReceiver());
+            receiverInfoLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+            receiverInfoLabel.setStyle("-fx-text-fill: #1E293B; -fx-padding: 8px; -fx-background-color: #F1F5F9;");
+            receiverInfoLabel.setMaxWidth(Double.MAX_VALUE);
+            receiverInfoLabel.setAlignment(Pos.CENTER);
 
-            Scene scene = new Scene(scrollPane, 400, 500);
+            container.getChildren().addAll(receiverInfoLabel, imageView);
+
+            ScrollPane scrollPane = new ScrollPane(container);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            scrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent; -fx-padding: 0;");
+
+            Scene scene = new Scene(scrollPane, 385, Region.USE_COMPUTED_SIZE);
             stage.setScene(scene);
             stage.setResizable(false);
+            
+            stage.sizeToScene();
             stage.show();
-        } catch (Exception ex) {
-            System.out.println("Σφάλμα προβολής εικόνας: " + ex.getMessage());
-        }
+        } catch (Exception ex) { ex.printStackTrace(); }
     }
 
     public void addInMainList() {
@@ -307,6 +421,7 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
                 if (i.getName().equalsIgnoreCase(item.getName())) {
                     i.setQuantity(i.getQuantity() + item.getQuantity());
                     exists = true;
+                    updateItemInDatabase(i);
                     break;
                 }
             }
@@ -324,9 +439,22 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
                     checkedList.remove(foundInChecked); 
                     mainList.add(0, foundInChecked); 
                     exists = true;
+                    updateItemInDatabase(foundInChecked);
                 }
             }
             if (!exists) {
+                String query = "INSERT INTO shopping_list (room_id, item_name, quantity, is_checked) VALUES (?, ?, ?, ?)";
+                try (Connection conn = DatabaseManager.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setInt(1, currentRoomId);
+                    ps.setString(2, item.getName());
+                    ps.setInt(3, item.getQuantity());
+                    ps.setBoolean(4, item.isChecked());
+                    ps.executeUpdate();
+                    try (ResultSet gk = ps.getGeneratedKeys()) {
+                        if (gk.next()) item.setItemId(gk.getInt(1));
+                    }
+                } catch (SQLException e) { e.printStackTrace(); }
                 mainList.add(0, item);
             }
             updateUI();
@@ -335,9 +463,10 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
 
     public void selectFromMainList(Item item) {
         if (item != null) {
-            item.swap();
+            item.swap(); 
             mainList.remove(item);
             checkedList.add(0, item);
+            updateItemInDatabase(item);
             updateUI();
         }
     }
@@ -348,6 +477,7 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
             Item updated = editScreen.insertItemQuantity(primaryStage, item.getName(), item.getQuantity());
             if (updated != null) {
                 item.setQuantity(updated.getQuantity());
+                updateItemInDatabase(item);
                 updateUI();
             }
         }
@@ -370,6 +500,43 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
 
     public void returnAllocation(Allocation alloc) {
         if (alloc != null) {
+            String allocQuery = "INSERT INTO allocations (room_id, allocation_date, total_amount, receiver_username, image_path, is_done) " +
+                                "VALUES (?, ?, ?, ?, ?, ?)";
+            
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(allocQuery, Statement.RETURN_GENERATED_KEYS)) {
+                
+                ps.setInt(1, currentRoomId);
+                ps.setDate(2, Date.valueOf(alloc.getDate()));
+                ps.setDouble(3, alloc.getTotalAmount());
+                ps.setString(4, alloc.getReceiver());
+                ps.setString(5, (alloc.getImageFile() != null) ? alloc.getImageFile().getAbsolutePath() : null);
+                ps.setBoolean(6, alloc.isDone());
+                
+                ps.executeUpdate();
+                
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        alloc.setAllocationId(generatedKeys.getInt(1));
+                    }
+                }
+                
+                String shareQuery = "INSERT INTO allocation_shares (allocation_id, roommate_username, amount_owed) VALUES (?, ?, ?)";
+                try (PreparedStatement psShare = conn.prepareStatement(shareQuery)) {
+                    for (Map.Entry<String, Double> entry : alloc.getMemberAmounts().entrySet()) {
+                        psShare.setInt(1, alloc.getAllocationId());
+                        psShare.setString(2, entry.getKey());
+                        psShare.setDouble(3, entry.getValue());
+                        psShare.addBatch(); 
+                    }
+                    psShare.executeBatch();
+                }
+                
+            } catch (SQLException e) {
+                System.err.println("Σφάλμα κατά την εισαγωγή του allocation στη βάση:");
+                e.printStackTrace();
+            }
+
             historyList.add(0, alloc);
             updateUI();
         }
@@ -378,6 +545,12 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
     public void selectDone(Allocation alloc) {
         if (alloc != null) {
             alloc.done();
+            String query = "UPDATE allocations SET is_done = TRUE WHERE allocation_id = ?";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, alloc.getAllocationId());
+                ps.executeUpdate();
+            } catch (SQLException e) { e.printStackTrace(); }
             updateUI();
         }
     }
@@ -387,16 +560,20 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
             SplitScreen splitScreen = new SplitScreen();
             Allocation newAlloc = splitScreen.insertAllocationStatus(primaryStage, alloc.getImageFile(), alloc);
             if (newAlloc != null) {
-                alloc.delete();
-                historyList.remove(alloc);
-                returnAllocation(newAlloc);
+                selectDeleteAllocation(alloc); 
+                returnAllocation(newAlloc);    
             }
         }
     }
 
     public void selectDeleteAllocation(Allocation alloc) {
         if (alloc != null) {
-            alloc.delete(); 
+            String query = "DELETE FROM allocations WHERE allocation_id = ?";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, alloc.getAllocationId());
+                ps.executeUpdate();
+            } catch (SQLException e) { e.printStackTrace(); }
             historyList.remove(alloc); 
             updateUI(); 
         }
@@ -404,9 +581,12 @@ public class ShoppingListScreen { // <--- Καθαρή κλάση, χωρίς ex
 
     public void deleteItem(Item item) {
         if (item != null) {
-            item.delete();
-            mainList.remove(item);
-            checkedList.remove(item);
+            String query = "DELETE FROM shopping_list WHERE item_id = ?";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, item.getItemId());
+                ps.executeUpdate();
+            } catch (SQLException e) { e.printStackTrace(); }
             updateUI();
         }
     }
