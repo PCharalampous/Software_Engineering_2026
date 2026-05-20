@@ -49,57 +49,21 @@ public class Authentication  {
 	
 	public void createAcc(String usrEmail, String usrPass) throws Exception {
 		
-		
-			String sql = """
-					INSERT INTO users
-					(username, display_name, email, password_hash, bio, preferences, room_id)
-					VALUES
-
-					(
-					    'makis99',
-					    'Makis Kosta',
-					    'makis99@example.com',
-					    'hashed_password_1',
-					    'Computer Science student',
-					    'Quiet roommates preferred',
-					    NULL
-					),
-
-					(
-					    'anna_dev',
-					    'Anna Papadopoulou',
-					    'anna.dev@example.com',
-					    'hashed_password_2',
-					    'Loves Java and databases',
-					    'Non-smokers only',
-					    NULL
-					),
-
-					(
-					    'george21',
-					    'George Nikolaou',
-					    'george21@example.com',
-					    'hashed_password_3',
-					    'Enjoys gaming and music',
-					    'Pet friendly apartment',
-					    NULL
-					);
-					""";
-
-//					try 
-//					{
-//						this.conn = dataBaseMng.getConnection();
-//					    PreparedStatement stmt = this.conn.prepareStatement(sql);
-//					
-//
-//					    int rows = stmt.executeUpdate();
-//
-//					    System.out.println("Inserted rows: " + rows);
-//					    dataBaseMng.getTable("users");
-//					}
-//					 catch (SQLException e) {
-//					    e.printStackTrace();
-//					}
+//		String sql = "INSERT INTO users"
+//				+ "(email, password_hash)\r\n"
+//				+ "VALUES";
+//		
+//		try 
+//		{
+//			this.conn = dataBaseMng.getConnection();
+//			PreparedStatement stmt = this.conn.prepareStatement(sql);
+//			int rows = stmt.executeUpdate();
+//			System.out.println("Inserted rows: " + rows);
+//			dataBaseMng.getTable("users");
+//		}
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 			System.out.println("Inserted rows: " + 0+"apla einai se sxolia olo to method gia auto!");
 				
 	}

@@ -16,55 +16,90 @@ import java.util.Scanner;
 
 public class LogInPanel extends GridPane {
     private GridPane credenInput;
-    private Label usernameLabel;
+    private Label useremailLabel;
     private Label psswdLabel;
-    private TextField username;
+    private TextField useremail,dispFirstnameTxt, dispSecondnameTxt, userNameTxt;
     private TextField password;
     private Button login, signup;
     private Stage stage;
     private String userEmailBuffer;
     private String userPassBuffer;
     private Connection conn;
+    private Label dispFirstnameLabel;
+    private Label dispSecondnameLabel;
+    private Label usernameLabel;
+//    private Boolean add;
     
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
         //body
-    	
+//    	this.add= false;
     	this.stage = stage;
         credenInput = new GridPane();
         credenInput.setPadding(new Insets(15));
         credenInput.setVgap(10);
         credenInput.setHgap(10);
-        usernameLabel = new Label("User Email");
+        useremailLabel = new Label("User Email");
         psswdLabel = new Label("Password");
-        username = new TextField();
+        useremail = new TextField();
         password = new TextField();
         login = new Button("log in");
         signup = new Button("sign up");
-        credenInput.add(usernameLabel, 0, 0);
-        credenInput.add(username, 1, 0);
+        //
+        
+        dispFirstnameLabel = new Label("First Name:");
+        dispSecondnameLabel = new Label("Second Name:");
+        usernameLabel = new Label("User Name:");
+        dispFirstnameTxt = new TextField();
+        dispSecondnameTxt = new TextField();
+        userNameTxt = new TextField();
+        
+        //
+        
+        credenInput.add(useremailLabel, 0, 0);
+        credenInput.add(useremail, 1, 0);
         credenInput.add(psswdLabel, 0, 1);
         credenInput.add(password, 1, 1);
         credenInput.setAlignment(Pos.CENTER);
     }
     
-//    private void textFieldFunctiability() {
-//    	
-//    }
+    public void addToPanelComponentsForSignUp() {
+    	credenInput.getChildren().clear();
+
+        credenInput.add(dispFirstnameLabel, 0, 0);
+        credenInput.add(dispFirstnameTxt, 1, 0);
+
+        credenInput.add(dispSecondnameLabel, 0, 1);
+        credenInput.add(dispSecondnameTxt, 1, 1);
+
+        credenInput.add(usernameLabel, 0, 2);
+        credenInput.add(userNameTxt, 1, 2);
+
+        credenInput.add(useremailLabel, 0, 3);
+        credenInput.add(useremail, 1, 3);
+
+        credenInput.add(psswdLabel, 0, 4);
+        credenInput.add(password, 1, 4);
+        
+      //functiability for sign up extra components
+	     = .getText();
+	     = .getText();
+	     = .getText();
+    }
+    
     
     public void setDataBaseConnection(Connection conn) {
     	this.conn = conn;
     }
     
-    private void buttonsFunctiability() {
+    private void panelFunctiability() {
     	Authentication auth = new Authentication(this.conn);
     	
     	login.setOnAction(e -> {
-    			userEmailBuffer = username.getText();
+    			userEmailBuffer = useremail.getText();
 
     		    userPassBuffer = password.getText();
     		    System.out.println("from login gui "+userEmailBuffer+": " + userPassBuffer);
-    		    
     		    
 //    		    auth.setUserEmail(userEmailBuffer);
 //    		    auth.setUserPassword(userPassBuffer);
@@ -92,6 +127,7 @@ public class LogInPanel extends GridPane {
 		);
 		
 		signup.setOnAction(e -> {
+				
 				SignUpScreen signUpScr = new SignUpScreen(this.stage, this.conn);
 				signUpScr.createWindow();
 			}
@@ -143,12 +179,12 @@ public class LogInPanel extends GridPane {
 	
     @SuppressWarnings("exports")
 	public Button getLogInBtn(){
-    	this.buttonsFunctiability();
+    	this.panelFunctiability();
         return this.buttonStyling(this.login);
     }
     
     public Button getSignUpBtn(){
-    	this.buttonsFunctiability();
+    	this.panelFunctiability();
         return this.buttonStyling(this.signup);
     }
     

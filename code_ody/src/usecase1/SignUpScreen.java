@@ -39,7 +39,7 @@ private Stage primaryStage;
         
         
         innerPanel = new LogInPanel(primaryStage);
-        
+        innerPanel.addToPanelComponentsForSignUp();
         
         root.setPadding(new Insets(5));
         root.getChildren().addAll(label, innerPanel.getCredenInput());        
@@ -74,6 +74,7 @@ private Stage primaryStage;
 				
 				LogInScreen logINsc = new LogInScreen(this.primaryStage);
 				logINsc.createWindow();
+				
 			}
 		);
 		
