@@ -1,29 +1,16 @@
 package entities;
 
 public class Item {
-    private int itemId; // Το ID από τη βάση δεδομένων για το sync
+    // Attributes από το Domain Model
     private String name;
-    private int quantity; 
-    private boolean isChecked; 
+    private int quantity; // integer
+    private boolean isChecked; // Εσωτερικό state για τον διαχωρισμό των λιστών
 
-    // Constructor για νέα αντικείμενα (πριν μπουν στη βάση)
     public Item(String name, int quantity) {
         this.name = name;
         this.quantity = quantity;
         this.isChecked = false;
     }
-
-    // Constructor για αντικείμενα που έρχονται έτοιμα από τη βάση
-    public Item(int itemId, String name, int quantity, boolean isChecked) {
-        this.itemId = itemId;
-        this.name = name;
-        this.quantity = quantity;
-        this.isChecked = isChecked;
-    }
-
-    // Getter και Setter για το itemId
-    public int getItemId() { return itemId; }
-    public void setItemId(int itemId) { this.itemId = itemId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -33,11 +20,12 @@ public class Item {
 
     public boolean isChecked() { return isChecked; }
 
+    // Methods από το Domain Model
     public void swap() {
         this.isChecked = !this.isChecked;
     }
 
     public void delete() {
-        // Λογική εκκαθάρισης
+        // Λογική εκκαθάρισης/αποδέσμευσης αντικειμένου
     }
 }

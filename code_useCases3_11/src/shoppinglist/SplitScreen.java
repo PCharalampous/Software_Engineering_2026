@@ -85,16 +85,19 @@ public class SplitScreen {
         Map<String, TextField> fieldsMap = new HashMap<>();
         root.getChildren().add(dynamicFieldsContainer);
 
+        // Σύνδεση του Listener με τη νέα μέθοδο δημιουργίας πεδίων
         receiverComboBox.setOnAction(e -> {
             populateRoommateFields(receiverComboBox.getValue(), existingAlloc, dynamicFieldsContainer, fieldsMap);
         });
 
+        // ΔΙΟΡΘΩΣΗ: Αν είμαστε σε Edit mode, επιλέγουμε τον receiver ΚΑΙ καλούμε ρητά 
+        // τη μέθοδο για να εμφανιστούν ακαριαία οι συγκατοίκοι από κάτω!
         if (existingAlloc != null) {
             receiverComboBox.setValue(existingAlloc.getReceiver());
             populateRoommateFields(existingAlloc.getReceiver(), existingAlloc, dynamicFieldsContainer, fieldsMap);
         }
 
-        // --- 5. ΚΟΥΜΠΙ CONFIRM ΜΕ ΕΛΕΓΧΟΥΣ ΕΓΚΥΡΟΤΗΤΑΣ ---
+        // --- 5. ΚΟΥΜΠΙ CONFIRM ---
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setMaxWidth(Double.MAX_VALUE);
         confirmBtn.setStyle("-fx-font-weight: bold;");
@@ -108,34 +111,14 @@ public class SplitScreen {
             
             try {
                 double totalAmt = Double.parseDouble(totalAmountField.getText());
-                
-                // ΕΛΕΓΧΟΣ 1: Το συνολικό ποσό δεν μπορεί να είναι αρνητικό
-                if (totalAmt < 0) {
-                    ErrorScreen.show("Το συνολικό ποσό δεν μπορεί να είναι αρνητικό!");
-                    return;
-                }
-
                 Map<String, Double> amounts = new HashMap<>();
-                double othersSum = 0.0;
                 
+                double othersSum = 0.0;
                 for (Map.Entry<String, TextField> entry : fieldsMap.entrySet()) {
                     String name = entry.getKey();
                     double amount = Double.parseDouble(entry.getValue().getText());
-                    
-                    // ΕΛΕΓΧΟΣ 2: Το ποσό ενός συγκατοίκου δεν μπορεί να είναι αρνητικό
-                    if (amount < 0) {
-                        ErrorScreen.show("Το ποσό για τον συγκατοίκο " + name + " δεν μπορεί να είναι αρνητικό!");
-                        return;
-                    }
-                    
                     amounts.put(name, amount);
                     othersSum += amount;
-                }
-
-                // ΕΛΕΓΧΟΣ 3: Το άθροισμα των υπολοίπων δεν πρέπει να ξεπερνά το Total Amount
-                if (othersSum > totalAmt) {
-                    ErrorScreen.show("Το άθροισμα των ποσών των συγκατοίκων ξεπερνά το συνολικό ποσό της απόδειξης!");
-                    return;
                 }
 
                 // Αυτόματος υπολογισμός receiver (Σύνολο - Υπόλοιποι)
@@ -161,6 +144,7 @@ public class SplitScreen {
         return resultAllocation;
     }
 
+    // ΝΕΑ ΑΥΤΟΝΟΜΗ ΜΕΘΟΔΟΣ: Δημιουργεί και γεμίζει τα πεδία των συγκατοίκων με απόλυτη ασφάλεια
     private void populateRoommateFields(String selectedReceiver, Allocation existingAlloc, VBox dynamicFieldsContainer, Map<String, TextField> fieldsMap) {
         dynamicFieldsContainer.getChildren().clear();
         fieldsMap.clear();
@@ -175,6 +159,7 @@ public class SplitScreen {
                     label.setPrefWidth(80); 
                     
                     String defaultVal = "0";
+                    // Αν είναι Edit και ο receiver παραμένει ίδιος, φορτώνουμε τις αποθηκευμένες τιμές
                     if (existingAlloc != null && selectedReceiver.equals(existingAlloc.getReceiver())) {
                         if (existingAlloc.getMemberAmounts().containsKey(roommate)) {
                             double amt = existingAlloc.getMemberAmounts().get(roommate);
