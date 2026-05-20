@@ -139,6 +139,29 @@ CREATE TABLE chore_reports (
 ) ENGINE=InnoDB;
 
 -- -----------------------------------------------------
+-- Table: chores_history
+-- -----------------------------------------------------
+
+CREATE TABLE chore_history (
+    history_id INT AUTO_INCREMENT,
+    room_id INT NOT NULL,
+    chore_id INT NOT NULL,                            -- ΑΜΕΣΗ συσχέτιση με το ID της αγγαρείας!
+    completed_by VARCHAR(100) NOT NULL,              -- Το όνομα του συγκατοίκου που την τελείωσε
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (history_id),
+    CONSTRAINT fk_history_rooms
+        FOREIGN KEY (room_id)
+        REFERENCES rooms (room_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_history_chores
+        FOREIGN KEY (chore_id)
+        REFERENCES chores (chore_id)                  -- Δείχνει κατευθείαν στον πίνακα chores
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- -----------------------------------------------------
 -- Table: user_points
 -- -----------------------------------------------------
 CREATE TABLE user_points (
