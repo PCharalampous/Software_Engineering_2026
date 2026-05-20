@@ -43,9 +43,6 @@ public class Authentication  {
 			
         }
 		
-		// create logged in user
-        
-		
 		rs.close();
 		dataBaseMng.closeConnection();
 		//dataBaseMng.showTable("users");
@@ -54,10 +51,42 @@ public class Authentication  {
 	
 	public void createAcc(String usrEmail, String usrPass, String userName, String dispFirstName, String dispSecondName) throws Exception {
 		
+		this.conn = dataBaseMng.getConnection();
 		String sql = "INSERT INTO users " +
                  "(username, display_name, email, password_hash) " +
                  "VALUES (?, ?, ?, ?)";
+		//-------------
+		String checkSql =
+		        "SELECT * FROM users WHERE email = ?";
+		
+        PreparedStatement checkStmt =
+                this.conn.prepareStatement(checkSql);
 
+        checkStmt.setString(1, usrEmail);
+
+        ResultSet rs = checkStmt.executeQuery();
+
+        // if user exists
+        if (rs.next()) {
+
+            ErrorScreen errScr = new ErrorScreen(
+                    "Sign Up failed",
+                    "User email already exists"
+            );
+
+            errScr.show();
+
+            rs.close();
+            checkStmt.close();
+
+            return;
+        }
+
+        rs.close();
+        checkStmt.close();
+	        
+		
+		//-------------
 	    try {
 	        this.conn = dataBaseMng.getConnection();
 	
