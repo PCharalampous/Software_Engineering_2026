@@ -1,0 +1,33 @@
+ΑΝΑΦΟΡΑ ΑΛΛΑΓΩΝ: ΣΥΝΔΕΣΗ APPLICATIONS ΜΕ MYSQL
+-------------------------------------------------
+
+Στόχος: Αποσύνδεση του module "Αγγελιών" (Applications) από την προσωρινή μνήμη (mock data) και πλήρης διασύνδεση με τη βάση δεδομένων MySQL.
+
+1. entities/Application.java (Η "Καρδιά" των αλλαγών)
+- Τι κάναμε: Το μετατρέψαμε από απλό Data Object σε DAO (Data Access Object).
+- Λεπτομέρειες: 
+  * Προστέθηκε το πεδίο `applicationId` (Primary Key).
+  * Οι μέθοδοι `saveApplication` και `cancelApplication` εκτελούν πλέον πραγματικά SQL Queries (INSERT INTO και UPDATE) μέσω του `DatabaseManager.getConnection()`.
+  * Δημιουργήθηκε η static μέθοδος `loadUserApplications(userId)` για την ανάγνωση (SELECT) των αγγελιών του χρήστη από τη βάση.
+
+2. profile/ProfileScreen.java (Διαγραφή της μνήμης)
+- Τι κάναμε: Αφαιρέσαμε την τοπική λίστα.
+- Λεπτομέρειες: Διαγράφηκε η `ObservableList<Application> database`. Το κουμπί "MY APPLICATIONS" πλέον καλεί την `Application.loadUserApplications(1)` για να βρει το πραγματικό πλήθος των αγγελιών δυναμικά.
+
+3. myapplications/MyApplicationScreen.java (Δυναμικό UI)
+- Τι κάναμε: Το UI τραβάει δεδομένα κατευθείαν από τη βάση.
+- Λεπτομέρειες: Το loop των αγγελιών χρησιμοποιεί την `loadUserApplications(1)`. Το κουμπί CANCEL καλεί τη νέα μέθοδο ακύρωσης που κάνει UPDATE το status σε 'CANCELED' απευθείας στον SQL Server.
+
+4. myapplications/NewApplicationScreen.java (Αποθήκευση στη Βάση)
+- Τι κάναμε: Η φόρμα νέας αγγελίας γράφει στη βάση.
+- Λεπτομέρειες: Στο "Preview & Submit", όταν ο χρήστης πατάει επιβεβαίωση, καλείται η `newApp.saveApplication(1)` που κάνει INSERT τα δεδομένα στη MySQL.
+
+5. main/HOMYApp.java (Καθαρισμός)
+- Τι κάναμε: Αφαιρέσαμε τα hardcoded/mock δεδομένα.
+- Λεπτομέρειες: Στην `initData()`, διαγράφηκαν οι γραμμές που δημιουργούσαν εικονικές αγγελίες κατά την εκκίνηση, αφού η μόνη πηγή δεδομένων είναι πλέον ο πίνακας `applications`.
+
+-------------------------------------------------
+ΣΗΜΑΝΤΙΚΗ ΣΗΜΕΙΩΣΗ ΓΙΑ ΤΗΝ ΟΜΑΔΑ: 
+Προς το παρόν, έχει χρησιμοποιηθεί το hardcoded `user_id = 1` σε όλες τις κλήσεις προς τη βάση (αφού δεν έχει συνδεθεί ακόμα το Log In). 
+
+Όταν υλοποιηθεί το Session Management, πρέπει να πάμε σε αυτά τα αρχεία (κυρίως στο ProfileScreen, MyApplicationScreen και NewApplicationScreen) και να αντικαταστήσουμε τον αριθμό 1 με το ID του εκάστοτε συνδεδεμένου χρήστη (π.χ. Session.getCurrentUser().getId()).
