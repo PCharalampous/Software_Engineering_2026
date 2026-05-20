@@ -112,9 +112,8 @@ public class ShoppingListScreen {
 
         // --- ΔΕΞΙΑ ΣΤΗΛΗ (Receipt & History) ---
         VBox rightColumn = new VBox(10); 
-        
-        // Μηδενίζουμε πλήρως το δεξί εσωτερικό περιθώριο της στήλης
         rightColumn.setPadding(new Insets(10, 0, 10, 10));
+        rightColumn.setMinWidth(280);
 
         Label addReceiptLabel = new Label("Add receipt:");
         addReceiptLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
@@ -141,30 +140,23 @@ public class ShoppingListScreen {
         VBox.setMargin(historyHeader, new Insets(0, 10, 0, 0)); 
 
         historyScrollPane.setContent(historyContainer);
-        
-        // Εξαναγκάζουμε το ScrollPane και το περιεχόμενό του να γεμίσουν όλο το πλάτος
         historyScrollPane.setFitToWidth(true);
         historyScrollPane.setFitToHeight(true); 
         historyScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         historyScrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;");
 
-        // Το Container του ιστορικού απλώνει αυτόματα σε όλο το διαθέσιμο πλάτος
-        historyContainer.setMaxWidth(Double.MAX_VALUE);
         historyContainer.setPadding(new Insets(0, 10, 0, 0));
         historyContainer.setStyle("-fx-background-color: transparent;");
         
         VBox.setVgrow(historyContainer, Priority.ALWAYS);
         VBox.setVgrow(historyScrollPane, Priority.ALWAYS);
+        HBox.setHgrow(rightColumn, Priority.ALWAYS); 
         
         rightColumn.getChildren().addAll(addReceiptLabel, receiptBox, historyHeader, historyScrollPane);
 
         // --- ΚΥΡΙΟ LAYOUT ---
         BorderPane root = new BorderPane();
         root.setTop(headerBox);
-        
-        // ΔΙΟΡΘΩΣΗ: Επιτρέπουμε στη δεξιά στήλη να μεγαλώσει οριζόντια και να "σπρώξει" το scrollbar τέρμα δεξιά
-        HBox.setHgrow(rightColumn, Priority.ALWAYS);
-        
         HBox centerLayout = new HBox(leftColumn, rightColumn);
         root.setStyle("-fx-background-color: #F8FAF9;");
         
@@ -306,8 +298,6 @@ public class ShoppingListScreen {
             VBox allocBox = new VBox(3);
             allocBox.setPadding(new Insets(5));
             allocBox.setStyle("-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1px 0;"); 
-            
-            // Κάνουμε ολόκληρο το box του allocation να πιάνει όλο το οριζόντιο πλάτος
             allocBox.setMaxWidth(Double.MAX_VALUE);
             
             if (alloc.getImageFile() != null) {
@@ -405,7 +395,9 @@ public class ShoppingListScreen {
             
             stage.sizeToScene();
             stage.show();
-        } catch (Exception ex) { ex.printStackTrace(); }
+            
+        // ΔΙΟΡΘΩΣΗ ΣΦΑΛΜΑΤΟΣ: ex.printStackTrace(); αντί για e.printStackTrace();
+        } catch (Exception ex) { ex.printStackTrace(); } 
     }
 
     public void addInMainList() {
@@ -581,6 +573,9 @@ public class ShoppingListScreen {
 
     public void deleteItem(Item item) {
         if (item != null) {
+            mainList.remove(item);
+            checkedList.remove(item);
+            
             String query = "DELETE FROM shopping_list WHERE item_id = ?";
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement ps = conn.prepareStatement(query)) {
