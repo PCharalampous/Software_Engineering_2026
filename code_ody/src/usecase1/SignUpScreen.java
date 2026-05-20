@@ -1,5 +1,7 @@
 package usecase1;
 
+import java.sql.Connection;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,9 +19,11 @@ private Stage primaryStage;
 	
 	private Button createAcc;
 	private LogInPanel innerPanel;
+	private Connection conn;
 
-	public SignUpScreen(Stage stage) {
+	public SignUpScreen(Stage stage, Connection conn) {
 		this.primaryStage = stage;
+		this.conn = conn;
 	}
 	
 	public void createWindow() {
@@ -35,7 +39,7 @@ private Stage primaryStage;
         
         
         innerPanel = new LogInPanel(primaryStage);
-
+        
         
         root.setPadding(new Insets(5));
         root.getChildren().addAll(label, innerPanel.getCredenInput());        
@@ -58,7 +62,7 @@ private Stage primaryStage;
 	private void buttonsFunctiability() {
 		
 		createAcc.setOnAction(e -> {
-				Authentication auth = new Authentication();
+				Authentication auth = new Authentication(this.conn);
 				try {
 					auth.createAcc(innerPanel.getUserEmail(), innerPanel.getUserPassword());
 				} catch (Exception e1) {
@@ -83,6 +87,7 @@ private Stage primaryStage;
     		    "-fx-font-size: 15px;"
     		);
     }
+	
 	
 	
 }

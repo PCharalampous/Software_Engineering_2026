@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class LogInPanel extends GridPane {
@@ -22,10 +23,12 @@ public class LogInPanel extends GridPane {
     private Stage stage;
     private String userEmailBuffer;
     private String userPassBuffer;
+    private Connection conn;
     
     @SuppressWarnings("exports")
 	public LogInPanel(Stage stage) {
         //body
+    	
     	this.stage = stage;
         credenInput = new GridPane();
         credenInput.setPadding(new Insets(15));
@@ -48,6 +51,10 @@ public class LogInPanel extends GridPane {
 //    	
 //    }
     
+    public void setDataBaseConnection(Connection conn) {
+    	this.conn = conn;
+    }
+    
     private void buttonsFunctiability() {
 		
     	login.setOnAction(e -> {
@@ -55,7 +62,7 @@ public class LogInPanel extends GridPane {
 
     		    userPassBuffer = password.getText();
     		    System.out.println(": "+userEmailBuffer+": " + userPassBuffer);
-    		    Authentication auth = new Authentication();
+    		    Authentication auth = new Authentication(this.conn);
     		    
     		    auth.setUserEmail(userEmailBuffer);
     		    auth.setUserPassword(userPassBuffer);
@@ -76,7 +83,7 @@ public class LogInPanel extends GridPane {
 		);
 		
 		signup.setOnAction(e -> {
-				SignUpScreen signUpScr = new SignUpScreen(this.stage);
+				SignUpScreen signUpScr = new SignUpScreen(this.stage, this.conn);
 				signUpScr.createWindow();
 			}
 		);

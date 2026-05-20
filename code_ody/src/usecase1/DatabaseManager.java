@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -88,20 +89,31 @@ public class DatabaseManager {
         }
     }
     
-    public ResultSet geTable(String tableName) {
-    	String sql = "SELECT * FROM"+tableName+"";
+    public ResultSet getTable(String tableName) {
+    	String sql = "SELECT * FROM "+tableName+"";
     	ResultSet rs = null;
+    	int columnCount =0;
+    	
+    	
     	try { 
-//                Connection conn = getConnection();
-                PreparedStatement stmt = this.connection.prepareStatement(sql);
+                Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
                 rs = stmt.executeQuery();
-            
+                ResultSetMetaData metaData = rs.getMetaData();
+                columnCount = metaData.getColumnCount();
 
                 System.out.println("===== DATABASE TABLE:"+tableName+"=====");
 
                 while (rs.next()) {
-                    System.out.println(rs.getString(1));
+                	for (int i = 1; i <= columnCount; i++) {
+
+                        System.out.print(rs.getString(i) + " | ");
+                    }
+
+                    System.out.println();
                 }
+                    
+                
     	}
             catch (SQLException e) {
                 e.printStackTrace();

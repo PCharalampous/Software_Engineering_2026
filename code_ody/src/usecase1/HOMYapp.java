@@ -6,18 +6,20 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class HOMYapp extends Application{
-
-    
-	@SuppressWarnings("exports")
-	@Override
+	
+	
+	private static Connection conn;
+	private static DatabaseManager dataB;
+	
     public void start(Stage primaryStage) {
-		
+    	
 		LogInScreen loginScr = new LogInScreen(primaryStage);
 		//Authentication authScr = new Authentication();
 //		SignUpScreen signupScr = new SignUpScreen();
 //		HomeScreen homeScr = new HomeScreen();
 		
 		loginScr.createWindow();
+		loginScr.setDataBaseConnection(conn);
 //		signupScr.createWindow();
 //		homeScr.createWindow();
 		//authScr.createWindow();
@@ -26,10 +28,9 @@ public class HOMYapp extends Application{
 	
     public static void main(String[] args) {
     	
-    	 System.out.println("Έναρξη δοκιμής σύνδεσης απευθείας από τον DatabaseManager...");
-    	 DatabaseManager dataB = new DatabaseManager();
-         
-         Connection conn = dataB.getConnection();
+    	System.out.println("Έναρξη δοκιμής σύνδεσης απευθείας από τον DatabaseManager...");
+    	dataB = new DatabaseManager();
+     	conn = dataB.getConnection();
          
          if (conn != null) {
              System.out.println("Η σύνδεση με το Clever Cloud πέτυχε.");

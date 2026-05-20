@@ -1,6 +1,8 @@
 package usecase1;
 
 
+import java.sql.Connection;
+
 import javafx.application.Application;
 
 import javafx.geometry.Insets;
@@ -19,10 +21,15 @@ import javafx.stage.Stage;
 public class LogInScreen {
 	
 	private Stage logINstage;
+	private Connection conn;
 	
 	LogInScreen(Stage stage){
 		this.logINstage = stage;
 	}
+	
+	public void setDataBaseConnection(Connection conn) {
+    	this.conn = conn;
+    }
 	
 	public void createWindow(){
 		
@@ -36,7 +43,7 @@ public class LogInScreen {
         
         
         LogInPanel innerPanel = new LogInPanel(logINstage);
-
+        innerPanel.setDataBaseConnection(this.conn);
         
         root.setPadding(new Insets(5));
         root.getChildren().addAll(	
