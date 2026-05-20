@@ -1,5 +1,6 @@
 package usecase1;
 
+import java.sql.ResultSet;
 
 public class Authentication  {
 	
@@ -7,6 +8,8 @@ public class Authentication  {
 	private String password;
 	private Boolean isCorrect;
 	private Integer id;
+//	private User currentUser;
+
 	
 //	public Authentication() {
 //		use default constructor
@@ -14,6 +17,9 @@ public class Authentication  {
 	
 	public Boolean userLogIn() {
 		isCorrect = true;
+		DatabaseManager dataBase = new DatabaseManager();
+		ResultSet rs = dataBase.getUserTable();
+		
 		return isCorrect;
 	}
 	

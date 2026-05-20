@@ -56,6 +56,7 @@ public class LogInPanel extends GridPane {
     		    userPassBuffer = password.getText();
     		    System.out.println(": "+userEmailBuffer+": " + userPassBuffer);
     		    Authentication auth = new Authentication();
+    		    
     		    auth.setUserEmail(userEmailBuffer);
     		    auth.setUserPassword(userPassBuffer);
     		    

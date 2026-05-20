@@ -29,7 +29,7 @@ public class HomeScreenMiddlePanel {
 		
 		searchBar = new TextField();
 
-        searchBar.setPromptText("Search...");
+        searchBar.setPromptText("Press enter to search. Type...");
         
         
         centerBox = new VBox(10);

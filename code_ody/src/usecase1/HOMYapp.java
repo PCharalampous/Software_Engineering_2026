@@ -21,23 +21,25 @@ public class HOMYapp extends Application{
 //		signupScr.createWindow();
 //		homeScr.createWindow();
 		//authScr.createWindow();
+		
     }
 	
     public static void main(String[] args) {
-    	launch(args); //call this only once in the entire program.
-//    	 System.out.println("Έναρξη δοκιμής σύνδεσης απευθείας από τον DatabaseManager...");
-//    	 DatabaseManager dataB = new DatabaseManager();
-//         // Προσπάθεια σύνδεσης
-//         Connection conn = dataB.getConnection();
-//         
-//         if (conn != null) {
-//             System.out.println("Όλα λειτουργούν ρολόι! Η σύνδεση με το Clever Cloud πέτυχε.");
-//             
-//             // Κλείσιμο σύνδεσης μετά τη δοκιμή
-//             dataB.closeConnection();
-//         } else {
-//             System.err.println("Αποτυχία σύνδεσης! Σιγουρέψου ότι το αρχείο config.properties βρίσκεται στον φάκελο src.");
-//         }
+    	
+    	 System.out.println("Έναρξη δοκιμής σύνδεσης απευθείας από τον DatabaseManager...");
+    	 DatabaseManager dataB = new DatabaseManager();
+         
+         Connection conn = dataB.getConnection();
+         
+         if (conn != null) {
+             System.out.println("Η σύνδεση με το Clever Cloud πέτυχε.");
+             dataB.showTables();
+             launch(args); //call this only once in the entire program.
+             
+             dataB.closeConnection();
+         } else {
+             System.err.println("Αποτυχία σύνδεσης! Σιγουρέψου ότι το αρχείο config.properties βρίσκεται στον φάκελο src.");
+         }
     }
     
    

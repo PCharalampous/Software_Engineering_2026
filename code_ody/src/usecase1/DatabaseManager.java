@@ -4,10 +4,13 @@ import java.io.InputStream;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseManager {
+	
     private Connection connection = null;
 
     /**
@@ -63,24 +66,48 @@ public class DatabaseManager {
             }
         }
     }
+    
+    public void showTables() {
 
-    /**
-     * Μέθοδος main αποκλειστικά για τη δοκιμή της σύνδεσης.
-     * Μπορείς να τη διαγράψεις ή να την αφήσεις όταν τελειώσεις τις δοκιμές.
-     */
-//    public static void main(String[] args) {
-//        System.out.println("Έναρξη δοκιμής σύνδεσης απευθείας από τον DatabaseManager...");
-//        
-//        // Προσπάθεια σύνδεσης
-//        Connection conn = DatabaseManager.getConnection();
-//        
-//        if (conn != null) {
-//            System.out.println("Όλα λειτουργούν ρολόι! Η σύνδεση με το Clever Cloud πέτυχε.");
-//            
-//            // Κλείσιμο σύνδεσης μετά τη δοκιμή
-//            DatabaseManager.closeConnection();
-//        } else {
-//            System.err.println("Αποτυχία σύνδεσης! Σιγουρέψου ότι το αρχείο config.properties βρίσκεται στον φάκελο src.");
-//        }
-//    }
+        String sql = "SHOW TABLES";
+        
+        try (
+            Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+        ) {
+
+            System.out.println("===== DATABASE TABLES =====");
+
+            while (rs.next()) {
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public ResultSet geTable(String tableName) {
+    	String sql = "SELECT * FROM"+tableName+"";
+    	ResultSet rs = null;
+    	try { 
+//                Connection conn = getConnection();
+                PreparedStatement stmt = this.connection.prepareStatement(sql);
+                rs = stmt.executeQuery();
+            
+
+                System.out.println("===== DATABASE TABLE:"+tableName+"=====");
+
+                while (rs.next()) {
+                    System.out.println(rs.getString(1));
+                }
+    	}
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+    	return rs;
+    }
+
+    
 }
