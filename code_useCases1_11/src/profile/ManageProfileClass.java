@@ -49,8 +49,51 @@ public class ManageProfileClass {
     }
 
     public void choseACCEPT(Request req, String justification) {
-        incomingRequests.remove(req);
-        updateRequestStatus(req.request_id, "ACCEPTED", justification);
+        // 1. Ενημερώνουμε την κατάσταση του αιτήματος σε 'ACCEPTED'
+        String sqlRequest = "UPDATE room_requests SET request_status = 'ACCEPTED', justification = ? WHERE request_id = ?";
+        
+        // 2. Ενημερώνουμε τον αποστολέα (Χρήστης 2) να μπει στο δωμάτιο (το currentUser.room_id είναι το δωμάτιο του Owner)
+        String sqlSender = "UPDATE users SET room_id = ? WHERE user_id = (SELECT sender_id FROM room_requests WHERE request_id = ?)";
+        
+        // 3. Εξασφαλίζουμε ότι και ο Owner (Χρήστης 1) έχει το σωστό room_id στη βάση
+        String sqlOwner = "UPDATE users SET room_id = ? WHERE user_id = ?";
+
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false); // Χρήση Transaction για ασφάλεια
+
+            try (PreparedStatement stmt1 = conn.prepareStatement(sqlRequest);
+                 PreparedStatement stmt2 = conn.prepareStatement(sqlSender);
+                 PreparedStatement stmt3 = conn.prepareStatement(sqlOwner)) {
+
+                // Update Request
+                stmt1.setString(1, justification);
+                stmt1.setInt(2, req.request_id);
+                stmt1.executeUpdate();
+
+                // Update Sender (Χρήστης 2)
+                stmt2.setInt(1, this.currentUser.room_id);
+                stmt2.setInt(2, req.request_id);
+                stmt2.executeUpdate();
+
+                // Update Owner (Χρήστης 1)
+                stmt3.setInt(1, this.currentUser.room_id);
+                stmt3.setInt(2, this.currentUser.user_id);
+                stmt3.executeUpdate();
+
+                conn.commit();
+                System.out.println("Το room_id ενημερώθηκε επιτυχώς και για τους δύο χρήστες!");
+                
+                // Προαιρετικά: Μεταφέρουμε αμέσως τον Owner στο Central Hub αφού έκανε accept
+                main.HOMYApp.showCentralHub();
+
+            } catch (SQLException ex) {
+                conn.rollback();
+                throw ex;
+            }
+        } catch (SQLException e) {
+            System.err.println("Σφάλμα κατά την αποδοχή της αίτησης:");
+            e.printStackTrace();
+        }
     }
 
     public void choseDECLINE(Request req, String justification) {

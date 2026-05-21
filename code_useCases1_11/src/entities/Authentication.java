@@ -50,7 +50,7 @@ public class Authentication {
                     isCorrect = true;
                     
                     // rs.getInt(1): παίρνει το ID από την πρώτη στήλη, rs.getString(2): το username
-                    currentUser = new User(rs.getInt(1), rs.getString(2), rs.getString(4));
+                    currentUser = new User(rs.getInt(1), rs.getString(2), rs.getString(4), rs.getInt(8));
                     break;
                 } else {
                     System.out.println("user NOT found");

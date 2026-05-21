@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import entities.Authentication;
+import entities.User;
 import util.DatabaseManager;
 
 public class LogInPanel extends GridPane {
@@ -108,15 +109,20 @@ public class LogInPanel extends GridPane {
                 System.out.println("from login gui " + useremail.getText() + ": " + password.getText());
                 
                 try {
-                    if (auth.userLogIn(useremail.getText(), password.getText())) {
-                        // ΔΙΟΡΘΩΘΗΚΕ: Μεταφορά του χρήστη στο HomeScreen σου με τη σωστή σύνδεση
-                        HomeScreen homeScr = new HomeScreen(this.stage, this.conn);
-                        homeScr.createWindow();
-                    } else {
-                        ErrorScreen errScr = new ErrorScreen("Log In Failed", 
-                                "Ensure that the credentials are correct, otherwise create account");
-                        errScr.show();
-                    }
+                	// ... Μέσα στο event φιλτραρίσματος/κουμπιού του Log In:
+                	if (auth.userLogIn(useremail.getText(), password.getText())) {
+                	    User loggedInUser = Authentication.getCurrentUser();
+                	    
+                	    if (loggedInUser != null && loggedInUser.getRoomId() > 0) {
+                	        // Αν ο χρήστης έχει ήδη δωμάτιο (είτε επειδή ήταν Owner είτε επειδή έγινε Accept)
+                	        System.out.println("Ο χρήστης ανήκει σε δωμάτιο. Ανακατεύθυνση στο Central Hub...");
+                	        main.HOMYApp.showCentralHub(); 
+                	    } else {
+                	        // Αν δεν έχει δωμάτιο, τον πάει στην αρχική οθόνη αναζήτησης/δημιουργίας
+                	        HomeScreen homeScr = new HomeScreen(this.stage, this.conn);
+                	        homeScr.createWindow();
+                	    }
+                	}
                 } catch (SQLException e1) {
                     ErrorScreen errScr = new ErrorScreen("Log In Failed", 
                             "Database couldnt respond properly");
