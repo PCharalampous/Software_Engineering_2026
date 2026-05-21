@@ -41,7 +41,8 @@ public class HomeScreenLeftPanel {
 	private VBox joinRoomComponent() {
 		VBox joinRoom = new VBox(10);
 		Label joinRoomLbl = new Label("JOIN ROOM");
-		roomIdSect = new TextField("Enter room id...");
+		roomIdSect = new TextField();
+		roomIdSect.setPromptText("Enter room id...");
 		joinBtn = new Button("JOIN");
 		joinRoom.getChildren().addAll(joinRoomLbl,roomIdSect,joinBtn);
 		joinRoom.setAlignment(Pos.CENTER);
