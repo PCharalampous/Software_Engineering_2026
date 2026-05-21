@@ -1,5 +1,6 @@
 package issues;
 
+import util.DatabaseManager;
 import entities.Issue;
 import ui.ConfirmationScreen;
 import ui.ErrorScreen;
@@ -13,6 +14,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 
 public class HomeIssueScreen extends VBox {
@@ -27,13 +31,7 @@ public class HomeIssueScreen extends VBox {
     private final Runnable onNavigateToCreate;
     private final Runnable onNavigateToSchedule;
 
-    static {
-        if (allIssues.isEmpty()) {
-            allIssues.add(new Issue("Plumbing - Kitchen Leak", "Τρέχει νερό κάτω από τον νιπτήρα", "Plumbing", "Alex", "All Roommates", "2026-05-14"));
-            allIssues.add(new Issue("Electrical - HVAC Failure", "Δεν βγάζει κρύο αέρα", "Electrical", "John", "John", "2026-05-16"));
-            allIssues.add(new Issue("Structural - Door Lock", "Μαγκώνει η κλειδαριά της εξώπορτας", "Structural", "Sarah", "All Roommates", "2026-05-18"));
-        }
-    }
+   
 
     public HomeIssueScreen(Runnable onBackToHub, Runnable onNavigateToCreate, Runnable onNavigateToSchedule) {
         this.onBackToHub = onBackToHub;
@@ -43,7 +41,9 @@ public class HomeIssueScreen extends VBox {
         this.setSpacing(0);
         this.setStyle("-fx-background-color: #f1f5f9;");
         
+        
         buildUI();
+        loadIssuesFromDatabase();
     }
 
     private void buildUI() {
@@ -149,24 +149,20 @@ public class HomeIssueScreen extends VBox {
     }
 
     private void setupDataBindings() {
-        FilteredList<Issue> pendingFilteredList = new FilteredList<>(allIssues, issue -> 
-            issue.getDescription() != null && !issue.getDescription().startsWith("[RESOLVED]")
-        );
+    // Filter by status instead of description
+    FilteredList<Issue> pendingFilteredList = new FilteredList<>(allIssues, issue -> 
+        "Pending".equals(issue.getStatus())
+    );
 
-        FilteredList<Issue> historyFilteredList = new FilteredList<>(allIssues, issue -> 
-            issue.getDescription() != null && issue.getDescription().startsWith("[RESOLVED]")
-        );
+    FilteredList<Issue> historyFilteredList = new FilteredList<>(allIssues, issue -> 
+        "Resolved".equals(issue.getStatus())
+    );
 
-        pendingIssuesTable.setItems(pendingFilteredList);
-        issuesHistoryTable.setItems(historyFilteredList);
+    pendingIssuesTable.setItems(pendingFilteredList);
+    issuesHistoryTable.setItems(historyFilteredList);
 
-        activeCountLabel.setText(String.valueOf(pendingFilteredList.size()));
-
-        pendingFilteredList.addListener((javafx.collections.ListChangeListener.Change<? extends Issue> c) -> {
-            activeCountLabel.setText(String.valueOf(pendingFilteredList.size()));
-        });
+    // ... (rest of your binding code remains the same)
     }
-
     public void setupTableDataRefresh() {
         pendingIssuesTable.refresh();
         issuesHistoryTable.refresh();
@@ -186,31 +182,37 @@ public class HomeIssueScreen extends VBox {
         }
 
         // ΔΙΟΡΘΩΣΗ: Αφαίρεση και επανεισαγωγή για ακαριαίο UI update μέσω του δικού σου custom Pop-up
+      // Inside handleResolutionAction()
         ConfirmationScreen confirm = new ConfirmationScreen(
-            "Confirm Payment Action", 
-            "Are you sure you want to resolve and pay for this issue?",
-            () -> {
-                // 1. Αφαιρούμε το αντικείμενο για να εξαναγκάσουμε τη FilteredList σε update
-                allIssues.remove(selected);
+        "Confirm Payment Action", 
+        "Are you sure you want to resolve and pay for this issue?",
+        () -> {
+            // 1. Update the database
+            String updateSql = "UPDATE issues SET issue_status = 'Resolved' WHERE issue_id = ?";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
                 
-                // 2. Ενημερώνουμε τα δεδομένα του issue
-                selected.setDescription("[RESOLVED] " + selected.getDescription());
-                selected.setDate(LocalDate.now().toString());
+                pstmt.setInt(1, selected.getId());
+                int rowsAffected = pstmt.executeUpdate();
                 
-                // 3. Το ξαναπροσθέτουμε, σπρώχνοντάς το αυτόματα στο κάτω Table (History)
-                allIssues.add(selected);
+                if (rowsAffected > 0) {
+                    // Database updated successfully
+                    allIssues.remove(selected);
+                    selected.setStatus("Resolved");
+                    allIssues.add(selected);
+                    pendingIssuesTable.getSelectionModel().clearSelection();
+                } else {
+                    // Database connection worked, but the ID wasn't found
+                    ErrorScreen.show("Database error: Could not find issue with ID " + selected.getId());
+                }
                 
-                // 4. Καθαρίζουμε τα selection states και κάνουμε refresh
-                pendingIssuesTable.getSelectionModel().clearSelection();
-                issuesHistoryTable.getSelectionModel().clearSelection();
-                setupTableDataRefresh();
-
-                // 5. Χειροκίνητο update στον μετρητή metrics για απόλυτη ακρίβεια
-                FilteredList<Issue> pendingList = (FilteredList<Issue>) pendingIssuesTable.getItems();
-                activeCountLabel.setText(String.valueOf(pendingList.size()));
-            },
-            () -> pendingIssuesTable.getSelectionModel().clearSelection()
-        );
+            } catch (Exception e) {
+                ErrorScreen.show("Database exception: " + e.getMessage());
+                e.printStackTrace(); // This will print the full error in the terminal
+            }
+        },
+        () -> pendingIssuesTable.getSelectionModel().clearSelection()
+);
         confirm.show();
     }
 
@@ -230,4 +232,34 @@ public class HomeIssueScreen extends VBox {
         hbox.getChildren().addAll(dot, lbl);
         return hbox;
     }
+  
+  private void loadIssuesFromDatabase() {
+    allIssues.clear(); 
+
+    // Adjust the query if you need to filter by a specific room_id
+    String query = "SELECT * FROM issues WHERE room_id = 1"; 
+    
+    try (Connection conn = DatabaseManager.getConnection();
+         java.sql.Statement stmt = conn.createStatement();
+         java.sql.ResultSet rs = stmt.executeQuery(query)) {
+        
+        while (rs.next()) {
+            Issue issue = new Issue(
+                rs.getInt("issue_id"),
+                rs.getString("issue_type"),
+                rs.getString("reported_by"),
+                rs.getString("payers"),
+                rs.getString("issue_date")
+            );
+            
+            // Set the status from the database
+            issue.setStatus(rs.getString("issue_status")); 
+            
+            allIssues.add(issue);
+        }
+    } catch (Exception e) {
+        System.err.println("Error loading issues from database: " + e.getMessage());
+    }
+}
+
 }

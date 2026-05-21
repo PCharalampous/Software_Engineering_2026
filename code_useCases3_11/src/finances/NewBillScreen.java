@@ -2,6 +2,7 @@ package finances;
 
 import entities.Bill;
 import ui.ErrorScreen;
+import util.DatabaseManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,6 +11,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,16 +137,53 @@ public class NewBillScreen extends VBox {
     }
 
     private void handleCreateBill() {
-        if (typeField.getText().isEmpty() || amountField.getText().isEmpty() || payersField.getText().isEmpty()) {
-            ErrorScreen.show("All fields are mandatory. Please fill in the details fully.");
-            return;
-        }
-        try {
-            double amount = Double.parseDouble(amountField.getText());
-            FinancesScreen.allBills.add(new Bill(typeField.getText(), amount, datePicker.getValue().toString(), payersField.getText(), "Pending"));
+    if (typeField.getText().trim().isEmpty() || amountField.getText().trim().isEmpty() || payersField.getText().trim().isEmpty()) {
+        ErrorScreen.show("All fields are mandatory.");
+        return;
+    }
+
+    try {
+        double amount = Double.parseDouble(amountField.getText());
+        String type = typeField.getText().trim();
+        String date = datePicker.getValue().toString();
+        String payers = payersField.getText();
+
+        // SQL queries
+        String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status) VALUES (1, ?, ?, ?, ?, 'Pending')";
+        String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (1, ?, ?, ?, 0900, 'BILL')";
+
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false); // Start Transaction (Ensure both succeed)
+
+            // 1. Save to Bills table
+            try (PreparedStatement pstmt1 = conn.prepareStatement(billSql)) {
+                pstmt1.setString(1, type);
+                pstmt1.setDouble(2, amount);
+                pstmt1.setString(3, date);
+                pstmt1.setString(4, payers);
+                pstmt1.executeUpdate();
+            }
+
+            // 2. Save to Calendar table
+            try (PreparedStatement pstmt2 = conn.prepareStatement(calendarSql)) {
+                pstmt2.setString(1, "Bill: " + type);
+                pstmt2.setString(2, "Amount: " + amount + "€ | Payers: " + payers);
+                pstmt2.setString(3, date);
+                pstmt2.executeUpdate();
+            }
+
+            conn.commit(); // Save both changes
+            
+            // Update UI list (Memory)
+            FinancesScreen.allBills.add(new Bill(type, amount, date, payers, "Pending"));
             onCancelAction.run();
-        } catch (Exception e) {
-            ErrorScreen.show("Invalid data format.");
+            
+        } catch (Exception ex) {
+            ErrorScreen.show("Database error: " + ex.getMessage());
+            ex.printStackTrace();
         }
+    } catch (NumberFormatException e) {
+        ErrorScreen.show("Invalid amount format.");
+    }
     }
 }

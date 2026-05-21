@@ -1,12 +1,16 @@
 package issues;
 
 import ui.ErrorScreen;
+import util.DatabaseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 
 public class NewScheduleScreen extends VBox {
@@ -112,6 +116,35 @@ public class NewScheduleScreen extends VBox {
             }
             System.out.println("[Scheduled] " + typeField.getText().trim() + " set for " + datePicker.getValue() + " at " + timePicker.getValue());
             onCancel.run();
+
+            // 1. Prepare data
+            String eventName = typeField.getText().trim();
+            String date = datePicker.getValue().toString();
+            
+            // 2. Convert "HH:mm" (e.g., "09:10") to int (e.g., 910)
+            String timeStr = timePicker.getValue().replace(":", "");
+            int eventTime = Integer.parseInt(timeStr);
+
+            // 3. SQL Insert
+            String sql = "INSERT INTO calendar_events (room_id, event_name, event_date, event_time, event_type) VALUES (1, ?, ?, ?, 'ISSUE')";
+
+            try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setString(1, eventName);
+                pstmt.setString(2, date);
+                pstmt.setInt(3, eventTime);
+                
+                pstmt.executeUpdate();
+                
+                System.out.println("Successfully saved to calendar_events!");
+                onCancel.run();
+                
+            } catch (Exception ex) {
+                ErrorScreen.show("Error saving schedule: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+
         });
 
         actionTray.getChildren().addAll(btnCancel, btnAddSchedule);

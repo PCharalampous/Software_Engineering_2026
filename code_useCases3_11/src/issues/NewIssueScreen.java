@@ -1,5 +1,6 @@
 package issues;
 
+import util.DatabaseManager;
 import entities.Issue;
 import ui.ErrorScreen;
 import javafx.geometry.Insets;
@@ -10,6 +11,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,12 +127,10 @@ public class NewIssueScreen extends VBox {
         datePicker.setMaxWidth(Double.MAX_VALUE);
 
         // Καλούμε κανονικά τη μέθοδο, πλέον δέχεται και το HBox Container
-        addFormField(grid, "Issue Title:", titleField, 0);
-        addFormField(grid, "Description:", descField, 1);
-        addFormField(grid, "Issue Type:", typeField, 2);
-        addFormField(grid, "Reported By:", reportedComboBox, 3);
-        addFormField(grid, "Payers:", payersContainer, 4); 
-        addFormField(grid, "Date Logged:", datePicker, 5);
+        addFormField(grid, "Issue Type:", typeField, 0);
+        addFormField(grid, "Reported By:", reportedComboBox, 1);
+        addFormField(grid, "Payers:", payersContainer, 2); 
+        addFormField(grid, "Date Logged:", datePicker, 3);
 
         formContentBlock.getChildren().add(grid);
         contentWrapper.getChildren().add(formContentBlock);
@@ -169,20 +171,35 @@ public class NewIssueScreen extends VBox {
     private void handleSave() {
         String payersText = payersField.getText().trim();
 
-        if (titleField.getText().trim().isEmpty() || typeField.getText().trim().isEmpty() || payersText.isEmpty()) {
+        if ( typeField.getText().trim().isEmpty() || payersText.isEmpty()) {
             ErrorScreen.show("All fields are required before creating an entry. Make sure to select payers using the + button.");
             return;
         }
+        String defaultTitle = "Issue: " + typeField.getText().trim();
+        String defaultDesc = "No description provided.";
 
         Issue newIssue = new Issue(
-            titleField.getText().trim(),
-            descField.getText().trim().isEmpty() ? "No description logs" : descField.getText().trim(),
             typeField.getText().trim(),
             reportedComboBox.getValue(),
             payersText, 
             datePicker.getValue() != null ? datePicker.getValue().toString() : LocalDate.now().toString()
         );
+        String sql = "INSERT INTO issues (room_id, issue_type, reported_by, payers, issue_date) VALUES (1, ?, ?, ?, ?)";
 
+    try (Connection conn = DatabaseManager.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        
+        pstmt.setString(1, typeField.getText().trim());
+        pstmt.setString(2, reportedComboBox.getValue());
+        pstmt.setString(3, payersField.getText().trim());
+        pstmt.setString(4, datePicker.getValue().toString());
+        
+        pstmt.executeUpdate();
+        
+    } catch (Exception e) {
+        ErrorScreen.show("Error saving to database: " + e.getMessage());
+    }
         HomeIssueScreen.allIssues.add(newIssue);
         onCancel.run();
     }

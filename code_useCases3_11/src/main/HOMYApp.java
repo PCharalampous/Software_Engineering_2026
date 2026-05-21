@@ -235,11 +235,7 @@ public class HOMYApp {
         FinancesScreen.allBills.add(new Bill("Electricity", 120.50, "2026-05-10", "Giorgos, Alex", "Pending"));
         FinancesScreen.allBills.add(new Bill("Internet", 35.00, "2026-05-01", "All Roommates", "Paid"));
 
-        issues.HomeIssueScreen.allIssues.clear(); 
-        issues.HomeIssueScreen.allIssues.add(new Issue("Plumbing - Kitchen Leak", "Τρέχει νερό κάτω από τον νιπτήρα", "Plumbing", "Alex", "All Roommates", "2026-05-14"));
-        issues.HomeIssueScreen.allIssues.add(new Issue("Electrical - HVAC Failure", "Δεν βγάζει κρύο αέρα", "Electrical", "John", "John", "2026-05-16"));
-        issues.HomeIssueScreen.allIssues.add(new Issue("Structural - Door Lock", "Μαγκώνει η κλειδαριά της εξώπορτας", "Structural", "Sarah", "All Roommates", "2026-05-18"));
-        issues.HomeIssueScreen.allIssues.add(new Issue("Appliance - Refrigerator Fix", "[RESOLVED] Επισκευάστηκε το μοτέρ", "Appliance", "Emma", "John, Alex", "2026-04-29"));
+        
     }
 
     private static VBox createMenuCard(String title, String description, String accentColor, Runnable action) {
