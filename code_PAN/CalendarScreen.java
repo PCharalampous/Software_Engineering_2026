@@ -16,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-// ΔΙΟΡΘΩΘΗΚΕ: Εισαγωγή του DatabaseManager για τη σωστή σύνδεση με το project σου
 import util.DatabaseManager; 
 import java.sql.*;
 import java.time.LocalDate;
@@ -44,9 +43,10 @@ public class CalendarScreen {
         this.calendar = new Calendar(); 
         this.currentLocalDate = LocalDate.now(); 
         this.selectedDay = currentLocalDate.getDayOfMonth(); 
+        this.prefilledDateForForm = currentLocalDate; // Αρχικοποίηση με τη σημερινή ημερομηνία
         this.backAction = backAction;
         createUI();
-        loadEventsFromDatabase(); // Αυτόματη ανάγνωση από Clever Cloud κατά την εκκίνηση
+        loadEventsFromDatabase(); 
     }
 
     public void display() {
@@ -60,28 +60,42 @@ public class CalendarScreen {
         returnCalendar();
     }
 
-    // ΔΙΟΡΘΩΘΗΚΕ: Φόρτωση των δεδομένων με χρήση του DatabaseManager.getConnection()
     public void loadEventsFromDatabase() {
         calendar.getEvents().clear();
-        String query = "SELECT event_id, event_name, event_description, event_date, event_time, event_type, is_accepted FROM calendar_events";
+        
+        int currentRoomId = 0;
+        if (entities.Authentication.getCurrentUser() != null) {
+            currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
+        }
+        
+        if (currentRoomId <= 0) {
+            System.out.println("User does not belong to a room. Calendar is empty.");
+            return;
+        }
+
+        String query = "SELECT event_id, event_name, event_description, event_date, event_time, event_type, is_accepted " +
+                       "FROM calendar_events WHERE room_id = ?";
         
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            while (rs.next()) {
-                int id = rs.getInt("event_id");
-                String name = rs.getString("event_name");
-                String desc = rs.getString("event_description");
-                Date sqlDate = rs.getDate("event_date");
-                int time = rs.getInt("event_time");
-                String type = rs.getString("event_type");
-                int isAccepted = rs.getInt("is_accepted");
-                
-                if (sqlDate != null) {
-                    LocalDate ld = sqlDate.toLocalDate();
-                    Event ev = new Event(id, ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear(), time, name, type, isAccepted, desc);
-                    calendar.addEvent(ev);
+            stmt.setInt(1, currentRoomId); 
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("event_id");
+                    String name = rs.getString("event_name");
+                    String desc = rs.getString("event_description");
+                    Date sqlDate = rs.getDate("event_date");
+                    int time = rs.getInt("event_time");
+                    String type = rs.getString("event_type");
+                    int isAccepted = rs.getInt("is_accepted");
+                    
+                    if (sqlDate != null) {
+                        LocalDate ld = sqlDate.toLocalDate();
+                        Event ev = new Event(id, ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear(), time, name, type, isAccepted, desc);
+                        calendar.addEvent(ev);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -89,7 +103,6 @@ public class CalendarScreen {
         }
     }
 
-    // ΔΙΟΡΘΩΘΗΚΕ: 𝚲ειτουργία SQL Update (Ψήφος/Έγκριση) μέσω DatabaseManager
     public void updateEventStatusInDatabase(Event ev, int newStatus) {
         String query = "UPDATE calendar_events SET is_accepted = ? WHERE event_id = ?";
         try (Connection conn = DatabaseManager.getConnection();
@@ -103,7 +116,6 @@ public class CalendarScreen {
         }
     }
 
-    // ΔΙΟΡΘΩΘΗΚΕ: 𝚲ειτουργία SQL Delete (Διαγραφή) μέσω DatabaseManager
     public void deleteEventFromDatabase(Event ev) {
         String query = "DELETE FROM calendar_events WHERE event_id = ?";
         try (Connection conn = DatabaseManager.getConnection();
@@ -205,7 +217,8 @@ public class CalendarScreen {
         Button addEventBtn = new Button("Add Event");
         
         addEventBtn.setOnAction(e -> {
-            this.prefilledDateForForm = null;
+            // Αν πατηθεί το γενικό κουμπί, παίρνει ως προεπιλογή την ήδη επιλεγμένη μέρα του ημερολογίου
+            this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), selectedDay);
             addEvent();
         });
         btnContainer.getChildren().add(addEventBtn);
@@ -219,6 +232,7 @@ public class CalendarScreen {
 
     public void selectDay(int day) {
         this.selectedDay = day;
+        this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), day);
         returnCalendar(); 
         returnEvent();
     }
@@ -291,11 +305,16 @@ public class CalendarScreen {
 
                     dayCell.getChildren().addAll(dayNum, dotsBox);
                     
+                    // ΔΙΟΡΘΩΘΗΚΕ: Σωστή διαχείριση μονού και διπλού κλικ
                     dayCell.setOnMouseClicked(e -> {
-                        selectDay(day);
                         if (e.getClickCount() == 2) {
+                            // Με διπλό κλικ, κλειδώνει η ημερομηνία και ανοίγει αμέσως η φόρμα
                             this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), day);
+                            this.selectedDay = day;
                             addEvent();
+                        } else {
+                            // Με μονό κλικ, απλώς επιλέγεται η ημέρα
+                            selectDay(day);
                         }
                     });
 

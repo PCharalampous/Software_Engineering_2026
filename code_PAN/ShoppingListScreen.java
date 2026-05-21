@@ -33,6 +33,9 @@ public class ShoppingListScreen {
     private List<Item> mainList = new ArrayList<>();
     private List<Item> checkedList = new ArrayList<>();
     private List<Allocation> historyList = new ArrayList<>();
+    
+    // Δυναμική λίστα για την αποθήκευση των ονομάτων των συγκατοίκων
+    private List<String> roommateNames = new ArrayList<>();
 
     private VBox mainListContainer = new VBox(5);
     private VBox checkedListContainer = new VBox(5);
@@ -45,10 +48,43 @@ public class ShoppingListScreen {
     private Stage primaryStage;
     private Runnable backAction; 
     
-    private final int currentRoomId = 1;
+    // Το room_id ορίζεται πλέον δυναμικά
+    private int currentRoomId;
 
     public ShoppingListScreen(Runnable backAction) {
         this.backAction = backAction;
+        
+        // Ανάκτηση του room_id του συνδεδεμένου χρήστη από το Authentication
+        if (entities.Authentication.getCurrentUser() != null) {
+            this.currentRoomId = entities.Authentication.getCurrentUser().getRoomId(); 
+        } else {
+            this.currentRoomId = 1; // Fallback τιμή για δοκιμές αν δεν υπάρχει session
+        }
+        
+        // Φόρτωση των συγκατοίκων του συγκεκριμένου δωματίου από τη βάση δεδομένων
+        loadRoommatesFromDatabase();
+    }
+
+    private void loadRoommatesFromDatabase() {
+        roommateNames.clear();
+        String query = "SELECT username FROM users WHERE room_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, currentRoomId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    roommateNames.add(rs.getString("username"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Σφάλμα κατά τη φόρτωση των συγκατοίκων από τη βάση:");
+            e.printStackTrace();
+        }
+        
+        // Αν για κάποιο λόγο η βάση επιστρέψει άδεια λίστα, βάζουμε default τιμές για ασφάλεια
+        if (roommateNames.isEmpty()) {
+            roommateNames.addAll(List.of("Giannis", "Manos", "Makis"));
+        }
     }
 
     public void display() {
@@ -378,9 +414,6 @@ public class ShoppingListScreen {
             Label receiverInfoLabel = new Label("Paid by: " + alloc.getReceiver());
             receiverInfoLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
             receiverInfoLabel.setStyle("-fx-text-fill: #1E293B; -fx-padding: 8px; -fx-background-color: #F1F5F9;");
-            receiverInfoLabel.setMaxWidth(Double.MAX_VALUE);
-            receiverInfoLabel.setAlignment(Pos.CENTER);
-
             container.getChildren().addAll(receiverInfoLabel, imageView);
 
             ScrollPane scrollPane = new ScrollPane(container);
@@ -482,7 +515,8 @@ public class ShoppingListScreen {
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
 
         if (selectedFile != null) {
-            SplitScreen splitScreen = new SplitScreen();
+            // Περνάμε τη δυναμική λίστα συγκατοίκων
+            SplitScreen splitScreen = new SplitScreen(roommateNames);
             Allocation newAlloc = splitScreen.insertAllocationStatus(primaryStage, selectedFile, null); 
             returnAllocation(newAlloc);
         }
@@ -545,37 +579,32 @@ public class ShoppingListScreen {
         }
     }
 
-    // ΔΙΟΡΘΩΣΗ: Πλέον γίνεται UPDATE της υπάρχουσας εγγραφής στη βάση αντί για σβήσιμο και επανεισαγωγή!
     public void selectEdit(Allocation alloc) {
         if (alloc != null) {
-            SplitScreen splitScreen = new SplitScreen();
+            // Περνάμε τη δυναμική λίστα συγκατοίκων και στο Edit Mode
+            SplitScreen splitScreen = new SplitScreen(roommateNames);
             
-            // Ανοίγουμε το SplitScreen δίνοντας το τρέχον alloc (Edit Mode)
             Allocation updatedAlloc = splitScreen.insertAllocationStatus(primaryStage, alloc.getImageFile(), alloc);
             
             if (updatedAlloc != null) {
-                // Αν ο χρήστης πάτησε Confirm, εκτελούμε UPDATE στη βάση δεδομένων κρατώντας το ΙΔΙΟ ID
                 String updateAllocQuery = "UPDATE allocations SET total_amount = ?, receiver_username = ?, allocation_date = ? WHERE allocation_id = ?";
                 String deleteSharesQuery = "DELETE FROM allocation_shares WHERE allocation_id = ?";
                 String insertShareQuery = "INSERT INTO allocation_shares (allocation_id, roommate_username, amount_owed) VALUES (?, ?, ?)";
 
                 try (Connection conn = DatabaseManager.getConnection()) {
-                    // 1. Update των γενικών στοιχείων του Allocation
                     try (PreparedStatement ps = conn.prepareStatement(updateAllocQuery)) {
                         ps.setDouble(1, updatedAlloc.getTotalAmount());
                         ps.setString(2, updatedAlloc.getReceiver());
                         ps.setDate(3, Date.valueOf(updatedAlloc.getDate()));
-                        ps.setInt(4, alloc.getAllocationId()); // Κρατάμε το αρχικό allocation_id!
+                        ps.setInt(4, alloc.getAllocationId()); 
                         ps.executeUpdate();
                     }
 
-                    // 2. Διαγραφή των παλιών μεριδίων (shares)
                     try (PreparedStatement psDel = conn.prepareStatement(deleteSharesQuery)) {
                         psDel.setInt(1, alloc.getAllocationId());
                         psDel.executeUpdate();
                     }
 
-                    // 3. Εισαγωγή των νέων μεριδίων για το ίδιο allocation_id
                     try (PreparedStatement psShare = conn.prepareStatement(insertShareQuery)) {
                         for (Map.Entry<String, Double> entry : updatedAlloc.getMemberAmounts().entrySet()) {
                             psShare.setInt(1, alloc.getAllocationId());
@@ -591,10 +620,8 @@ public class ShoppingListScreen {
                     e.printStackTrace();
                 }
 
-                // Ανανέωση των τοπικών λιστών στη μνήμη της εφαρμογής για να δείξει αμέσως τις αλλαγές
                 int index = historyList.indexOf(alloc);
                 if (index != -1) {
-                    // Θέτουμε το σωστό ID και στο νέο αντικείμενο της μνήμης
                     updatedAlloc.setAllocationId(alloc.getAllocationId());
                     historyList.set(index, updatedAlloc);
                 }

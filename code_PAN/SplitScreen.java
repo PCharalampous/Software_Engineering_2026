@@ -21,7 +21,14 @@ import java.util.Map;
 
 public class SplitScreen {
     private Allocation resultAllocation = null;
-    private final List<String> roommates = List.of("Giannis", "Manos", "Makis");
+    
+    // Η λίστα γίνεται δυναμική, χωρίς καρφωμένες τιμές
+    private List<String> roommates;
+
+    // Constructor που δέχεται δυναμικά τη λίστα των συγκατοίκων
+    public SplitScreen(List<String> roommates) {
+        this.roommates = roommates;
+    }
 
     public Allocation insertAllocationStatus(Stage owner, File imageFile, Allocation existingAlloc) {
         Stage stage = new Stage();
@@ -73,7 +80,7 @@ public class SplitScreen {
         receiverLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         
         ComboBox<String> receiverComboBox = new ComboBox<>();
-        receiverComboBox.getItems().addAll(roommates);
+        receiverComboBox.getItems().addAll(roommates); // Γεμίζει δυναμικά από τη βάση
         receiverComboBox.setMaxWidth(Double.MAX_VALUE);
         receiverComboBox.setPromptText("-");
 
@@ -109,7 +116,6 @@ public class SplitScreen {
             try {
                 double totalAmt = Double.parseDouble(totalAmountField.getText());
                 
-                // ΕΛΕΓΧΟΣ 1: Το συνολικό ποσό δεν μπορεί να είναι αρνητικό
                 if (totalAmt < 0) {
                     ErrorScreen.show("Το συνολικό ποσό δεν μπορεί να είναι αρνητικό!");
                     return;
@@ -122,7 +128,6 @@ public class SplitScreen {
                     String name = entry.getKey();
                     double amount = Double.parseDouble(entry.getValue().getText());
                     
-                    // ΕΛΕΓΧΟΣ 2: Το ποσό ενός συγκατοίκου δεν μπορεί να είναι αρνητικό
                     if (amount < 0) {
                         ErrorScreen.show("Το ποσό για τον συγκατοίκο " + name + " δεν μπορεί να είναι αρνητικό!");
                         return;
@@ -132,13 +137,11 @@ public class SplitScreen {
                     othersSum += amount;
                 }
 
-                // ΕΛΕΓΧΟΣ 3: Το άθροισμα των υπολοίπων δεν πρέπει να ξεπερνά το Total Amount
                 if (othersSum > totalAmt) {
                     ErrorScreen.show("Το άθροισμα των ποσών των συγκατοίκων ξεπερνά το συνολικό ποσό της απόδειξης!");
                     return;
                 }
 
-                // Αυτόματος υπολογισμός receiver (Σύνολο - Υπόλοιποι)
                 double receiverAmount = totalAmt - othersSum;
                 amounts.put(selectedReceiver, receiverAmount);
 
@@ -172,7 +175,7 @@ public class SplitScreen {
                     row.setAlignment(Pos.CENTER_LEFT);
                     
                     Label label = new Label("- " + roommate + ":");
-                    label.setPrefWidth(80); 
+                    label.setPrefWidth(100); 
                     
                     String defaultVal = "0";
                     if (existingAlloc != null && selectedReceiver.equals(existingAlloc.getReceiver())) {

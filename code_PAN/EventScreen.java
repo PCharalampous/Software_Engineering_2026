@@ -16,7 +16,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-// ΔΙΟΡΘΩΘΗΚΕ: Εισαγωγή του DatabaseManager για τη σωστή σύνδεση με το project σου
 import util.DatabaseManager; 
 import java.sql.*;
 import java.time.LocalDate;
@@ -237,7 +236,7 @@ public class EventScreen {
         }
     }
 
-    // ΔΙΟΡΘΩΘΗΚΕ: SQL INSERT query μέσω του DatabaseManager.getConnection() για Clever Cloud συγχρονισμό
+    // ΔΙΟΡΘΩΘΗΚΕ: SQL INSERT με το δυναμικό roomId απευθείας από το User Object της μνήμης
     public void insertEventStatus() {
         try {
             String name = titleField.getText();
@@ -262,12 +261,23 @@ public class EventScreen {
 
             Event newEvent = new Event(date, month, year, time, name, "GENERAL", 0, optionalDesc);
             
-            // SQL Query εκτέλεσης στον σωστό Clever Cloud πίνακα `calendar_events`
+            // Άμεση και γρήγορη λήψη του roomId από τη μνήμη
+            int currentRoomId = 0;
+            if (entities.Authentication.getCurrentUser() != null) {
+                currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
+            }
+
+            // Αν ο χρήστης δεν ανήκει σε δωμάτιο, απαγορεύουμε την καταχώρηση
+            if (currentRoomId <= 0) {
+                throw new Exception("You must belong to a room to add events!");
+            }
+
+            // SQL Query εκτέλεσης στον Clever Cloud πίνακα `calendar_events` με το σωστό room_id
             String query = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type, is_accepted) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 
-                stmt.setInt(1, 1); // Default room_id = 1
+                stmt.setInt(1, currentRoomId); // Δυναμικό room_id πλέον χωρίς έξτρα query στη βάση!
                 stmt.setString(2, newEvent.getName());
                 stmt.setString(3, newEvent.getDescription());
                 stmt.setDate(4, Date.valueOf(selectedDate)); 
