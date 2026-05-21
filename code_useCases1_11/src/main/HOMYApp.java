@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,6 +25,7 @@ import calendar.CalendarScreen;
 import finances.FinancesScreen;
 import finances.NewBillScreen;
 import issues.HomeIssueScreen;
+import ui.ConfirmationScreen;
 import issues.NewIssueScreen;
 import issues.NewScheduleScreen;
 import profile.ProfileScreen;
@@ -30,11 +33,13 @@ import points.PointScreen;
 import points.RewardScreen;
 import shoppinglist.ShoppingListScreen;
 import util.DatabaseManager;
+import search.HomeScreen;
 
 import entities.Notification;
 import entities.UnreadCounter;
 import entities.Bill;
 import entities.Issue;
+import entities.Authentication;
 
 public class HOMYApp extends Application {
     
@@ -58,7 +63,6 @@ public class HOMYApp extends Application {
         LogInScreen loginScr = new LogInScreen(primaryStage);
         loginScr.createWindow();
         
-        // Καλούμε κανονικά τη static μέθοδο του DatabaseManager
         conn = DatabaseManager.getConnection();
         loginScr.setDataBaseConnection(conn);
     }
@@ -100,13 +104,87 @@ public class HOMYApp extends Application {
         row2.getChildren().addAll(notificationsCard, calendarCard, financesCard, issuesCard);
         cardsGrid.getChildren().addAll(row1, row2);
 
-        VBox profileSidebar = new VBox(10);
+        // --- Sidebar (Δεξιά) ---
+        VBox profileSidebar = new VBox(15);
         profileSidebar.setPadding(new Insets(20));
-        profileSidebar.setPrefWidth(180);
-        Label profileLabel = new Label("👤 Profile: Makis");
+        profileSidebar.setPrefWidth(200);
+        profileSidebar.setAlignment(Pos.TOP_CENTER);
+        
+        String username = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getUsername() : "Makis";
+        Label profileLabel = new Label("👤 Profile: " + username);
         profileLabel.setStyle("-fx-font-weight: bold; -fx-cursor: hand; -fx-text-fill: #1E3A5F; -fx-font-size: 14px;");
         profileLabel.setOnMouseClicked(e -> openProfile());
         profileSidebar.getChildren().add(profileLabel);
+
+        Region verticalSpacer = new Region();
+        VBox.setVgrow(verticalSpacer, Priority.ALWAYS);
+        profileSidebar.getChildren().add(verticalSpacer);
+
+        // --- ΔΙΟΡΘΩΘΗΚΕ: ΚΟΥΜΠΙ LEAVE ROOM ΜΕ ΑΥΤΟΜΑΤΗ ΑΥΞΗΣΗ ΘΕΣΕΩΝ ΣΤΗΝ ΑΓΓΕΛΙΑ ---
+        Button leaveRoomBtn = new Button("🚪 Leave Room");
+        leaveRoomBtn.setMaxWidth(Double.MAX_VALUE);
+        leaveRoomBtn.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 8; -fx-cursor: hand;");
+        
+        leaveRoomBtn.setOnAction(e -> {
+            ConfirmationScreen confirmDialog = new ConfirmationScreen(
+                "Leave Room Confirmation",
+                "Are you sure you want to leave this room? Your room ID association will be removed.",
+                "Leave Room",
+                "-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;",
+                () -> {
+                    int userId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getId() : 1;
+                    
+                    try (Connection updateConn = DatabaseManager.getConnection()) {
+                        updateConn.setAutoCommit(false); // Έναρξη Transaction
+
+                        // 1. Βρίσκουμε το τρέχον room_id του χρήστη πριν το κάνουμε NULL
+                        int userRoomId = 0;
+                        String findUserRoom = "SELECT room_id FROM users WHERE user_id = ?";
+                        try (PreparedStatement psFind = updateConn.prepareStatement(findUserRoom)) {
+                            psFind.setInt(1, userId);
+                            try (var rs = psFind.executeQuery()) {
+                                if (rs.next()) {
+                                    userRoomId = rs.getInt("room_id");
+                                }
+                            }
+                        }
+
+                        // 2. Θέτουμε το room_id του χρήστη σε NULL
+                        String sqlLeave = "UPDATE users SET room_id = NULL WHERE user_id = ?";
+                        try (PreparedStatement psLeave = updateConn.prepareStatement(sqlLeave)) {
+                            psLeave.setInt(1, userId);
+                            psLeave.executeUpdate();
+                        }
+                        
+                        // 3. Αυξάνουμε το roommates_wanted κατά 1 στην αγγελία αυτού του δωματίου
+                        if (userRoomId > 0) {
+                            String sqlIncrease = 
+                                "UPDATE applications a " +
+                                "JOIN users u ON a.user_id = u.user_id " +
+                                "SET a.roommates_wanted = a.roommates_wanted + 1 " +
+                                "WHERE u.room_id = ?";
+                            try (PreparedStatement psInc = updateConn.prepareStatement(sqlIncrease)) {
+                                psInc.setInt(1, userRoomId);
+                                psInc.executeUpdate();
+                            }
+                        }
+                        
+                        updateConn.commit(); // Commit όλης της συναλλαγής
+                        System.out.println("Left room successfully! Roommates wanted listing updated.");
+                        
+                        HomeScreen searchScreen = new HomeScreen(mainStage, conn);
+                        searchScreen.createWindow();
+                        
+                    } catch (Exception ex) {
+                        System.err.println("Database error during leave room transaction:");
+                        ex.printStackTrace();
+                    }
+                }
+            );
+            confirmDialog.show();
+        });
+        
+        profileSidebar.getChildren().add(leaveRoomBtn);
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F8FAF9;");
@@ -114,7 +192,7 @@ public class HOMYApp extends Application {
         root.setCenter(cardsGrid);
         root.setRight(profileSidebar);
 
-        Scene hubScene = new Scene(root, 1150, 600);
+        Scene hubScene = new Scene(root, 1150, 650);
         mainStage.setScene(hubScene);
         mainStage.show();
     }
@@ -141,7 +219,6 @@ public class HOMYApp extends Application {
         super.stop();
     }
     
-    // --- ΜΕΘΟΔΟΙ ΠΛΟΗΓΗΣΗΣ ---
     private static void openChores() { 
         try { Stage s = new Stage(); s.setOnHiding(e -> mainStage.show()); mainStage.hide(); new ChoreScreen(() -> mainStage.show()).start(s); } catch(Exception e){ e.printStackTrace(); } 
     }

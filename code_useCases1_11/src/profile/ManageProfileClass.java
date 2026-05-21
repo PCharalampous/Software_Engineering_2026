@@ -26,7 +26,6 @@ public class ManageProfileClass {
     }
 
     public void save(String name, String bio, String prefs) {
-        // Safe check για Null values ώστε να αποφευχθεί το NullPointerException
         currentUser.name = (name != null) ? name.trim() : "";
         currentUser.bio = (bio != null) ? bio.trim() : "";
         currentUser.preferences = (prefs != null) ? prefs.trim() : "";
@@ -52,38 +51,45 @@ public class ManageProfileClass {
         // 1. Ενημερώνουμε την κατάσταση του αιτήματος σε 'ACCEPTED'
         String sqlRequest = "UPDATE room_requests SET request_status = 'ACCEPTED', justification = ? WHERE request_id = ?";
         
-        // 2. Ενημερώνουμε τον αποστολέα (Χρήστης 2) να μπει στο δωμάτιο (το currentUser.room_id είναι το δωμάτιο του Owner)
+        // 2. Ενημερώνουμε τον αποστολέα να μπει στο δωμάτιο του Owner
         String sqlSender = "UPDATE users SET room_id = ? WHERE user_id = (SELECT sender_id FROM room_requests WHERE request_id = ?)";
         
-        // 3. Εξασφαλίζουμε ότι και ο Owner (Χρήστης 1) έχει το σωστό room_id στη βάση
+        // 3. Εξασφαλίζουμε ότι ο Owner έχει το σωστό room_id στη βάση
         String sqlOwner = "UPDATE users SET room_id = ? WHERE user_id = ?";
+        
+        // 4. ΠΡΟΣΘΗΚΗ: Μειώνουμε τις κενές θέσεις (roommates_wanted) στην αγγελία του Owner
+        String sqlDecreaseApps = "UPDATE applications SET roommates_wanted = roommates_wanted - 1 WHERE user_id = ? AND roommates_wanted > 0";
 
         try (Connection conn = DatabaseManager.getConnection()) {
-            conn.setAutoCommit(false); // Χρήση Transaction για ασφάλεια
+            conn.setAutoCommit(false); // Χρήση Transaction για ACID ασφάλεια
 
             try (PreparedStatement stmt1 = conn.prepareStatement(sqlRequest);
                  PreparedStatement stmt2 = conn.prepareStatement(sqlSender);
-                 PreparedStatement stmt3 = conn.prepareStatement(sqlOwner)) {
+                 PreparedStatement stmt3 = conn.prepareStatement(sqlOwner);
+                 PreparedStatement stmt4 = conn.prepareStatement(sqlDecreaseApps)) {
 
                 // Update Request
                 stmt1.setString(1, justification);
                 stmt1.setInt(2, req.request_id);
                 stmt1.executeUpdate();
 
-                // Update Sender (Χρήστης 2)
+                // Update Sender
                 stmt2.setInt(1, this.currentUser.room_id);
                 stmt2.setInt(2, req.request_id);
                 stmt2.executeUpdate();
 
-                // Update Owner (Χρήστης 1)
+                // Update Owner
                 stmt3.setInt(1, this.currentUser.room_id);
                 stmt3.setInt(2, this.currentUser.user_id);
                 stmt3.executeUpdate();
+                
+                // Update Applications (Μείωση θέσης αγγελίας)
+                stmt4.setInt(1, this.currentUser.user_id);
+                stmt4.executeUpdate();
 
                 conn.commit();
-                System.out.println("Το room_id ενημερώθηκε επιτυχώς και για τους δύο χρήστες!");
+                System.out.println("Το room_id ενημερώθηκε και οι ζητούμενοι συγκατοίκοι μειώθηκαν!");
                 
-                // Προαιρετικά: Μεταφέρουμε αμέσως τον Owner στο Central Hub αφού έκανε accept
                 main.HOMYApp.showCentralHub();
 
             } catch (SQLException ex) {
@@ -110,11 +116,7 @@ public class ManageProfileClass {
             stmt.setString(2, justification.trim().isEmpty() ? null : justification.trim());
             stmt.setInt(3, requestId);
             stmt.executeUpdate();
-            System.out.println("Request " + requestId + " -> " + status + 
-                               (justification.trim().isEmpty() ? "" : " | justification: " + justification));
-
         } catch (SQLException e) {
-            System.err.println("Σφάλμα κατά το update του request:");
             e.printStackTrace();
         }
     }
@@ -150,7 +152,6 @@ public class ManageProfileClass {
                 );
             }
         } catch (SQLException e) {
-            System.err.println("Σφάλμα κατά το φόρτωμα του profile από τη βάση:");
             e.printStackTrace();
         }
         return null;
@@ -185,7 +186,6 @@ public class ManageProfileClass {
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("Σφάλμα κατά το φόρτωμα των requests:");
             e.printStackTrace();
         }
         return requests;
