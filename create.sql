@@ -146,6 +146,8 @@ CREATE TABLE chore_reports (
 CREATE TABLE chore_history (
     history_id INT AUTO_INCREMENT,
     room_id INT NOT NULL,
+    chore_name VARCHAR(200) NOT NULL DEFAULT '',
+    points INT NOT NULL DEFAULT 0,
     chore_id INT NOT NULL,                            -- ΑΜΕΣΗ συσχέτιση με το ID της αγγαρείας!
     completed_by VARCHAR(100) NOT NULL,              -- Το όνομα του συγκατοίκου που την τελείωσε
     completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
