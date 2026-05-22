@@ -126,6 +126,7 @@ CREATE TABLE chores (
 -- -----------------------------------------------------
 CREATE TABLE chore_reports (
     report_id INT AUTO_INCREMENT,
+    room_id INT NOT NULL, 
     chore_id INT NOT NULL,                          -- Σε ποια δουλειά αναφέρεται
     title VARCHAR(200) NULL,                        -- Τίτλος αναφοράς
     description TEXT NOT NULL,                      -- Περιγραφή του τι πήγε λάθος
