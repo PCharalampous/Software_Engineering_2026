@@ -148,8 +148,8 @@ CREATE TABLE chore_history (
     room_id INT NOT NULL,
     chore_name VARCHAR(200) NOT NULL DEFAULT '',
     points INT NOT NULL DEFAULT 0,
-    chore_id INT NOT NULL,                            -- ΑΜΕΣΗ συσχέτιση με το ID της αγγαρείας!
-    completed_by VARCHAR(100) NOT NULL,              -- Το όνομα του συγκατοίκου που την τελείωσε
+    chore_id INT NULL,                               -- ΑΛΛΑΓΗ: NULL για να μην διαγράφεται το history όταν διαγράφεται το chore
+    completed_by VARCHAR(100) NOT NULL,
     completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (history_id),
     CONSTRAINT fk_history_rooms
@@ -159,8 +159,8 @@ CREATE TABLE chore_history (
         ON UPDATE CASCADE,
     CONSTRAINT fk_history_chores
         FOREIGN KEY (chore_id)
-        REFERENCES chores (chore_id)                  -- Δείχνει κατευθείαν στον πίνακα chores
-        ON DELETE CASCADE
+        REFERENCES chores (chore_id)
+        ON DELETE SET NULL                           -- ΑΛΛΑΓΗ: SET NULL αντί για CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
