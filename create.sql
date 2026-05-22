@@ -70,6 +70,7 @@ CREATE TABLE bills (
     bill_date DATE NOT NULL,                        -- Ημερομηνία (yyyy-MM-dd)
     payers TEXT NOT NULL,                           -- Ποιοι πληρώνουν (π.χ. "Giorgos, Alex")
     bill_status ENUM('Pending', 'Paid') NOT NULL DEFAULT 'Pending',
+    approval_status VARCHAR(50) NOT NULL DEFAULT 'Accepted', -- ΝΕΟ ΠΕΔΙΟ: Κατάσταση έγκρισης συγκατοίκων (Accepted, Pending_Approval, Declined)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (bill_id),
     CONSTRAINT fk_bills_rooms
@@ -91,6 +92,7 @@ CREATE TABLE issues (
     issue_date DATE NOT NULL,                       -- Ημερομηνία καταγραφής ή επίλυσης
     issue_status ENUM('Pending', 'Resolved') NOT NULL DEFAULT 'Pending',
     scheduled_time TIME NULL,                       -- Προαιρετικό: Time window για το ραντεβού με τεχνικό
+    approval_status VARCHAR(50) NOT NULL DEFAULT 'Accepted', -- ΝΕΟ ΠΕΔΙΟ: Κατάσταση έγκρισης συγκατοίκων (Accepted, Pending_Approval, Declined)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (issue_id),
     CONSTRAINT fk_issues_rooms
@@ -99,7 +101,6 @@ CREATE TABLE issues (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-
 -- -----------------------------------------------------
 -- Table: chores
 -- -----------------------------------------------------
