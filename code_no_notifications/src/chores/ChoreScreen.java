@@ -244,15 +244,16 @@ public class ChoreScreen extends VBox {
 
     private void archiveChoreToHistory(Chore chore) {
         String insertHistorySql = "INSERT INTO chore_history (room_id, chore_id, completed_by, chore_name, points) VALUES (?, ?, ?, ?, ?)";
-        String updateUserPointsSql = "UPDATE user_points up " +
-                                     "JOIN users u ON up.user_id = u.user_id " +
-                                     "SET up.current_balance = up.current_balance + ? " +
-                                     "WHERE (TRIM(u.username) = ? OR TRIM(u.display_name) = ?) AND up.room_id = ?";
+        
+        // 1. Βρίσκουμε το user_id με βάση το username ή το display_name
         String findUserIdSql = "SELECT user_id FROM users WHERE TRIM(username) = ? OR TRIM(display_name) = ? LIMIT 1";
-        String insertUserPointsSql = "INSERT INTO user_points (user_id, room_id, current_balance) VALUES (?, ?, ?)";
+        
+        // 2. Safe Upsert: Αν υπάρχει ήδη το user_id (που είναι Primary Key), κάνει UPDATE προσθέτοντας τους πόντους
+        String upsertUserPointsSql = "INSERT INTO user_points (user_id, room_id, current_balance) VALUES (?, ?, ?) " +
+                                     "ON DUPLICATE KEY UPDATE current_balance = current_balance + VALUES(current_balance)";
+        
         String resetChoreSql = "UPDATE chores SET chore_status = 'Pending', assignee = 'Unassigned', " +
                                "approve_votes = 0, reject_votes = 0 WHERE chore_id = ?";
-        // ΝΕΑ ΠΡΟΣΘΗΚΗ: Query για τη διαγραφή των ψήφων της συγκεκριμένης αγγαρείας
         String clearVotesSql = "DELETE FROM chore_reports WHERE chore_id = ? AND (title LIKE 'VOTE_APPROVE_%' OR title LIKE 'VOTE_REJECT_%')";
 
         try (Connection conn = DatabaseManager.getConnection()) {
@@ -268,35 +269,29 @@ public class ChoreScreen extends VBox {
                 psHistory.executeUpdate();
             }
 
-            // 2. Ενημέρωση των πόντων του χρήστη
+            // 2. Εύρεση του σωστού user_id από τον πίνακα users
+            int targetUserId = -1;
             String rawAssignee = chore.getAssignee().trim();
-            int rowsAffected = 0;
-            try (PreparedStatement psUserPoints = conn.prepareStatement(updateUserPointsSql)) {
-                psUserPoints.setInt(1, chore.getPoints());
-                psUserPoints.setString(2, rawAssignee);
-                psUserPoints.setString(3, rawAssignee);
-                psUserPoints.setInt(4, this.currentRoomId);
-                rowsAffected = psUserPoints.executeUpdate();
+            try (PreparedStatement psFindId = conn.prepareStatement(findUserIdSql)) {
+                psFindId.setString(1, rawAssignee);
+                psFindId.setString(2, rawAssignee);
+                try (ResultSet rs = psFindId.executeQuery()) {
+                    if (rs.next()) {
+                        targetUserId = rs.getInt("user_id");
+                    }
+                }
             }
 
-            // 3. Αν δεν υπήρχε εγγραφή στα user_points, δημιουργία νέας
-            if (rowsAffected == 0) {
-                int targetUserId = -1;
-                try (PreparedStatement psFindId = conn.prepareStatement(findUserIdSql)) {
-                    psFindId.setString(1, rawAssignee);
-                    psFindId.setString(2, rawAssignee);
-                    try (ResultSet rs = psFindId.executeQuery()) {
-                        if (rs.next()) targetUserId = rs.getInt("user_id");
-                    }
+            // 3. Εκτέλεση του Upsert για τους πόντους (Δεν θα ξαναχτυπήσει ποτέ Duplicate Entry)
+            if (targetUserId != -1) {
+                try (PreparedStatement psUpsert = conn.prepareStatement(upsertUserPointsSql)) {
+                    psUpsert.setInt(1, targetUserId);
+                    psUpsert.setInt(2, this.currentRoomId);
+                    psUpsert.setInt(3, chore.getPoints()); 
+                    psUpsert.executeUpdate();
                 }
-                if (targetUserId != -1) {
-                    try (PreparedStatement psInsertPoints = conn.prepareStatement(insertUserPointsSql)) {
-                        psInsertPoints.setInt(1, targetUserId);
-                        psInsertPoints.setInt(2, this.currentRoomId);
-                        psInsertPoints.setInt(3, chore.getPoints());
-                        psInsertPoints.executeUpdate();
-                    }
-                }
+            } else {
+                System.err.println("[WARNING] ChoreScreen: Could not find user_id for assignee: " + rawAssignee);
             }
 
             // 4. Επαναφορά της αγγαρείας σε κατάσταση Pending / Unassigned για τον επόμενο γύρο
@@ -305,19 +300,19 @@ public class ChoreScreen extends VBox {
                 psReset.executeUpdate();
             }
 
-            // ΝΕΑ ΠΡΟΣΘΗΚΗ: 5. Διαγραφή των ψήφων (VOTE_APPROVE / VOTE_REJECT) από τον πίνακα reports
+            // 5. Διαγραφή των ψήφων (VOTE_APPROVE / VOTE_REJECT) από τον πίνακα reports
             try (PreparedStatement psClearVotes = conn.prepareStatement(clearVotesSql)) {
                 psClearVotes.setInt(1, chore.getChoreId());
                 psClearVotes.executeUpdate();
             }
 
-            // Οριστικοποίηση αλλαγών στη βάση
+            // Οριστικοποίηση αλλαγών στη βάση (Commit)
             conn.commit();
             choresList.remove(chore);
 
             // Επαναφόρτωση δεδομένων και συγχρονισμός της RAM με τη βάση
             loadChoresFromDatabase();
-            loadVotesFromDatabase(); // ΝΕΑ ΠΡΟΣΘΗΚΗ: Καθαρίζει το votedChoreIdsInSession από τις σβησμένες ψήφους
+            loadVotesFromDatabase(); 
             refreshChoresUI();
             loadHistoryFromDatabase();
             refreshHistoryUI();
@@ -330,28 +325,6 @@ public class ChoreScreen extends VBox {
             System.err.println("CRITICAL ERROR: Transaction rolled back in archiveChoreToHistory!");
             e.printStackTrace();
         }
-    }
-
-    private void resetChoreToPending(Chore chore) {
-        chore.setStatus("Pending");
-        String resetChoreSql = "UPDATE chores SET chore_status = 'Pending', approve_votes = 0, reject_votes = 0 WHERE chore_id = ?";
-        String clearVotesSql = "DELETE FROM chore_reports WHERE chore_id = ? AND (title LIKE 'VOTE_APPROVE_%' OR title LIKE 'VOTE_REJECT_%')";
-        
-        try (Connection conn = DatabaseManager.getConnection()) {
-            conn.setAutoCommit(false);
-            try (PreparedStatement ps1 = conn.prepareStatement(resetChoreSql);
-                 PreparedStatement ps2 = conn.prepareStatement(clearVotesSql)) {
-                ps1.setInt(1, chore.getChoreId());
-                ps1.executeUpdate();
-                ps2.setInt(1, chore.getChoreId());
-                ps2.executeUpdate();
-                conn.commit();
-            } catch (Exception ex) {
-                conn.rollback();
-                throw ex;
-            }
-        } catch (Exception ex) { ex.printStackTrace(); }
-        loadChoresFromDatabase();
     }
 
     private void deleteChoreFromDatabase(Chore chore) {
@@ -457,7 +430,31 @@ public class ChoreScreen extends VBox {
             historyListView.getItems().add("💎 " + p.toString());
         }
     }
-
+    
+    private void resetChoreToPending(Chore chore) {
+        chore.setStatus("Pending");
+        String resetChoreSql = "UPDATE chores SET chore_status = 'Pending', approve_votes = 0, reject_votes = 0 WHERE chore_id = ?";
+        String clearVotesSql = "DELETE FROM chore_reports WHERE chore_id = ? AND (title LIKE 'VOTE_APPROVE_%' OR title LIKE 'VOTE_REJECT_%')";
+        
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement ps1 = conn.prepareStatement(resetChoreSql);
+                 PreparedStatement ps2 = conn.prepareStatement(clearVotesSql)) {
+                ps1.setInt(1, chore.getChoreId());
+                ps1.executeUpdate();
+                ps2.setInt(1, chore.getChoreId());
+                ps2.executeUpdate();
+                conn.commit();
+            } catch (Exception ex) {
+                conn.rollback();
+                throw ex;
+            }
+        } catch (Exception ex) { ex.printStackTrace(); }
+        
+        loadChoresFromDatabase();
+        refreshChoresUI(); // <--- ΠΡΟΣΘΗΚΗ: Σχεδιάζει ξανά το UI με τα φρέσκα δεδομένα από τη βάση!
+    }
+    
     private HBox createChoreCard(Chore chore) {
         HBox card = new HBox(15);
         card.setPadding(new Insets(15, 20, 15, 20));
@@ -541,11 +538,14 @@ public class ChoreScreen extends VBox {
                 logVoteToDatabase(chore.getChoreId(), currentUsername, true);
                 chore.vote(true);
                 updateChoreInDatabase(chore);
+                
                 int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
                 if (chore.getApproveVotes() >= majorityNeeded) {
                     archiveChoreToHistory(chore);
+                    return; // Σταματάει εδώ, το UI ανανεώθηκε από την archive
                 } else if (currentTotalVotes >= totalExpectedVoters) {
                     resetChoreToPending(chore);
+                    return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                 }
                 refreshChoresUI();
             });
@@ -558,14 +558,18 @@ public class ChoreScreen extends VBox {
                 logVoteToDatabase(chore.getChoreId(), currentUsername, false);
                 chore.vote(false);
                 updateChoreInDatabase(chore);
+                
                 int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
                 if (chore.getRejectVotes() >= majorityNeeded) {
                     resetChoreToPending(chore);
+                    return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                 } else if (currentTotalVotes >= totalExpectedVoters) {
                     if (chore.getApproveVotes() > chore.getRejectVotes()) {
                         archiveChoreToHistory(chore);
+                        return; // Σταματάει εδώ
                     } else {
                         resetChoreToPending(chore);
+                        return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                     }
                 }
                 refreshChoresUI();
