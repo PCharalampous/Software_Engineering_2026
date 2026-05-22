@@ -1,1 +1,2 @@
 Αφαίρεσα τελείως το Chore Reeport οπότε αν μπορέσουμε να βγάλουμε από τη βάση το chore_reports
+DROP TABLE IF EXISTS chore_reports;
