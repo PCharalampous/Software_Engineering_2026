@@ -45,7 +45,9 @@ public class EventScreen {
     public EventScreen(Event eventToView, CalendarScreen calendarScreen) {
         this.eventToView = eventToView;
         this.calendarScreen = calendarScreen;
+        this.prefilledDate = LocalDate.of(eventToView.getYear(), eventToView.getMonth(), eventToView.getDate());
         createUI();
+        populateFieldsWithEvent();
     }
 
     private void createUI() {
@@ -236,7 +238,19 @@ public class EventScreen {
         }
     }
 
-    // ΔΙΟΡΘΩΘΗΚΕ: SQL INSERT με το δυναμικό roomId απευθείας από το User Object της μνήμης
+    private void populateFieldsWithEvent() {
+        // ΔΙΟΡΘΩΘΗΚΕ: Έλεγχος ώστε να μην εκτελείται το populate αν τα textfields δεν έχουν αρχικοποιηθεί (isViewMode)
+        if (eventToView != null && titleField != null && hourSpinner != null && minuteSpinner != null && descField != null) {
+            titleField.setText(eventToView.getName());
+            int rawTime = eventToView.getTime();
+            int hours = rawTime / 100;
+            int minutes = rawTime % 100;
+            hourSpinner.getValueFactory().setValue(hours);
+            minuteSpinner.getValueFactory().setValue(minutes);
+            descField.setText(eventToView.getDescription());
+        }
+    }
+
     public void insertEventStatus() {
         try {
             String name = titleField.getText();
@@ -259,46 +273,93 @@ public class EventScreen {
             int year = selectedDate.getYear();
             String optionalDesc = descField.getText();
 
-            Event newEvent = new Event(date, month, year, time, name, "GENERAL", 0, optionalDesc);
-            
-            // Άμεση και γρήγορη λήψη του roomId από τη μνήμη
             int currentRoomId = 0;
+            int currentUserId = 0;
             if (entities.Authentication.getCurrentUser() != null) {
                 currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
+                currentUserId = entities.Authentication.getCurrentUser().getId();
             }
 
-            // Αν ο χρήστης δεν ανήκει σε δωμάτιο, απαγορεύουμε την καταχώρηση
             if (currentRoomId <= 0) {
                 throw new Exception("You must belong to a room to add events!");
             }
 
-            // SQL Query εκτέλεσης στον Clever Cloud πίνακα `calendar_events` με το σωστό room_id
-            String query = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type, is_accepted) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (Connection conn = DatabaseManager.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            Event newEvent = new Event(date, month, year, time, name, "GENERAL", 0, optionalDesc, currentUserId);
+
+            String query = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type, is_accepted, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            try (Connection conn = DatabaseManager.getConnection()) {
+                conn.setAutoCommit(false);
                 
-                stmt.setInt(1, currentRoomId); // Δυναμικό room_id πλέον χωρίς έξτρα query στη βάση!
-                stmt.setString(2, newEvent.getName());
-                stmt.setString(3, newEvent.getDescription());
-                stmt.setDate(4, Date.valueOf(selectedDate)); 
-                stmt.setInt(5, newEvent.getTime());
-                stmt.setString(6, newEvent.getType());
-                stmt.setInt(7, newEvent.getIsAccepted());
-                
-                stmt.executeUpdate();
-                
-                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        newEvent.setEventId(generatedKeys.getInt(1)); // Συγχρονισμός ID
+                int generatedEventId = 0;
+                try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                    stmt.setInt(1, currentRoomId); 
+                    stmt.setString(2, newEvent.getName());
+                    stmt.setString(3, newEvent.getDescription());
+                    stmt.setDate(4, Date.valueOf(selectedDate)); 
+                    stmt.setInt(5, newEvent.getTime());
+                    stmt.setString(6, newEvent.getType());
+                    stmt.setInt(7, newEvent.getIsAccepted());
+                    stmt.setInt(8, newEvent.getCreatedBy());
+                    
+                    stmt.executeUpdate();
+                    
+                    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            generatedEventId = generatedKeys.getInt(1);
+                            newEvent.setEventId(generatedEventId); 
+                        }
                     }
                 }
+                
+                // ΑΥΤΟΜΑΤΗ ΨΗΦΟΣ ΔΗΜΙΟΥΡΓΟΥ: Καταγραφή στον πίνακα notifications
+                if (generatedEventId > 0) {
+                    String logVoteQuery = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    try (PreparedStatement logStmt = conn.prepareStatement(logVoteQuery)) {
+                        logStmt.setInt(1, currentUserId);
+                        logStmt.setInt(2, currentRoomId);
+                        logStmt.setString(3, "CALENDAR_VOTE");
+                        logStmt.setString(4, "EventID:" + generatedEventId + "|Vote:YES");
+                        logStmt.setString(5, "Vote system tracking");
+                        logStmt.setString(6, "None");
+                        logStmt.setString(7, "#000000");
+                        logStmt.setInt(8, 1);
+                        logStmt.executeUpdate();
+                    }
+                    
+                    // Υπολογισμός συνολικών συγκατοίκων
+                    String countRoommatesQuery = "SELECT COUNT(*) FROM users WHERE room_id = ?";
+                    int totalRoommates = 1;
+                    try (PreparedStatement countStmt = conn.prepareStatement(countRoommatesQuery)) {
+                        countStmt.setInt(1, currentRoomId);
+                        try (ResultSet rsCount = countStmt.executeQuery()) {
+                            if (rsCount.next()) {
+                                totalRoommates = rsCount.getInt(1);
+                            }
+                        }
+                    }
+                    
+                    // ΛΟΓΙΚΗ ΠΛΕΙΟΨΗΦΙΑΣ: Αν η 1 ψήφος του δημιουργού είναι > από το μισό των συγκατοίκων (π.χ. σε δωμάτιο με 1 ή 2 άτομα)
+                    if (1 > (totalRoommates / 2.0)) {
+                        String acceptQuery = "UPDATE calendar_events SET is_accepted = 1 WHERE event_id = ?";
+                        try (PreparedStatement acceptStmt = conn.prepareStatement(acceptQuery)) {
+                            acceptStmt.setInt(1, generatedEventId);
+                            acceptStmt.executeUpdate();
+                            newEvent.setIsAccepted(1);
+                        }
+                    }
+                }
+                
+                conn.commit();
                 calendar.addEvent(newEvent);
             }
 
+            calendarScreen.loadEventsFromDatabase();
             calendarScreen.returnCalendar();
             goBack(); 
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             ErrorScreen errorScreen = new ErrorScreen("Λανθασμένα στοιχεία εισαγωγής συμβάντος!", () -> goBack());
             errorScreen.show();
         }

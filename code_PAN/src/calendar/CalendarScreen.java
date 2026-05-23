@@ -43,7 +43,7 @@ public class CalendarScreen {
         this.calendar = new Calendar(); 
         this.currentLocalDate = LocalDate.now(); 
         this.selectedDay = currentLocalDate.getDayOfMonth(); 
-        this.prefilledDateForForm = currentLocalDate; // Αρχικοποίηση με τη σημερινή ημερομηνία
+        this.prefilledDateForForm = currentLocalDate; 
         this.backAction = backAction;
         createUI();
         loadEventsFromDatabase(); 
@@ -73,7 +73,7 @@ public class CalendarScreen {
             return;
         }
 
-        String query = "SELECT event_id, event_name, event_description, event_date, event_time, event_type, is_accepted " +
+        String query = "SELECT event_id, event_name, event_description, event_date, event_time, event_type, is_accepted, created_by " +
                        "FROM calendar_events WHERE room_id = ?";
         
         try (Connection conn = DatabaseManager.getConnection();
@@ -90,10 +90,11 @@ public class CalendarScreen {
                     int time = rs.getInt("event_time");
                     String type = rs.getString("event_type");
                     int isAccepted = rs.getInt("is_accepted");
+                    int createdBy = rs.getInt("created_by"); 
                     
                     if (sqlDate != null) {
                         LocalDate ld = sqlDate.toLocalDate();
-                        Event ev = new Event(id, ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear(), time, name, type, isAccepted, desc);
+                        Event ev = new Event(id, ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear(), time, name, type, isAccepted, desc, createdBy);
                         calendar.addEvent(ev);
                     }
                 }
@@ -125,6 +126,100 @@ public class CalendarScreen {
             calendar.removeEvent(ev);
         } catch (SQLException e) {
             System.err.println("Database delete error: " + e.getMessage());
+        }
+    }
+
+    private boolean hasUserVoted(int eventId, int userId) {
+        String query = "SELECT COUNT(*) FROM notifications WHERE category = 'CALENDAR_VOTE' AND user_id = ? AND notification_text LIKE ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            stmt.setString(2, "EventID:" + eventId + "|%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+ // ΔΙΟΡΘΩΘΗΚΕ: Έλεγχος πλειοψηφίας με >= ώστε να λειτουργεί σωστά και για 2 άτομα
+    private void registerUserVote(Event ev, int userId, int roomId, String voteType) {
+        String logQuery = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection conn = DatabaseManager.getConnection()) {
+            // 1. Καταγραφή της ψήφου του τρέχοντος χρήστη
+            try (PreparedStatement stmt = conn.prepareStatement(logQuery)) {
+                stmt.setInt(1, userId);
+                stmt.setInt(2, roomId);
+                stmt.setString(3, "CALENDAR_VOTE");
+                stmt.setString(4, "EventID:" + ev.getEventId() + "|Vote:" + voteType);
+                stmt.setString(5, "Vote system tracking");
+                stmt.setString(6, "None");
+                stmt.setString(7, "#000000");
+                stmt.setInt(8, 1);
+                stmt.executeUpdate();
+            }
+
+            // 2. Μάθε πόσοι συνολικά χρήστες μένουν σε αυτό το δωμάτιο
+            int totalRoommates = 1;
+            String countRoommates = "SELECT COUNT(*) FROM users WHERE room_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(countRoommates)) {
+                stmt.setInt(1, roomId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        totalRoommates = rs.getInt(1);
+                    }
+                }
+            }
+
+            // 3. Υπολογισμός των 'NO' ψήφων που έχουν συγκεντρωθεί μέχρι τώρα
+            int noVotes = 0;
+            String countNo = "SELECT COUNT(*) FROM notifications WHERE category = 'CALENDAR_VOTE' AND room_id = ? AND notification_text = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(countNo)) {
+                stmt.setInt(1, roomId);
+                stmt.setString(2, "EventID:" + ev.getEventId() + "|Vote:NO");
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        noVotes = rs.getInt(1);
+                    }
+                }
+            }
+
+            // ΕΛΕΓΧΟΣ ΑΠΟΡΡΙΨΗΣ: Αλλαγή σε >= ώστε αν 1 στους 2 ψηφίσει Όχι, το event να διαγράφεται αμέσως
+            if (noVotes >= (totalRoommates / 2.0)) {
+                deleteEventFromDatabase(ev);
+                return;
+            }
+
+            // 4. Υπολογισμός των 'YES' ψήφων που έχουν συγκεντρωθεί μέχρι τώρα
+            int yesVotes = 0;
+            String countYes = "SELECT COUNT(*) FROM notifications WHERE category = 'CALENDAR_VOTE' AND room_id = ? AND notification_text = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(countYes)) {
+                stmt.setInt(1, roomId);
+                stmt.setString(2, "EventID:" + ev.getEventId() + "|Vote:YES");
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        yesVotes = rs.getInt(1);
+                    }
+                }
+            }
+
+            // ΕΛΕΓΧΟΣ ΕΓΚΡΙΣΗΣ: Αν τα '✓' είναι περισσότερα από τους μισούς συγκατοίκους, αλλάζει σε σκούρο πράσινο
+            if (yesVotes > (totalRoommates / 2.0)) {
+                String acceptQuery = "UPDATE calendar_events SET is_accepted = 1 WHERE event_id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(acceptQuery)) {
+                    stmt.setInt(1, ev.getEventId());
+                    stmt.executeUpdate();
+                    ev.setIsAccepted(1);
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -217,7 +312,6 @@ public class CalendarScreen {
         Button addEventBtn = new Button("Add Event");
         
         addEventBtn.setOnAction(e -> {
-            // Αν πατηθεί το γενικό κουμπί, παίρνει ως προεπιλογή την ήδη επιλεγμένη μέρα του ημερολογίου
             this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), selectedDay);
             addEvent();
         });
@@ -305,15 +399,12 @@ public class CalendarScreen {
 
                     dayCell.getChildren().addAll(dayNum, dotsBox);
                     
-                    // ΔΙΟΡΘΩΘΗΚΕ: Σωστή διαχείριση μονού και διπλού κλικ
                     dayCell.setOnMouseClicked(e -> {
                         if (e.getClickCount() == 2) {
-                            // Με διπλό κλικ, κλειδώνει η ημερομηνία και ανοίγει αμέσως η φόρμα
                             this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), day);
                             this.selectedDay = day;
                             addEvent();
                         } else {
-                            // Με μονό κλικ, απλώς επιλέγεται η ημέρα
                             selectDay(day);
                         }
                     });
@@ -339,6 +430,13 @@ public class CalendarScreen {
                 .sorted((e1, e2) -> Integer.compare(e1.getTime(), e2.getTime()))
                 .collect(Collectors.toList());
 
+        int currentUserId = 0;
+        int currentRoomId = 0;
+        if (entities.Authentication.getCurrentUser() != null) {
+            currentUserId = entities.Authentication.getCurrentUser().getId();
+            currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
+        }
+
         for (Event ev : dayEvents) {
             HBox eventRow = new HBox(10);
             eventRow.setAlignment(Pos.CENTER_LEFT);
@@ -349,12 +447,13 @@ public class CalendarScreen {
             timeAndTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
             timeAndTitle.setStyle("-fx-cursor: hand;"); 
             
+            // ΔΙΑΤΗΡΗΣΗ ΑΥΘΕΝΤΙΚΩΝ ΧΡΩΜΑΤΩΝ
             if (ev.getType().equals("BILL")) {
                 timeAndTitle.setTextFill(Color.DARKRED);
             } else if (ev.getType().equals("ISSUE")) {
                 timeAndTitle.setTextFill(Color.BLUE); 
             } else if (ev.getIsAccepted() == 0) {
-                timeAndTitle.setTextFill(Color.web("#b2ff59")); 
+                timeAndTitle.setTextFill(Color.ORANGE); 
             } else if (ev.getIsAccepted() == 1) {
                 timeAndTitle.setTextFill(Color.GREEN); 
             }
@@ -365,28 +464,42 @@ public class CalendarScreen {
             HBox.setHgrow(spacer, Priority.ALWAYS);
             eventRow.getChildren().addAll(timeAndTitle, spacer);
 
-            if (ev.getIsAccepted() == 0 && !ev.getType().equals("BILL") && !ev.getType().equals("ISSUE")) {
-                Button voteYesBtn = new Button("✓");
-                Button voteNoBtn = new Button("✕");
-                
-                voteYesBtn.setOnAction(e -> {
-                    updateEventStatusInDatabase(ev, 1);
-                    returnCalendar();
-                });
-                
-                voteNoBtn.setOnAction(e -> {
-                    deleteEventFromDatabase(ev);
-                    returnCalendar();
-                });
-                
-                Button deleteBtn = new Button("Delete");
-                deleteBtn.setOnAction(e -> deleteEvent(ev));
+            boolean isBillOrIssue = ev.getType().equals("BILL") || ev.getType().equals("ISSUE");
+            boolean isCreator = (ev.getCreatedBy() == currentUserId);
 
-                eventRow.getChildren().addAll(voteYesBtn, voteNoBtn, deleteBtn);
-            } else {
-                Button deleteBtn = new Button("Delete");
-                deleteBtn.setOnAction(e -> deleteEvent(ev));
-                eventRow.getChildren().add(deleteBtn);
+            if (!isBillOrIssue) {
+                if (isCreator) {
+                    Button deleteBtn = new Button("Delete");
+                    deleteBtn.setOnAction(e -> deleteEvent(ev));
+                    eventRow.getChildren().add(deleteBtn);
+                } else if (ev.getIsAccepted() == 0) {
+                    if (!hasUserVoted(ev.getEventId(), currentUserId)) {
+                        Button voteYesBtn = new Button("✓");
+                        Button voteNoBtn = new Button("✕");
+                        
+                        final int finalRoomId = currentRoomId;
+                        final int finalUserId = currentUserId;
+                        
+                        voteYesBtn.setOnAction(e -> {
+                            registerUserVote(ev, finalUserId, finalRoomId, "YES");
+                            loadEventsFromDatabase();
+                            returnCalendar();
+                        });
+                        
+                        voteNoBtn.setOnAction(e -> {
+                            registerUserVote(ev, finalUserId, finalRoomId, "NO");
+                            loadEventsFromDatabase();
+                            returnCalendar();
+                        });
+
+                        eventRow.getChildren().addAll(voteYesBtn, voteNoBtn);
+                    } else {
+                        Label votedLbl = new Label("Voted");
+                        votedLbl.setFont(Font.font("Segoe UI", 11));
+                        votedLbl.setTextFill(Color.GRAY);
+                        eventRow.getChildren().add(votedLbl);
+                    }
+                }
             }
 
             eventsContainer.getChildren().add(eventRow);

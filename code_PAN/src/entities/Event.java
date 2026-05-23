@@ -1,18 +1,19 @@
 package entities;
 
 public class Event {
-    private int eventId;      // Το ID από τη βάση δεδομένων για το sync
-    private int date;         // Ημέρα του μήνα (1-31)
-    private int month;        // Μήνας (1-12)
-    private int year;         // Έτος (π.χ. 2026)
-    private int time;         // Ώρα ως 4ψήφιος ακέραιος (π.χ., 1615)
-    private String name;      // Όνομα/Τίτλος συμβάντος
-    private String type;      // Τύπος: "BILL", "ISSUE", ή "GENERAL"
-    private int isAccepted;   // 0 = Εκκρεμότητα, 1 = Εγκρίθηκε
-    private String description; // Περιγραφή
+    private int eventId;      
+    private int date;         
+    private int month;        
+    private int year;         
+    private int time;         
+    private String name;      
+    private String type;      
+    private int isAccepted;   
+    private String description; 
+    private int createdBy;    
 
     // Constructor για νέα συμβάντα (πριν μπουν στη βάση)
-    public Event(int date, int month, int year, int time, String name, String type, int isAccepted, String description) {
+    public Event(int date, int month, int year, int time, String name, String type, int isAccepted, String description, int createdBy) {
         this.date = date;
         this.month = month;
         this.year = year;
@@ -21,10 +22,11 @@ public class Event {
         this.type = type;
         this.isAccepted = isAccepted;
         this.description = description;
+        this.createdBy = createdBy;
     }
 
     // Constructor για συμβάντα που έρχονται έτοιμα από τη βάση με το ID τους
-    public Event(int eventId, int date, int month, int year, int time, String name, String type, int isAccepted, String description) {
+    public Event(int eventId, int date, int month, int year, int time, String name, String type, int isAccepted, String description, int createdBy) {
         this.eventId = eventId;
         this.date = date;
         this.month = month;
@@ -34,6 +36,14 @@ public class Event {
         this.type = type;
         this.isAccepted = isAccepted;
         this.description = description;
+        this.createdBy = createdBy;
+    }
+
+    // Επιστρέφει την ώρα σε μορφή HH:MM (π.χ. 1430 -> "14:30")
+    public String getTimeFormatted() {
+        int hours = time / 100;
+        int minutes = time % 100;
+        return String.format("%02d:%02d", hours, minutes);
     }
 
     public void update() {
@@ -71,9 +81,7 @@ public class Event {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    
-    public String getTimeFormatted() {
-        String timeStr = String.format("%04d", time);
-        return timeStr.substring(0, 2) + ":" + timeStr.substring(2);
-    }
+
+    public int getCreatedBy() { return createdBy; }
+    public void setCreatedBy(int createdBy) { this.createdBy = createdBy; }
 }
