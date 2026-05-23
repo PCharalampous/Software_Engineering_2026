@@ -318,6 +318,11 @@ public class RewardScreen extends VBox {
                                 psApp.executeUpdate();
                                 System.out.println("Reward approved by strict majority of all members!");
                             }
+                            
+                            // ΔΙΟΡΘΩΣΗ: Αφαιρούμε το ID από τα voted της τρέχουσας συνεδρίας 
+                            // για να εμφανιστεί αμέσως το κουμπί BUY καθαρό για όλους!
+                            votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
+                            
                         } else {
                             String deleteSql = "DELETE FROM rewards WHERE reward_id = ?";
                             String deleteLogs = "DELETE FROM chore_reports WHERE description = ?";
@@ -329,6 +334,7 @@ public class RewardScreen extends VBox {
                                 psLogs.executeUpdate();
                                 System.out.println("Reward proposal failed and was deleted automatically.");
                             }
+                            votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                         }
                     }
                 }

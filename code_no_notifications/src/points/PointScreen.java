@@ -19,10 +19,6 @@ import util.DatabaseManager;
 public class PointScreen extends VBox {
     private final Point pointModel;
     
-    // ΔΙΟΡΘΩΣΗ: Ο mock χρήστης έχει πλέον το σωστό string username "1" βάσει του πίνακα users
-    private final String currentUser = "1"; 
-    private final int mockRoomId = 1;
-    
     private VBox leaderboardList;
     private VBox redeemedList;
     private Stage primaryStage;
@@ -56,9 +52,11 @@ public class PointScreen extends VBox {
     }
     
     public int getCurrentRoomId() {
-        // Εδώ πρέπει να βρεις το room_id του χρήστη που είναι συνδεδεμένος (Authentication.getCurrentUser())
-        // όπως κάνεις και στο ChoreScreen.
-        return Authentication.getCurrentUser().getRoomId(); 
+        entities.User sessionUser = Authentication.getCurrentUser();
+        if (sessionUser != null) {
+            return sessionUser.getRoomId(); 
+        }
+        return 1; // Fallback ιδανικό για τα test περιβάλλοντα
     }
 
     private void buildSections() {
@@ -110,10 +108,10 @@ public class PointScreen extends VBox {
         String lbQuery = "SELECT u.display_name, COALESCE(up.current_balance, 0) as balance FROM users u " +
                          "LEFT JOIN user_points up ON u.user_id = up.user_id " +
                          "WHERE u.room_id = ? ORDER BY balance DESC";
-                         
+                           
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(lbQuery)) {
-            ps.setInt(1, getCurrentRoomId()); // Χρησιμοποίησε το σωστό room ID
+            ps.setInt(1, getCurrentRoomId()); 
             try (ResultSet rs = ps.executeQuery()) {
                 int rank = 1;
                 while (rs.next()) {
@@ -152,14 +150,14 @@ public class PointScreen extends VBox {
     }
 
     public Point getPointModel() { return pointModel; }
+    
     public String getCurrentUser() { 
         entities.User sessionUser = entities.Authentication.getCurrentUser();
         if (sessionUser != null) {
             return sessionUser.getUsername().trim();
         }
-        return "2"; // Fallback για να μπορείς να δοκιμάζεις απευθείας τον User 2
+        return "makis99"; 
     }
-    public int getMockRoomId() { return mockRoomId; }
 
     public static class Launcher {
         public void start(Stage primaryStage) {
