@@ -193,8 +193,6 @@ CREATE TABLE rewards (
     room_id INT NOT NULL,                           -- Ανταμοιβές ανά δωμάτιο/σπίτι
     reward_name VARCHAR(150) NOT NULL,              -- Όνομα ανταμοιβής
     cost INT NOT NULL DEFAULT 0,                    -- Κόστος σε πόντους
-    created_by VARCHAR(255) DEFAULT NULL,
-    is_available BOOLEAN NOT NULL DEFAULT TRUE,     -- Διαθεσιμότητα ανταμοιβής
     approve_votes INT NOT NULL DEFAULT 0,           -- Ψήφοι έγκρισης ολοκλήρωσης
     reject_votes INT NOT NULL DEFAULT 0,            -- Ψήφοι απόρριψης ολοκλήρωσης
     ui_color VARCHAR(20) NULL,                      -- Χρώμα για το UI αναπαράστασης
