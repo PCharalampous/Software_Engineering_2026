@@ -603,61 +603,91 @@ public class ChoreScreen extends VBox {
                 refreshChoresUI();
             });
 
+            //-----------
             rejectBtn.setOnAction(e -> {
                 if (isAssignee) return;
                 votedChoreIdsInSession.add(chore.getChoreId());
                 approveBtn.setDisable(true);
                 rejectBtn.setDisable(true);
+                
+                // 1. Log the tracking event
                 logVoteToDatabase(chore.getChoreId(), currentUsername, false);
-                chore.vote(false);
+                
+                // 2. Fetch the actual LIVE vote counts currently stored in the DB from other users
+                int currentDbApprove = 0;
+                int currentDbReject = 0;
+                String getVotesSql = "SELECT approve_votes, reject_votes FROM chores WHERE chore_id = ?";
+                try (Connection conn = DatabaseManager.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(getVotesSql)) {
+                    ps.setInt(1, chore.getChoreId());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            currentDbApprove = rs.getInt("approve_votes");
+                            currentDbReject = rs.getInt("reject_votes");
+                        }
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
+                // 3. Increment the live counts instead of using the stale local object memory
+                currentDbReject++; 
+                
+                // Sync our local object tracker
+                chore.setApproveVotes(currentDbApprove);
+                chore.setRejectVotes(currentDbReject);
+                
+                // 4. Commit this true incremented value back to the DB
                 updateChoreInDatabase(chore);
                 
-                int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
-                if (chore.getRejectVotes() >= majorityNeeded) {
-                	
-                    resetChoreToPending(chore);
+                int currentTotalVotes = currentDbApprove + currentDbReject;
+                System.out.println("[DEBUG] Vote Recorded! Reject Total in DB: " + currentDbReject + " | Total cast: " + currentTotalVotes + " | Majority required: " + majorityNeeded);
+                
+                // 5. Evaluate conditions using the updated database totals
+                if (currentDbReject >= majorityNeeded) {
+                    System.out.println("\t --> IN IF ELSE SECTION: Majority reached!");
                     
-//                  //create notidfication	
-        	        //---------
+                    String savedAssignee = chore.getAssignee(); // Capture before reset shifts it to Unassigned
+                    resetChoreToPending(chore);
                     
                     try (Connection connection = DatabaseManager.getConnection()) {
                         String findUserName = "SELECT user_id FROM users WHERE username = ?";
                         int foundUserId = -1;
                         try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
-                            // 1. Set the username string safely into the parameter
-                            psFind.setString(1, chore.getAssignee());
-                            
+                            psFind.setString(1, savedAssignee);
                             try (var rs = psFind.executeQuery()) {
                                 if (rs.next()) {
-                                    // 2. Extract the user_id column that was requested in the SELECT statement
                                     foundUserId = rs.getInt("user_id");
                                 }
                             }
                             Notification.createNotification(connection, foundUserId ,"CHORES", "chore pending" , "chore rejected reseted to pending", "chores screen" , "#D1FAE5");
-            	        	connection.close();
                         }
-                    }catch (SQLException e1) {
-        	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
-        	            e1.printStackTrace();
-        	        }
-                    //---------
-        	        
+                    } catch (SQLException e1) {
+                        System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+                    }
                     
-                    return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
+                    loadChoresFromDatabase(); // Refresh the backing collection
+                    refreshChoresUI();
+                    return; 
+                    
                 } else if (currentTotalVotes >= totalExpectedVoters) {
-                    if (chore.getApproveVotes() > chore.getRejectVotes()) {
+                    System.out.println("\t --> IN: else if (currentTotalVotes >= totalExpectedVoters)");
+                    
+                    if (currentDbApprove > currentDbReject) {
                         archiveChoreToHistory(chore);
-                        return; // Σταματάει εδώ
                     } else {
                         resetChoreToPending(chore);
-                        return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                     }
+                    loadChoresFromDatabase();
+                    refreshChoresUI();
+                    return; 
                 }
-                /**/
               
+                // Normal vote registered without triggering threshold limits
+                loadChoresFromDatabase();
                 refreshChoresUI();
-                
             });
+            //----------
 
             btnBox.getChildren().addAll(rejectBtn, approveBtn);
         }

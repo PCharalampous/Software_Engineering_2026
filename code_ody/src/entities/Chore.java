@@ -58,4 +58,14 @@ public class Chore {
     public void setStatus(String status) { this.status = status; }
     public int getApproveVotes() { return approveVotes; }
     public int getRejectVotes() { return rejectVotes; }
+
+	public void setApproveVotes(int dbApproveVotes) {
+		this.approveVotes = dbApproveVotes;
+		
+	}
+
+	public void setRejectVotes(int dbRejectVotes) {
+		this.rejectVotes = dbRejectVotes;
+		
+	}
 }
