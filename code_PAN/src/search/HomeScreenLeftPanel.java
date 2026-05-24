@@ -2,6 +2,7 @@ package search;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -11,9 +12,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.HOMYApp;
 import ui.ConfirmationScreen;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import entities.Authentication;
+import entities.Notification;
 import entities.User;
 import ui.ErrorScreen;
+import util.DatabaseManager;
 
 public class HomeScreenLeftPanel {
 	
@@ -23,19 +32,80 @@ public class HomeScreenLeftPanel {
 	private Button joinBtn;
 	private TextField roomIdSect;
 	
-	public HomeScreenLeftPanel(Stage homeScreenStage){
-		headerLbl = new Label("USERS SECTION");
+	public HomeScreenLeftPanel(Stage stage, boolean inRoom, String labelMessage) {
+        
+        headerLbl = new Label("USERS SECTION");
 		separator = new Separator();
-        leftBoxLabel = new Label("Not in room yet");
+        leftBoxLabel = new Label(labelMessage);
         leftBox = new VBox(10);
         
-        joinRoom = joinRoomComponent();
-        leftBox.getChildren().addAll(headerLbl ,separator ,leftBoxLabel,joinRoom);
         
-		leftBox.setAlignment(Pos.TOP_CENTER);
-        leftBox.setPadding(new Insets(10));
-        leftBox.setPrefWidth(200);
-	}
+        // Conditional Check: Only build the Join Room component if the user is NOT already in a room
+        // --- LAYER CONDITIONALS ---
+        if (!inRoom) {
+            // LAYER A: Show the instant join UI if the user is OUTSIDE a room
+        	
+        	joinRoom = joinRoomComponent();
+        	leftBox.getChildren().addAll(headerLbl ,separator ,leftBoxLabel,joinRoom);
+        	leftBox.setAlignment(Pos.TOP_CENTER);
+            
+        } else {
+            // LAYER B: Show Room Info & Members if the user is INSIDE a room
+            int activeRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
+            
+            // 2. Button to reveal/get current Room ID
+            Button btnGetRoomId = new Button("Show Room ID");
+            btnGetRoomId.setMaxWidth(Double.MAX_VALUE);
+            btnGetRoomId.setStyle("-fx-background-color: transparent ;"
+            		+ " -fx-text-fill: #1E3A5F; -fx-font-weight: bold; -fx-cursor: hand;-fx-font-size: 14px;\n"
+            		+ "-fx-font-weight: bold;");
+            
+            btnGetRoomId.setOnAction(e -> {
+                // Show an alert with the ID so they can easily share it with friends
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Room Share Code");
+                alert.setHeaderText("Share this ID with your friends:");
+                alert.setContentText(String.valueOf(activeRoomId));
+                alert.showAndWait();
+            });
+            
+            this.leftBox.getChildren().add(btnGetRoomId);
+            
+            // Separator Line
+            Separator sep = new Separator();
+            this.leftBox.getChildren().add(sep);
+
+            // 3. Room Occupants Panel Frame
+            VBox roommatesBox = new VBox(8);
+            Label lblTitle = new Label("ROOMMATES");
+            lblTitle.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;");
+            roommatesBox.getChildren().add(lblTitle);
+            
+            // Fetch names of people currently sharing this specific room ID
+            if (activeRoomId > 0) {
+                String sql = "SELECT username FROM users WHERE room_id = ?";
+                try (Connection conn = DatabaseManager.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    
+                    stmt.setInt(1, activeRoomId);
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        while (rs.next()) {
+                            Label lblUser = new Label("• " + rs.getString("username"));
+                            lblUser.setStyle("-fx-font-size: 13px; -fx-text-fill: #334155;");
+                            roommatesBox.getChildren().add(lblUser);
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error pulling room elements layout configuration profile list:");
+                    e.printStackTrace();
+                }
+            } else {
+                roommatesBox.getChildren().add(new Label("No roommates detected."));
+            }
+            
+            this.leftBox.getChildren().add(roommatesBox);
+        }
+    }
 	
 	
 	private VBox joinRoomComponent() {
@@ -100,6 +170,16 @@ public class HomeScreenLeftPanel {
 	            ErrorScreen errScr = new ErrorScreen("Error", "Could not join room. It might be full or invalid");
 		    	errScr.show();
 	        }
+	        //inform all users of the room that a new roomates joined directly
+	        Connection connect = DatabaseManager.getConnection();
+	        Notification.createNotificationToRoom(connect, "room screen", "new roomate joined" , "", "ROOM_SCREEN", "#F59E0B");
+	        try {
+	        	connect.close();
+	        }catch(Exception e) {
+	        	System.out.print(e);
+	        }
+	        
+	        
 	        
 	    } catch (NumberFormatException ex) {
 	        // Handle case where user types non-numeric characters
@@ -113,26 +193,39 @@ public class HomeScreenLeftPanel {
 	}
 	
 	private void leftPanelStyling() {
-		leftBox.setStyle(
-			"-fx-background-color: #D9D9FF;"+
-	        "-fx-border-color: #0000FF;" +
-	        "-fx-border-width: 2;"
-	    );
-		
-		joinRoom.setStyle(
-			"-fx-background-color: white;" +
-			"-fx-border-color: #0000FF;" +
-			"-fx-border-width: 1;" +
-			"-fx-border-radius: 12;" +
-			"-fx-background-radius: 12;" +
-			"-fx-padding: 20;"
-		);
-		
-		joinBtn.setStyle(
-			"-fx-background-radius: 20;" +
-		    "-fx-background-color: #0000FF;" +
-		    "-fx-text-fill: white;"
-		);
+	    // Check if joinRoom is null to determine if the user is inside a room
+	    if (joinRoom == null) {
+	        // --- LAYER B: STYLING FOR INSIDE THE ROOM (Matches HOMYApp central hub) ---
+	        leftBox.setStyle(
+	        	"-fx-background-color: #F8FAF9;" +
+	            "-fx-padding: 20 15 20 15;"
+	        );
+	        
+	    } else {
+	        
+	        leftBox.setStyle(
+	            "-fx-background-color: #D9D9FF;" +
+	            "-fx-border-color: #0000FF;" +
+	            "-fx-border-width: 2;"
+	        );
+	        
+	        joinRoom.setStyle(
+	            "-fx-background-color: white;" +
+	            "-fx-border-color: #0000FF;" +
+	            "-fx-border-width: 1;" +
+	            "-fx-border-radius: 12;" +
+	            "-fx-background-radius: 12;" +
+	            "-fx-padding: 20;"
+	        );
+	        
+	        if (joinBtn != null) {
+	            joinBtn.setStyle(
+	                "-fx-background-radius: 20;" +
+	                "-fx-background-color: #0000FF;" +
+	                "-fx-text-fill: white;"
+	            );
+	        }
+	    }
 	}
 	
 	public VBox getLeftPanel() {

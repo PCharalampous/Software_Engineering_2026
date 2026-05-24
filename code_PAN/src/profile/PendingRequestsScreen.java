@@ -78,9 +78,12 @@ public class PendingRequestsScreen {
         String justification = ta.getText();
         if (accept) {
             manager.choseACCEPT(req, justification);
+            
         } else {
-        manager.choseDECLINE(req, justification);
+        	manager.choseDECLINE(req, justification);
+        	
         }
+        incomingRequests.remove(req);
         dlg.close();
         refreshList();
     });

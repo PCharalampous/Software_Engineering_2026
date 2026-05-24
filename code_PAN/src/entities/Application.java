@@ -203,7 +203,11 @@ public class Application {
             insertStmt.setString(3, currentTimeString);
             
             int rowsInserted = insertStmt.executeUpdate();
-            return rowsInserted > 0;
+            if(rowsInserted > 0) {
+            	Notification.createNotification(conn,this.ownerId, "requests", "someone wants to join your room", "", "PROFILE_SCREEN", "#14B8A6");
+            	return true;
+            }else
+            	return false;
             
         } catch (SQLException e) {
             System.err.println("Σφάλμα κατά την εισαγωγή του room request:");

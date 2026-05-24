@@ -2,6 +2,7 @@ package main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import points.RewardScreen;
 import shoppinglist.ShoppingListScreen;
 import util.DatabaseManager;
 import search.HomeScreen;
-
+import search.HomeScreenLeftPanel;
 import entities.Notification;
 import entities.UnreadCounter;
 import entities.Bill;
@@ -51,14 +52,18 @@ public class HOMYApp extends Application {
     private static Stage issuesStage;
     private static Runnable financesBackAction; 
 
-    private static List<Notification> notifications = new ArrayList<>();
-    private static UnreadCounter unreadCounter;
+//    private static List<Notification> notifications = new ArrayList<>();
+//    private static UnreadCounter unreadCounter;
     private static ManageNotificationsClass notificationManager;
+    
+    //----------------------------------------------------
+    private static int currentUserId;
+    private static int currentUserRoomId;
 
     @Override
     public void start(Stage primaryStage) {
         mainStage = primaryStage;
-        initMockData();
+        //initMockData();
         
         LogInScreen loginScr = new LogInScreen(primaryStage);
         loginScr.createWindow();
@@ -68,9 +73,35 @@ public class HOMYApp extends Application {
     }
     
     public static void showCentralHub() {
+    	//-------------------------------------------------
+    	if (Authentication.getCurrentUser() != null) {
+            currentUserId = Authentication.getCurrentUser().getId();
+            try {
+	            Connection updateConn = DatabaseManager.getConnection();
+	            String findUserRoom = "SELECT room_id FROM users WHERE user_id = ?";
+	            PreparedStatement psFind = updateConn.prepareStatement(findUserRoom);
+	                psFind.setInt(1, currentUserId);
+	                try (var rs = psFind.executeQuery()) {
+	                    if (rs.next()) {
+	                    	currentUserRoomId = rs.getInt("room_id");
+	                    }
+	                }
+	            
+            }catch(Exception e) {
+            	System.out.println(e);
+            }
+        } else {
+            // Fallbacks for testing purposes if Authentication is null
+            currentUserId = 1;
+            currentUserRoomId = 1;
+            System.out.println("\t->user id is null Fallbacks for testing purposes to userid=1");
+        }
+    	
+    	//--------------------------------------------------
+    	
         mainStage.setTitle("HOMY - Central Hub");
         mainStage.setResizable(false);
-
+        
         VBox headerBox = new VBox(5);
         headerBox.setAlignment(Pos.CENTER);
         headerBox.setPadding(new Insets(25, 20, 10, 20));
@@ -132,19 +163,20 @@ public class HOMYApp extends Application {
                 "Leave Room",
                 "-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;",
                 () -> {
-                    int userId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getId() : 1;
+                	//currentUserId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getId() : 1;
                     
                     try (Connection updateConn = DatabaseManager.getConnection()) {
                         updateConn.setAutoCommit(false); // Έναρξη Transaction
 
                         // 1. Βρίσκουμε το τρέχον room_id του χρήστη πριν το κάνουμε NULL
-                        int userRoomId = 0;
+                        //einai stin arxi tis showCentralHub() arxikopoiimeno
+//                        currentUserRoomId = 0;
                         String findUserRoom = "SELECT room_id FROM users WHERE user_id = ?";
                         try (PreparedStatement psFind = updateConn.prepareStatement(findUserRoom)) {
-                            psFind.setInt(1, userId);
+                            psFind.setInt(1, currentUserId);
                             try (var rs = psFind.executeQuery()) {
                                 if (rs.next()) {
-                                    userRoomId = rs.getInt("room_id");
+                                	currentUserRoomId = rs.getInt("room_id");
                                 }
                             }
                         }
@@ -152,19 +184,19 @@ public class HOMYApp extends Application {
                         // 2. Θέτουμε το room_id του χρήστη σε NULL
                         String sqlLeave = "UPDATE users SET room_id = NULL WHERE user_id = ?";
                         try (PreparedStatement psLeave = updateConn.prepareStatement(sqlLeave)) {
-                            psLeave.setInt(1, userId);
+                            psLeave.setInt(1, currentUserId);
                             psLeave.executeUpdate();
                         }
                         
                         // 3. Αυξάνουμε το roommates_wanted κατά 1 στην αγγελία αυτού του δωματίου
-                        if (userRoomId > 0) {
+                        if (currentUserRoomId > 0) {
                             String sqlIncrease = 
                                 "UPDATE applications a " +
                                 "JOIN users u ON a.user_id = u.user_id " +
                                 "SET a.roommates_wanted = a.roommates_wanted + 1 " +
                                 "WHERE u.room_id = ?";
                             try (PreparedStatement psInc = updateConn.prepareStatement(sqlIncrease)) {
-                                psInc.setInt(1, userRoomId);
+                                psInc.setInt(1, currentUserRoomId);
                                 psInc.executeUpdate();
                             }
                         }
@@ -185,12 +217,17 @@ public class HOMYApp extends Application {
         });
         
         profileSidebar.getChildren().add(leaveRoomBtn);
+        
+        profileSidebar.setStyle("-fx-background-color: #F8FAF9;");
+        HomeScreenLeftPanel homeleftPanel = new HomeScreenLeftPanel(mainStage,true,"Welcome in room");
 
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F8FAF9;");
         root.setTop(headerBox);
         root.setCenter(cardsGrid);
         root.setRight(profileSidebar);
+        
+        root.setLeft(homeleftPanel.getLeftPanel());
 
         Scene hubScene = new Scene(root, 1150, 650);
         mainStage.setScene(hubScene);
@@ -234,7 +271,23 @@ public class HOMYApp extends Application {
     }
     
     private static void openNotifications() { 
-        mainStage.hide(); new NotificationsScreen(notificationManager, () -> mainStage.show()).display(); 
+    	//---------------------------------------------------------
+    	
+    	try (Connection connection = DatabaseManager.getConnection()) {
+    		//list from database table notifications
+        	List<Notification> latestList = Notification.fetchNotificationsForUser(connection, currentUserId, currentUserRoomId);
+        	UnreadCounter counter = new UnreadCounter(-1);
+        	counter.update(latestList);
+        	ManageNotificationsClass managerNotifications = new ManageNotificationsClass(latestList, counter);
+        	mainStage.hide(); new NotificationsScreen(managerNotifications, () -> mainStage.show()).display(); 
+    	}catch (SQLException e) {
+            System.err.println("Error during fetchNotificationsForUser in HOMYApp class : " + e.getMessage());
+            e.printStackTrace();
+        }
+    	
+    	
+        //---------------------------------------------------------
+        
     }
     
     private static void openCalendar() { 
@@ -262,16 +315,18 @@ public class HOMYApp extends Application {
     public static void setIssuesRootProgrammatic(VBox layout) { if (issuesStage != null && issuesStage.getScene() != null) { issuesStage.getScene().setRoot(layout); } }
     private static void openNewIssueForm() { setIssuesRootProgrammatic(new NewIssueScreen(() -> setIssuesRootProgrammatic(new HomeIssueScreen(() -> { issuesStage.close(); mainStage.show(); }, () -> openNewIssueForm(), () -> openNewScheduleForm())))); }
     private static void openNewScheduleForm() { setIssuesRootProgrammatic(new NewScheduleScreen(() -> setIssuesRootProgrammatic(new HomeIssueScreen(() -> { issuesStage.close(); mainStage.show(); }, () -> openNewIssueForm(), () -> openNewScheduleForm())))); }
-
-    private static void initMockData() {
-        notifications.add(new Notification("CHORES", "Έχεις εκκρεμή εργασία: Σκούπισμα", "Σκούπισμα", "CHORES", "#D4EDDA"));
-        notifications.add(new Notification("BILLS", "Ο λογαριασμός ΔΕΗ λήγει", "ΔΕΗ 45€", "BILLS", "#FFF3CD"));
-        unreadCounter = new UnreadCounter((int) notifications.stream().filter(n -> !n.read).count());
-        notificationManager = new ManageNotificationsClass(notifications, unreadCounter);
-        FinancesScreen.allBills.clear(); 
-        issues.HomeIssueScreen.allIssues.clear(); 
-    }
-
+    
+    //-----------------------------------------------------------------------------------------------------------------------
+//    private static void initMockData() {
+//        notifications.add(new Notification("CHORES", "Έχεις εκκρεμή εργασία: Σκούπισμα", "Σκούπισμα", "CHORES", "#D4EDDA"));
+//        notifications.add(new Notification("BILLS", "Ο λογαριασμός ΔΕΗ λήγει", "ΔΕΗ 45€", "BILLS", "#FFF3CD"));
+//        unreadCounter = new UnreadCounter((int) notifications.stream().filter(n -> !n.read).count());
+//        notificationManager = new ManageNotificationsClass(notifications, unreadCounter);
+//        FinancesScreen.allBills.clear(); 
+//        issues.HomeIssueScreen.allIssues.clear(); 
+//    }
+  //-----------------------------------------------------------------------------------------------------------------------
+    
     private static VBox createMenuCard(String title, String description, String accentColor, Runnable action) {
         VBox card = new VBox(12); card.setPrefSize(260, 180); card.setPadding(new Insets(20)); card.setAlignment(Pos.TOP_LEFT);
         card.setStyle("-fx-background-color: white; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-cursor: hand;");

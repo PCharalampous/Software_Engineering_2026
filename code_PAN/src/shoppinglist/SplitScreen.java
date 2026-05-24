@@ -1,7 +1,7 @@
 package shoppinglist;
 
 import entities.Allocation;
-import entities.Notification;
+import entities.Authentication;
 import ui.ErrorScreen;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -148,7 +151,57 @@ public class SplitScreen {
                 LocalDate allocDate = (existingAlloc != null) ? existingAlloc.getDate() : LocalDate.now();
                 resultAllocation = new Allocation(allocDate, amounts, imageFile, totalAmt, selectedReceiver);
                 
-                Notification.makeNotification("SHOPPING", "Δημιουργήθηκε νέος επιμερισμός!");
+                // --- ΔΙΟΡΘΩΣΗ: Αποστολή ειδοποίησης ΜΟΝΟ στους ΥΠΟΛΟΙΠΟΥΣ συγκατοίκους με σωστά ονόματα στηλών ---
+                if (Authentication.getCurrentUser() != null) {
+                    int currentUserId = Authentication.getCurrentUser().getId();
+                    String currentUsername = Authentication.getCurrentUser().getUsername();
+                    int userRoomId = Authentication.getCurrentUser().getRoomId();
+
+                    try (Connection conn = util.DatabaseManager.getConnection()) {
+                        String notificationText;
+                        String notificationDetail;
+                        
+                        if (existingAlloc == null) {
+                            notificationText = "Νέος επιμερισμός Shopping List!";
+                            notificationDetail = "Ο/Η " + currentUsername + " πρόσθεσε νέα έξοδα ύψους €" + String.format("%.2f", totalAmt);
+                        } else {
+                            notificationText = "Τροποποίηση επιμερισμού Shopping List!";
+                            notificationDetail = "Ο/Η " + currentUsername + " ενημέρωσε τα έξοδα ενός επιμερισμού στα €" + String.format("%.2f", totalAmt);
+                        }
+
+                        // Επιλέγουμε όλα τα μέλη του δωματίου ΕΚΤΟΣ από τον τρέχοντα χρήστη που κάνει το confirm
+                        String fetchRoommatesSql = "SELECT user_id FROM users WHERE room_id = ? AND user_id != ?";
+                        try (PreparedStatement psRoommates = conn.prepareStatement(fetchRoommatesSql)) {
+                            psRoommates.setInt(1, userRoomId);
+                            psRoommates.setInt(2, currentUserId);
+                            
+                            try (ResultSet rsRoommates = psRoommates.executeQuery()) {
+                                // ΔΙΟΡΘΩΘΗΚΕ: Τα ονόματα των στηλών άλλαξαν σε room_id, notification_text και target_screen σύμφωνα με το σχήμα της βάσης
+                                String insertNotificationSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
+                                try (PreparedStatement psInsert = conn.prepareStatement(insertNotificationSql)) {
+                                    
+                                    while (rsRoommates.next()) {
+                                        int targetUserId = rsRoommates.getInt("user_id");
+                                        psInsert.setInt(1, targetUserId);
+                                        psInsert.setInt(2, userRoomId);
+                                        psInsert.setString(3, "SHOPPING");
+                                        psInsert.setString(4, notificationText);
+                                        psInsert.setString(5, notificationDetail);
+                                        psInsert.setString(6, "SHOPPING_SCREEN");
+                                        psInsert.setString(7, "#F59E0B");
+                                        psInsert.addBatch();
+                                    }
+                                    psInsert.executeBatch(); // Εκτέλεση μαζικής εισαγωγής για όλους τους υπόλοιπους
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Σφάλμα κατά την αποστολή της ειδοποίησης SHOPPING στη βάση:");
+                        ex.printStackTrace();
+                    }
+                }
+                // --------------------------------------------------------------------------------------------------
+
                 stage.close();
             } catch (NumberFormatException ex) {
                 ErrorScreen.show("Εισάγετε έγκυρα ποσά!");

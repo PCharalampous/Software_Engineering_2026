@@ -32,7 +32,7 @@ private Stage homeScrStage;
         
         // LEFT SECTION
         
-        HomeScreenLeftPanel leftSection = new HomeScreenLeftPanel(this.homeScrStage);
+        HomeScreenLeftPanel leftSection = new HomeScreenLeftPanel(this.homeScrStage, false, "not in room yet");
         
         root.setLeft(leftSection.getLeftPanel());
         

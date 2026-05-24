@@ -3,11 +3,13 @@ package chores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import entities.Point;
 import entities.Chore;
+import entities.Notification;
 import entities.Authentication;
 import entities.User;
 import javafx.collections.FXCollections;
@@ -46,6 +48,8 @@ public class ChoreScreen extends VBox {
     
     private Stage primaryStage;
     private Runnable backAction;
+    
+    private static String name;
 
     public ChoreScreen() {
         this.backAction = null;
@@ -55,6 +59,10 @@ public class ChoreScreen extends VBox {
     public ChoreScreen(Runnable backAction) {
         this.backAction = backAction;
         initSessionData();
+    }
+    
+    public static void getRoomateToAddChore(String name) {
+    	ChoreScreen.name = name;
     }
 
     private void initSessionData() {
@@ -410,7 +418,42 @@ public class ChoreScreen extends VBox {
 
         Button addBtn = new Button("+");
         addBtn.setStyle("-fx-background-color: #4F46E5; -fx-text-fill: white; -fx-background-radius: 50; -fx-min-width: 65px; -fx-min-height: 65px; -fx-font-size: 28px; -fx-font-weight: bold; -fx-cursor: hand;");
-        addBtn.setOnAction(e -> selectAddChore());
+        addBtn.setOnAction(e -> {selectAddChore();
+        	
+//        	//create notidfication	
+//	        try (Connection connection = DatabaseManager.getConnection()) {
+//	        	Notification.createNotification(connection, "CHORES", "chore pending" , "chore is pending", "chores screen" , "#D1FAE5");
+//	        	connection.close();
+//	        }catch (SQLException e1) {
+//	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+//	            e1.printStackTrace();
+//	        }
+      //---------
+        
+        try (Connection connection = DatabaseManager.getConnection()) {
+            String findUserName = "SELECT user_id FROM users WHERE username = ?";
+            int foundUserId = -1;
+            try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
+                // 1. Set the username string safely into the parameter
+                psFind.setString(1, ChoreScreen.name);
+                
+                try (var rs = psFind.executeQuery()) {
+                    if (rs.next()) {
+                        // 2. Extract the user_id column that was requested in the SELECT statement
+                        foundUserId = rs.getInt("user_id");
+                    }
+                }
+                Notification.createNotification(connection, foundUserId ,"CHORES", "chore pending" , "chore for "+ChoreScreen.name+"", "chores screen" , "#D1FAE5");
+	        	connection.close();
+            }
+        }catch (SQLException e1) {
+            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+            e1.printStackTrace();
+        }
+        //---------
+        
+        
+        });
 
         bottomArea.getChildren().addAll(historyBox, spacer, addBtn);
         rootLayout.getChildren().add(bottomArea);
@@ -445,6 +488,16 @@ public class ChoreScreen extends VBox {
                 ps2.setInt(1, chore.getChoreId());
                 ps2.executeUpdate();
                 conn.commit();
+                
+              //create notidfication	
+    	        try (Connection connection = DatabaseManager.getConnection()) {
+    	        	Notification.createNotification(connection, "CHORES", "chore pending" , "chore rejected reseted to pending", "chores screen" , "#D1FAE5");
+    	        	connection.close();
+    	        }catch (SQLException e1) {
+    	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+    	            e1.printStackTrace();
+    	        }
+                
             } catch (Exception ex) {
                 conn.rollback();
                 throw ex;
@@ -561,7 +614,35 @@ public class ChoreScreen extends VBox {
                 
                 int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
                 if (chore.getRejectVotes() >= majorityNeeded) {
+                	
                     resetChoreToPending(chore);
+                    
+//                  //create notidfication	
+        	        //---------
+                    
+                    try (Connection connection = DatabaseManager.getConnection()) {
+                        String findUserName = "SELECT user_id FROM users WHERE username = ?";
+                        int foundUserId = -1;
+                        try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
+                            // 1. Set the username string safely into the parameter
+                            psFind.setString(1, chore.getAssignee());
+                            
+                            try (var rs = psFind.executeQuery()) {
+                                if (rs.next()) {
+                                    // 2. Extract the user_id column that was requested in the SELECT statement
+                                    foundUserId = rs.getInt("user_id");
+                                }
+                            }
+                            Notification.createNotification(connection, foundUserId ,"CHORES", "chore pending" , "chore rejected reseted to pending", "chores screen" , "#D1FAE5");
+            	        	connection.close();
+                        }
+                    }catch (SQLException e1) {
+        	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+        	            e1.printStackTrace();
+        	        }
+                    //---------
+        	        
+                    
                     return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                 } else if (currentTotalVotes >= totalExpectedVoters) {
                     if (chore.getApproveVotes() > chore.getRejectVotes()) {
@@ -572,7 +653,10 @@ public class ChoreScreen extends VBox {
                         return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
                     }
                 }
+                /**/
+              
                 refreshChoresUI();
+                
             });
 
             btnBox.getChildren().addAll(rejectBtn, approveBtn);
@@ -592,6 +676,7 @@ public class ChoreScreen extends VBox {
         card.getChildren().addAll(infoBox, arrow, assigneeBox, statusBadge, spacer, btnBox);
         return card;
     }
+    
 
     private void selectAddChore() {
         List<String> formOptions = new ArrayList<>(members);

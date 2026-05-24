@@ -168,6 +168,7 @@ public class HomeScreenMiddlePanel {
 						if (success) {
 							// ΔΙΟΡΘΩΘΗΚΕ: Χρήση των 3 παραμέτρων που υποστηρίζει η SuccessScreen
 							SuccessScreen.display("Request Sent", "Success", "Your request was successfully sent to the room owner! Waiting for approval.");
+							//
 						} else {
 							System.err.println("Αποτυχία δημιουργίας εκκρεμούς αιτήματος.");
 						}

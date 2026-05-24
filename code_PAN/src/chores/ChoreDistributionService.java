@@ -3,9 +3,12 @@ package chores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import entities.Notification;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import util.DatabaseManager;
@@ -20,7 +23,8 @@ public class ChoreDistributionService {
         this.members = members;
     }
 
-    public void distributeWeeklyChores() {
+    public void distributeWeeklyChores() { 
+    	
         if (members == null || members.isEmpty() || roomId == 0) return;
 
         try (Connection conn = DatabaseManager.getConnection()) {
@@ -132,6 +136,7 @@ public class ChoreDistributionService {
                 psUpdate.executeBatch();
                 psNotify.executeBatch();
                 conn.commit();
+    	        
                 System.out.println("Chores successfully redistributed among real house members!");
             } catch (Exception ex) {
                 conn.rollback();

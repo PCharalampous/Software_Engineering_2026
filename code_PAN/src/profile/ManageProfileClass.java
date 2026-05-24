@@ -90,7 +90,7 @@ public class ManageProfileClass {
                 conn.commit();
                 System.out.println("Το room_id ενημερώθηκε και οι ζητούμενοι συγκατοίκοι μειώθηκαν!");
                 
-                main.HOMYApp.showCentralHub();
+//                main.HOMYApp.showCentralHub();
 
             } catch (SQLException ex) {
                 conn.rollback();

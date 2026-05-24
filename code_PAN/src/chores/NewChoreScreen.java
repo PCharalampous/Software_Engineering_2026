@@ -1,6 +1,7 @@
 package chores;
 
 import ui.ErrorScreen;
+import util.DatabaseManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +12,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+
+import entities.Notification;
 
 public class NewChoreScreen {
 
@@ -82,6 +88,8 @@ public class NewChoreScreen {
             String name = nameField.getText().trim();
             String ptsText = pointsField.getText().trim();
             String duty = dutyCombo.getValue();
+                  
+            
 
             if (name.isEmpty()) { errorLabel.setText("Chore name cannot be empty."); return; }
             int pts;
@@ -92,7 +100,9 @@ public class NewChoreScreen {
                 ErrorScreen.show(stage, "Missing Assignee", "You must select a responsible roommate before saving.");
                 return;
             }
-
+            ChoreScreen.getRoomateToAddChore(duty);
+            
+            
             callback.onAdd(name, pts, duty);
             stage.close();
         });

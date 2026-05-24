@@ -68,6 +68,8 @@ public class ProfileScreen {
 
         // 3. Φορτώνουμε τα pending requests δυναμικά με βάση το δωμάτιο του χρήστη
         this.incomingRequests = ManageProfileClass.loadRequestsFromDatabase(currentUserProfile.room_id);
+        //
+        
 
         this.manager = new ManageProfileClass(currentUserProfile, incomingRequests);
     }
