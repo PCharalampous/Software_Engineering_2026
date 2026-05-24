@@ -252,11 +252,7 @@ public class ChoreScreen extends VBox {
 
     private void archiveChoreToHistory(Chore chore) {
         String insertHistorySql = "INSERT INTO chore_history (room_id, chore_id, completed_by, chore_name, points) VALUES (?, ?, ?, ?, ?)";
-        
-        // 1. Βρίσκουμε το user_id με βάση το username ή το display_name
         String findUserIdSql = "SELECT user_id FROM users WHERE TRIM(username) = ? OR TRIM(display_name) = ? LIMIT 1";
-        
-        // 2. Safe Upsert: Αν υπάρχει ήδη το user_id (που είναι Primary Key), κάνει UPDATE προσθέτοντας τους πόντους
         String upsertUserPointsSql = "INSERT INTO user_points (user_id, room_id, current_balance) VALUES (?, ?, ?) " +
                                      "ON DUPLICATE KEY UPDATE current_balance = current_balance + VALUES(current_balance)";
         
@@ -267,7 +263,6 @@ public class ChoreScreen extends VBox {
         try (Connection conn = DatabaseManager.getConnection()) {
             conn.setAutoCommit(false);
 
-            // 1. Εισαγωγή στο ιστορικό
             try (PreparedStatement psHistory = conn.prepareStatement(insertHistorySql)) {
                 psHistory.setInt(1, this.currentRoomId);
                 psHistory.setInt(2, chore.getChoreId());
@@ -277,7 +272,6 @@ public class ChoreScreen extends VBox {
                 psHistory.executeUpdate();
             }
 
-            // 2. Εύρεση του σωστού user_id από τον πίνακα users
             int targetUserId = -1;
             String rawAssignee = chore.getAssignee().trim();
             try (PreparedStatement psFindId = conn.prepareStatement(findUserIdSql)) {
@@ -290,7 +284,6 @@ public class ChoreScreen extends VBox {
                 }
             }
 
-            // 3. Εκτέλεση του Upsert για τους πόντους (Δεν θα ξαναχτυπήσει ποτέ Duplicate Entry)
             if (targetUserId != -1) {
                 try (PreparedStatement psUpsert = conn.prepareStatement(upsertUserPointsSql)) {
                     psUpsert.setInt(1, targetUserId);
@@ -302,23 +295,19 @@ public class ChoreScreen extends VBox {
                 System.err.println("[WARNING] ChoreScreen: Could not find user_id for assignee: " + rawAssignee);
             }
 
-            // 4. Επαναφορά της αγγαρείας σε κατάσταση Pending / Unassigned για τον επόμενο γύρο
             try (PreparedStatement psReset = conn.prepareStatement(resetChoreSql)) {
                 psReset.setInt(1, chore.getChoreId());
                 psReset.executeUpdate();
             }
 
-            // 5. Διαγραφή των ψήφων (VOTE_APPROVE / VOTE_REJECT) από τον πίνακα reports
             try (PreparedStatement psClearVotes = conn.prepareStatement(clearVotesSql)) {
                 psClearVotes.setInt(1, chore.getChoreId());
                 psClearVotes.executeUpdate();
             }
 
-            // Οριστικοποίηση αλλαγών στη βάση (Commit)
             conn.commit();
             choresList.remove(chore);
 
-            // Επαναφόρτωση δεδομένων και συγχρονισμός της RAM με τη βάση
             loadChoresFromDatabase();
             loadVotesFromDatabase(); 
             refreshChoresUI();
@@ -375,10 +364,9 @@ public class ChoreScreen extends VBox {
             ChoreDistributionService service = new ChoreDistributionService(this.currentRoomId, members);
             service.distributeWeeklyChores();
             
-            // ΚΑΘΑΡΙΣΜΟΣ ΚΑΙ ΕΠΑΝΑΦΟΡΤΩΣΗ ΓΙΑ ΝΑ ΜΗΝ ΕΠΙΤΡΕΠΕΙ ΔΙΠΛΟ VOTE
             votedChoreIdsInSession.clear();
             loadChoresFromDatabase();
-            loadVotesFromDatabase(); // <-- ΕΔΩ: Διαβάζει τις σβησμένες ψήφους από τη βάση και ξεκλειδώνει τα κουμπιά σωστά
+            loadVotesFromDatabase(); 
             refreshChoresUI();
             loadHistoryFromDatabase();
             refreshHistoryUI();
@@ -418,41 +406,8 @@ public class ChoreScreen extends VBox {
 
         Button addBtn = new Button("+");
         addBtn.setStyle("-fx-background-color: #4F46E5; -fx-text-fill: white; -fx-background-radius: 50; -fx-min-width: 65px; -fx-min-height: 65px; -fx-font-size: 28px; -fx-font-weight: bold; -fx-cursor: hand;");
-        addBtn.setOnAction(e -> {selectAddChore();
-        	
-//        	//create notidfication	
-//	        try (Connection connection = DatabaseManager.getConnection()) {
-//	        	Notification.createNotification(connection, "CHORES", "chore pending" , "chore is pending", "chores screen" , "#D1FAE5");
-//	        	connection.close();
-//	        }catch (SQLException e1) {
-//	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
-//	            e1.printStackTrace();
-//	        }
-      //---------
-        
-        try (Connection connection = DatabaseManager.getConnection()) {
-            String findUserName = "SELECT user_id FROM users WHERE username = ?";
-            int foundUserId = -1;
-            try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
-                // 1. Set the username string safely into the parameter
-                psFind.setString(1, ChoreScreen.name);
-                
-                try (var rs = psFind.executeQuery()) {
-                    if (rs.next()) {
-                        // 2. Extract the user_id column that was requested in the SELECT statement
-                        foundUserId = rs.getInt("user_id");
-                    }
-                }
-                Notification.createNotification(connection, foundUserId ,"CHORES", "chore pending" , "chore for "+ChoreScreen.name+"", "chores screen" , "#D1FAE5");
-	        	connection.close();
-            }
-        }catch (SQLException e1) {
-            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
-            e1.printStackTrace();
-        }
-        //---------
-        
-        
+        addBtn.setOnAction(e -> {
+            selectAddChore(); // Καλεί μόνο αυτό!
         });
 
         bottomArea.getChildren().addAll(historyBox, spacer, addBtn);
@@ -474,38 +429,65 @@ public class ChoreScreen extends VBox {
         }
     }
     
-    private void resetChoreToPending(Chore chore) {
-        chore.setStatus("Pending");
+ // Προσθέτουμε την παράμετρο String message
+    private void resetChoreToPending(Chore chore, String message) {
+        String savedAssignee = chore.getAssignee() != null ? chore.getAssignee().trim() : "";
+        int targetUserId = -1;
+        
         String resetChoreSql = "UPDATE chores SET chore_status = 'Pending', approve_votes = 0, reject_votes = 0 WHERE chore_id = ?";
         String clearVotesSql = "DELETE FROM chore_reports WHERE chore_id = ? AND (title LIKE 'VOTE_APPROVE_%' OR title LIKE 'VOTE_REJECT_%')";
+        String findUserIdSql = "SELECT user_id FROM users WHERE username = ? LIMIT 1";
         
+        // 1. Transaction για το Reset της αγγαρείας
         try (Connection conn = DatabaseManager.getConnection()) {
             conn.setAutoCommit(false);
             try (PreparedStatement ps1 = conn.prepareStatement(resetChoreSql);
                  PreparedStatement ps2 = conn.prepareStatement(clearVotesSql)) {
+                
                 ps1.setInt(1, chore.getChoreId());
                 ps1.executeUpdate();
                 ps2.setInt(1, chore.getChoreId());
                 ps2.executeUpdate();
+                
                 conn.commit();
-                
-              //create notidfication	
-    	        try (Connection connection = DatabaseManager.getConnection()) {
-    	        	Notification.createNotification(connection, "CHORES", "chore pending" , "chore rejected reseted to pending", "chores screen" , "#D1FAE5");
-    	        	connection.close();
-    	        }catch (SQLException e1) {
-    	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
-    	            e1.printStackTrace();
-    	        }
-                
+                System.out.println("[DEBUG] Chore reset transaction committed successfully.");
             } catch (Exception ex) {
                 conn.rollback();
                 throw ex;
             }
         } catch (Exception ex) { ex.printStackTrace(); }
         
+        // 2. Νέο, αυτόνομο Connection για την εύρεση του χρήστη και την αποστολή του Notification
+        if (!savedAssignee.isEmpty() && !savedAssignee.equalsIgnoreCase("Unassigned")) {
+            try (Connection connNotif = DatabaseManager.getConnection()) {
+                
+                // Εύρεση του user_id
+                try (PreparedStatement psFind = connNotif.prepareStatement(findUserIdSql)) {
+                    psFind.setString(1, savedAssignee);
+                    try (ResultSet rs = psFind.executeQuery()) {
+                        if (rs.next()) {
+                            targetUserId = rs.getInt("user_id");
+                        }
+                    }
+                }
+                
+                // Αποστολή ειδοποίησης αν βρέθηκε ο χρήστης
+                if (targetUserId != -1) {
+                    Notification.createNotification(connNotif, targetUserId, "CHORES", "Chore Reset", message, "chores screen", "#D1FAE5");
+                    System.out.println("[DEBUG] Notification sent successfully via standalone connection to user ID: " + targetUserId);
+                } else {
+                    System.err.println("[WARNING] Could not find user_id for assignee: " + savedAssignee);
+                }
+                
+            } catch (SQLException e) {
+                System.err.println("Error during Notification creation: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        
+        // 3. Ανανέωση του UI
         loadChoresFromDatabase();
-        refreshChoresUI(); // <--- ΠΡΟΣΘΗΚΗ: Σχεδιάζει ξανά το UI με τα φρέσκα δεδομένα από τη βάση!
+        refreshChoresUI();
     }
     
     private HBox createChoreCard(Chore chore) {
@@ -593,12 +575,24 @@ public class ChoreScreen extends VBox {
                 updateChoreInDatabase(chore);
                 
                 int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
+                
+                // 1. Έλεγχος αν πιάστηκε η πλειοψηφία
                 if (chore.getApproveVotes() >= majorityNeeded) {
                     archiveChoreToHistory(chore);
-                    return; // Σταματάει εδώ, το UI ανανεώθηκε από την archive
-                } else if (currentTotalVotes >= totalExpectedVoters) {
-                    resetChoreToPending(chore);
-                    return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
+                    return; 
+                } 
+                // 2. Έλεγχος αν ψήφισαν όλοι οι αναμενόμενοι
+                else if (currentTotalVotes >= totalExpectedVoters) {
+                    
+                    // ΑΝ ΕΙΝΑΙ 2 ΑΤΟΜΑ (totalExpectedVoters == 1) και πατήθηκε Approve, 
+                    // τότε το σκορ είναι 1-0, άρα η αγγαρεία ΕΓΚΡΙΘΗΚΕ. Την αρχειοθετούμε χωρίς ειδοποίηση reset.
+                    if (totalExpectedVoters == 1) {
+                        archiveChoreToHistory(chore);
+                    } else {
+                        // Αν είναι πάνω από 2 άτομα και βγήκε ισοπαλία, τότε μόνο πάει pending
+                        resetChoreToPending(chore, "Chore reset to pending due to a tie vote (Last vote: Approved).");
+                    }
+                    return; 
                 }
                 refreshChoresUI();
             });
@@ -608,55 +602,51 @@ public class ChoreScreen extends VBox {
                 votedChoreIdsInSession.add(chore.getChoreId());
                 approveBtn.setDisable(true);
                 rejectBtn.setDisable(true);
+                
                 logVoteToDatabase(chore.getChoreId(), currentUsername, false);
-                chore.vote(false);
+                
+                int currentDbApprove = 0;
+                int currentDbReject = 0;
+                String getVotesSql = "SELECT approve_votes, reject_votes FROM chores WHERE chore_id = ?";
+                try (Connection conn = DatabaseManager.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(getVotesSql)) {
+                    ps.setInt(1, chore.getChoreId());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            currentDbApprove = rs.getInt("approve_votes");
+                            currentDbReject = rs.getInt("reject_votes");
+                        }
+                    }
+                } catch (SQLException ex) { ex.printStackTrace(); }
+
+                currentDbReject++; 
+                chore.setApproveVotes(currentDbApprove);
+                chore.setRejectVotes(currentDbReject);
+                
                 updateChoreInDatabase(chore);
                 
-                int currentTotalVotes = chore.getApproveVotes() + chore.getRejectVotes();
-                if (chore.getRejectVotes() >= majorityNeeded) {
-                	
-                    resetChoreToPending(chore);
-                    
-//                  //create notidfication	
-        	        //---------
-                    
-                    try (Connection connection = DatabaseManager.getConnection()) {
-                        String findUserName = "SELECT user_id FROM users WHERE username = ?";
-                        int foundUserId = -1;
-                        try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
-                            // 1. Set the username string safely into the parameter
-                            psFind.setString(1, chore.getAssignee());
-                            
-                            try (var rs = psFind.executeQuery()) {
-                                if (rs.next()) {
-                                    // 2. Extract the user_id column that was requested in the SELECT statement
-                                    foundUserId = rs.getInt("user_id");
-                                }
-                            }
-                            Notification.createNotification(connection, foundUserId ,"CHORES", "chore pending" , "chore rejected reseted to pending", "chores screen" , "#D1FAE5");
-            	        	connection.close();
-                        }
-                    }catch (SQLException e1) {
-        	            System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
-        	            e1.printStackTrace();
-        	        }
-                    //---------
-        	        
-                    
-                    return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
-                } else if (currentTotalVotes >= totalExpectedVoters) {
-                    if (chore.getApproveVotes() > chore.getRejectVotes()) {
-                        archiveChoreToHistory(chore);
-                        return; // Σταματάει εδώ
-                    } else {
-                        resetChoreToPending(chore);
-                        return; // <--- ΝΕΑ ΠΡΟΣΘΗΚΗ: Σταματάει εδώ
-                    }
-                }
-                /**/
-              
-                refreshChoresUI();
+                int currentTotalVotes = currentDbApprove + currentDbReject;
                 
+                if (currentDbReject >= majorityNeeded) {
+                    System.out.println("\t --> IN IF ELSE SECTION: Majority reached!");
+                    // Μήνυμα για ξεκάθαρη απόρριψη από την πλειοψηφία
+                    resetChoreToPending(chore, "Chore was rejected by the majority and reset to pending.");
+                    return; 
+                    
+                } else if (currentTotalVotes >= totalExpectedVoters) {
+                    System.out.println("\t --> IN: else if (currentTotalVotes >= totalExpectedVoters)");
+                    
+                    if (currentDbApprove > currentDbReject) {
+                        archiveChoreToHistory(chore);
+                    } else {
+                        // Μήνυμα για ισοπαλία μέσω Reject
+                        resetChoreToPending(chore, "Chore reset to pending due to a tie vote (Last vote: Rejected).");
+                    }
+                    return; 
+                }
+              
+                loadChoresFromDatabase();
+                refreshChoresUI();
             });
 
             btnBox.getChildren().addAll(rejectBtn, approveBtn);
@@ -681,9 +671,35 @@ public class ChoreScreen extends VBox {
     private void selectAddChore() {
         List<String> formOptions = new ArrayList<>(members);
         NewChoreScreen form = new NewChoreScreen(formOptions, (name, pts, duty) -> {
+            // 1. Δημιουργία και εισαγωγή της αγγαρείας στη βάση
             Chore newChore = new Chore(name, pts, duty, members.size());
             insertChoreIntoDatabase(newChore); 
             refreshChoresUI();
+            
+            // 2. Το Notification εκτελείται ΜΟΝΟ εδώ, αφού πατήθηκε επιτυχώς το Save
+            try (Connection connection = DatabaseManager.getConnection()) {
+                String findUserName = "SELECT user_id FROM users WHERE username = ?";
+                int foundUserId = -1;
+                try (PreparedStatement psFind = connection.prepareStatement(findUserName)) {
+                    psFind.setString(1, duty.trim()); // Παίρνουμε το όνομα απευθείας από τη φόρμα
+                    
+                    try (var rs = psFind.executeQuery()) {
+                        if (rs.next()) {
+                            foundUserId = rs.getInt("user_id");
+                        }
+                    }
+                    
+                    if (foundUserId != -1) {
+                        Notification.createNotification(connection, foundUserId, "CHORES", "Chore Assigned", "New chore for " + duty, "chores screen", "#D1FAE5");
+                        System.out.println("[DEBUG] New chore notification sent to user ID: " + foundUserId);
+                    } else {
+                        System.err.println("[WARNING] Could not find user_id for newly assigned chore to: " + duty);
+                    }
+                }
+            } catch (SQLException e1) {
+                System.err.println("Error during Notification create in chore screen : " + e1.getMessage());
+                e1.printStackTrace();
+            }
         });
         form.show();
     }

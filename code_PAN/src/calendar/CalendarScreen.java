@@ -122,7 +122,15 @@ public class CalendarScreen {
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, ev.getEventId());
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            
+            // ΔΙΟΡΘΩΘΗΚΕ: Αποστολή ειδοποίησης χωρίς να αναφέρεται ποιος το διέγραψε
+            if (rowsAffected > 0) {
+                String notifText = "Διαγραφή event στο ημερολόγιο";
+                String notifDetail = "Το συμβάν '" + ev.getName() + "' διαγράφηκε.";
+                entities.Notification.createNotificationToRoom(conn, "CALENDAR", notifText, notifDetail, "CALENDAR_SCREEN", "#06B6D4");
+            }
+            
             calendar.removeEvent(ev);
         } catch (SQLException e) {
             System.err.println("Database delete error: " + e.getMessage());
@@ -146,12 +154,10 @@ public class CalendarScreen {
         return false;
     }
 
- // ΔΙΟΡΘΩΘΗΚΕ: Έλεγχος πλειοψηφίας με >= ώστε να λειτουργεί σωστά και για 2 άτομα
     private void registerUserVote(Event ev, int userId, int roomId, String voteType) {
         String logQuery = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseManager.getConnection()) {
-            // 1. Καταγραφή της ψήφου του τρέχοντος χρήστη
             try (PreparedStatement stmt = conn.prepareStatement(logQuery)) {
                 stmt.setInt(1, userId);
                 stmt.setInt(2, roomId);
@@ -164,7 +170,6 @@ public class CalendarScreen {
                 stmt.executeUpdate();
             }
 
-            // 2. Μάθε πόσοι συνολικά χρήστες μένουν σε αυτό το δωμάτιο
             int totalRoommates = 1;
             String countRoommates = "SELECT COUNT(*) FROM users WHERE room_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(countRoommates)) {
@@ -176,7 +181,6 @@ public class CalendarScreen {
                 }
             }
 
-            // 3. Υπολογισμός των 'NO' ψήφων που έχουν συγκεντρωθεί μέχρι τώρα
             int noVotes = 0;
             String countNo = "SELECT COUNT(*) FROM notifications WHERE category = 'CALENDAR_VOTE' AND room_id = ? AND notification_text = ?";
             try (PreparedStatement stmt = conn.prepareStatement(countNo)) {
@@ -189,13 +193,13 @@ public class CalendarScreen {
                 }
             }
 
-            // ΕΛΕΓΧΟΣ ΑΠΟΡΡΙΨΗΣ: Αλλαγή σε >= ώστε αν 1 στους 2 ψηφίσει Όχι, το event να διαγράφεται αμέσως
             if (noVotes >= (totalRoommates / 2.0)) {
+                // Αν απορριφθεί από την ψηφοφορία, καλείται η deleteEventFromDatabase
+                // η οποία πλέον στέλνει την ειδοποίηση "Το συμβάν '...' διαγράφηκε." αυτόματα.
                 deleteEventFromDatabase(ev);
                 return;
             }
 
-            // 4. Υπολογισμός των 'YES' ψήφων που έχουν συγκεντρωθεί μέχρι τώρα
             int yesVotes = 0;
             String countYes = "SELECT COUNT(*) FROM notifications WHERE category = 'CALENDAR_VOTE' AND room_id = ? AND notification_text = ?";
             try (PreparedStatement stmt = conn.prepareStatement(countYes)) {
@@ -208,7 +212,6 @@ public class CalendarScreen {
                 }
             }
 
-            // ΕΛΕΓΧΟΣ ΕΓΚΡΙΣΗΣ: Αν τα '✓' είναι περισσότερα από τους μισούς συγκατοίκους, αλλάζει σε σκούρο πράσινο
             if (yesVotes > (totalRoommates / 2.0)) {
                 String acceptQuery = "UPDATE calendar_events SET is_accepted = 1 WHERE event_id = ?";
                 try (PreparedStatement stmt = conn.prepareStatement(acceptQuery)) {
@@ -447,7 +450,6 @@ public class CalendarScreen {
             timeAndTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
             timeAndTitle.setStyle("-fx-cursor: hand;"); 
             
-            // ΔΙΑΤΗΡΗΣΗ ΑΥΘΕΝΤΙΚΩΝ ΧΡΩΜΑΤΩΝ
             if (ev.getType().equals("BILL")) {
                 timeAndTitle.setTextFill(Color.DARKRED);
             } else if (ev.getType().equals("ISSUE")) {

@@ -2,6 +2,7 @@ package calendar;
 
 import entities.Calendar;
 import entities.Event;
+import entities.Notification;
 import ui.ErrorScreen;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -239,7 +240,6 @@ public class EventScreen {
     }
 
     private void populateFieldsWithEvent() {
-        // ΔΙΟΡΘΩΘΗΚΕ: Έλεγχος ώστε να μην εκτελείται το populate αν τα textfields δεν έχουν αρχικοποιηθεί (isViewMode)
         if (eventToView != null && titleField != null && hourSpinner != null && minuteSpinner != null && descField != null) {
             titleField.setText(eventToView.getName());
             int rawTime = eventToView.getTime();
@@ -275,9 +275,12 @@ public class EventScreen {
 
             int currentRoomId = 0;
             int currentUserId = 0;
+            String creatorUsername = "Κάποιος συγκάτοικος";
+            
             if (entities.Authentication.getCurrentUser() != null) {
                 currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
                 currentUserId = entities.Authentication.getCurrentUser().getId();
+                creatorUsername = entities.Authentication.getCurrentUser().getUsername();
             }
 
             if (currentRoomId <= 0) {
@@ -339,7 +342,7 @@ public class EventScreen {
                         }
                     }
                     
-                    // ΛΟΓΙΚΗ ΠΛΕΙΟΨΗΦΙΑΣ: Αν η 1 ψήφος του δημιουργού είναι > από το μισό των συγκατοίκων (π.χ. σε δωμάτιο με 1 ή 2 άτομα)
+                    // ΛΟΓΙΚΗ ΠΛΕΙΟΨΗΦΙΑΣ
                     if (1 > (totalRoommates / 2.0)) {
                         String acceptQuery = "UPDATE calendar_events SET is_accepted = 1 WHERE event_id = ?";
                         try (PreparedStatement acceptStmt = conn.prepareStatement(acceptQuery)) {
@@ -349,6 +352,11 @@ public class EventScreen {
                         }
                     }
                 }
+                
+                // ΑΠΟΣΤΟΛΗ ΕΙΔΟΠΟΙΗΣΗΣ ΣΕ ΟΛΟ ΤΟ ΔΩΜΑΤΙΟ ΓΙΑ ΤΟ ΝΕΟ ΣΥΜΒΑΝ
+                String notifText = "Νέο event στο ημερολόγιο";
+                String notifDetail = "Ο/Η " + creatorUsername + " πρόσθεσε το συμβάν: '" + name + "' για τις " + date + "/" + month + "/" + year + ".";
+                Notification.createNotificationToRoom(conn, "CALENDAR", notifText, notifDetail, "CALENDAR_SCREEN", "#06B6D4");
                 
                 conn.commit();
                 calendar.addEvent(newEvent);
