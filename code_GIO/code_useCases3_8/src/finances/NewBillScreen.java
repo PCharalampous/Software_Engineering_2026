@@ -210,6 +210,9 @@ public class NewBillScreen extends VBox {
             // 2. Προσθήκη της στήλης approval_status στην INSERT
             String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status, approval_status) VALUES (?, ?, ?, ?, ?, 'Pending', ?)";
             String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 0900, 'BILL')";
+            String notificationSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, 'FINANCES', '#25880d', 0)";  
+            // SQL για να βρούμε το user_id του επιλεγμένου συγκατοίκου
+            String findUserSql = "SELECT user_id FROM users WHERE username = ? AND room_id = ?";
 
             try (Connection conn = DatabaseManager.getConnection()) {
                 conn.setAutoCommit(false); 
@@ -233,6 +236,67 @@ public class NewBillScreen extends VBox {
                         pstmt2.setString(4, date);
                         pstmt2.executeUpdate();
                     }
+                }
+                else {
+                    // Γ: Αποστολή ειδοποιήσεων σε ΟΛΟΥΣ τους επιλεγμένους χρήστες
+                    String creator = currentUsername.isEmpty() ? "A roommate" : currentUsername;
+                    
+                    // Λίστα για να αποθηκεύσουμε τα user_id των παραληπτών
+                    java.util.List<Integer> targetUserIds = new java.util.ArrayList<>();
+
+                    // 🌟 ΝΕΟΣ ΕΛΕΓΧΟΣ: Αν επιλέχθηκε το "All Roommates" shortcut string
+                    if (payers.trim().equalsIgnoreCase("All Roommates")) {
+                        String findAllRoommatesSql = "SELECT user_id, username FROM users WHERE room_id = ?";
+                        try (PreparedStatement pstmtAll = conn.prepareStatement(findAllRoommatesSql)) {
+                            pstmtAll.setInt(1, currentRoomId);
+                            try (ResultSet rs = pstmtAll.executeQuery()) {
+                                while (rs.next()) {
+                                    String rName = rs.getString("username");
+                                    // ΚΑΝΟΝΑΣ: Δεν στέλνουμε ειδοποίηση στον εαυτό μας
+                                    if (!rName.equalsIgnoreCase(currentUsername)) {
+                                        targetUserIds.add(rs.getInt("user_id"));
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // Αν είναι απλή comma-separated λίστα (π.χ. "Alex, Maria")
+                        String[] targetUsers = payers.split(",");
+                        for (String userRaw : targetUsers) {
+                            String targetUsername = userRaw.trim();
+
+                            if (targetUsername.equalsIgnoreCase(currentUsername) || targetUsername.equalsIgnoreCase("Only Me")) {
+                                continue; 
+                            }
+
+                            try (PreparedStatement pstmtFind = conn.prepareStatement(findUserSql)) {
+                                pstmtFind.setString(1, targetUsername);
+                                pstmtFind.setInt(2, currentRoomId);
+                                try (ResultSet rs = pstmtFind.executeQuery()) {
+                                    if (rs.next()) {
+                                        targetUserIds.add(rs.getInt("user_id"));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Εισαγωγή ξεχωριστής ειδοποίησης FINANCES για κάθε user_id που βρέθηκε
+                    for (int targetUserId : targetUserIds) {
+                        try (PreparedStatement pstmtNotif = conn.prepareStatement(notificationSql)) {
+                            pstmtNotif.setInt(1, targetUserId);
+                            pstmtNotif.setInt(2, currentRoomId);
+                            pstmtNotif.setString(3, "FINANCES");
+                            pstmtNotif.setString(4, "Bill Approval");
+                            
+                            String structuralDetails = creator + " added you as a payer for the new bill:\n" +
+                                                       "Type: " + type + "\n" +
+                                                       "Amount: " + amount + "€";
+                            pstmtNotif.setString(5, structuralDetails); 
+                            pstmtNotif.executeUpdate();
+                        }
+                    }
+                    System.out.println("[FINANCES ENGINE] Dispatched independent approval requests to all roommates.");
                 }
 
                 conn.commit(); 
