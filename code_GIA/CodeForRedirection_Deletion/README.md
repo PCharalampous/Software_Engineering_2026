@@ -1,1 +1,1 @@
-
+Οι κύριες αλλαγές έγιναν στο NotificationsScreen, NotificationDetailsScreen. Στο Notification άλλαξε η fetchNotificationsForUser και προσθέθηκε να παίρνει το notification_id. Τέλος στη main(HOMYApp) οι μέθοδοι openChores, openRewards έγιναν public.
