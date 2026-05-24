@@ -207,48 +207,127 @@ public class NewIssueScreen extends VBox {
         return;
     }
 
-    // 1. ΝΕΑ ΛΟΓΙΚΗ ΕΓΚΡΙΣΗΣ: Υπολογισμός του αρχικού approval_status
+    // 1. Υπολογισμός αρχικού approval_status
     String currentUsername = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getUsername() : "";
     String calculatedApprovalStatus = "Pending_Approval";
     if (payersText.equalsIgnoreCase("Only Me") || payersText.equalsIgnoreCase(currentUsername)) {
         calculatedApprovalStatus = "Accepted";
     }
 
-    // Ενημέρωση του αντικειμένου με το νέο πεδίο approvalStatus
+    // Ενημέρωση του τοπικού αντικειμένου Issue
     Issue newIssue = new Issue(
         typeField.getText().trim(),
         reportedComboBox.getValue(),
         payersText, 
         datePicker.getValue() != null ? datePicker.getValue().toString() : LocalDate.now().toString(),
-        calculatedApprovalStatus // Προσθήκη εδώ
+        calculatedApprovalStatus
     );
     
     int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
-    
-    // 2. ΕΝΗΜΕΡΩΣΗ SQL: Προσθήκη του column approval_status στο INSERT
-    String sql = "INSERT INTO issues (room_id, issue_type, reported_by, payers, issue_date, approval_status) VALUES (?, ?, ?, ?, ?, ?)";
+    String issueType = typeField.getText().trim();
+    String issueDate = datePicker.getValue() != null ? datePicker.getValue().toString() : LocalDate.now().toString();
 
-    try (Connection conn = DatabaseManager.getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        
-        pstmt.setInt(1, currentRoomId);
-        pstmt.setString(2, typeField.getText().trim());
-        pstmt.setString(3, reportedComboBox.getValue());
-        pstmt.setString(4, payersField.getText().trim());
-        pstmt.setString(5, datePicker.getValue() != null ? datePicker.getValue().toString() : LocalDate.now().toString());
-        pstmt.setString(6, calculatedApprovalStatus); // ← Προσθήκη παραμέτρου εδώ
-        
-        pstmt.executeUpdate();
+    // 2. SQL Queries για εγγραφή σε Issues, Calendar και Notifications
+    String sqlIssues = "INSERT INTO issues (room_id, issue_type, reported_by, payers, issue_date, approval_status) VALUES (?, ?, ?, ?, ?, ?)";
+    String sqlCalendar = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 1200, 'ISSUE')";
+    String sqlNotification = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, 'ISSUES', '#a855f7', 0)";
+    String findUserSql = "SELECT user_id FROM users WHERE username = ? AND room_id = ?";
+
+    try (Connection conn = DatabaseManager.getConnection()) {
+        conn.setAutoCommit(false); // Έναρξη Transaction για απόλυτη ασφάλεια δεδομένων
+
+        // Α: Εισαγωγή στον πίνακα των Issues
+        try (PreparedStatement pstmtIssue = conn.prepareStatement(sqlIssues)) {
+            pstmtIssue.setInt(1, currentRoomId);
+            pstmtIssue.setString(2, issueType);
+            pstmtIssue.setString(3, reportedComboBox.getValue());
+            pstmtIssue.setString(4, payersText);
+            pstmtIssue.setString(5, issueDate);
+            pstmtIssue.setString(6, calculatedApprovalStatus);
+            pstmtIssue.executeUpdate();
+        }
+
+        // Β: Αν εγκριθεί αυτόματα -> Προσθήκη απευθείας στο Calendar!
+        if (calculatedApprovalStatus.equals("Accepted")) {
+            try (PreparedStatement pstmtCal = conn.prepareStatement(sqlCalendar)) {
+                pstmtCal.setInt(1, currentRoomId);
+                pstmtCal.setString(2, "Issue: " + issueType);
+                pstmtCal.setString(3, "Reported by: " + reportedComboBox.getValue() + " | Payers: " + payersText);
+                pstmtCal.setString(4, issueDate);
+                pstmtCal.executeUpdate();
+            }
+        } 
+       else {
+            // Γ: Αποστολή ειδοποιήσεων σε ΟΛΟΥΣ τους επιλεγμένους χρήστες
+            String creator = currentUsername.isEmpty() ? "A roommate" : currentUsername;
+            
+            java.util.List<Integer> targetUserIds = new java.util.ArrayList<>();
+
+            // 🌟 ΝΕΟΣ ΕΛΕΓΧΟΣ: Αν επιλέχθηκε το "All Roommates" shortcut string
+            if (payersText.trim().equalsIgnoreCase("All Roommates")) {
+                String findAllRoommatesSql = "SELECT user_id, username FROM users WHERE room_id = ?";
+                try (PreparedStatement pstmtAll = conn.prepareStatement(findAllRoommatesSql)) {
+                    pstmtAll.setInt(1, currentRoomId);
+                    try (ResultSet rs = pstmtAll.executeQuery()) {
+                        while (rs.next()) {
+                            String rName = rs.getString("username");
+                            if (!rName.equalsIgnoreCase(currentUsername)) {
+                                targetUserIds.add(rs.getInt("user_id"));
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Αν είναι απλή comma-separated λίστα
+                String[] targetUsers = payersText.split(",");
+                for (String userRaw : targetUsers) {
+                    String targetUsername = userRaw.trim();
+
+                    if (targetUsername.equalsIgnoreCase(currentUsername) || targetUsername.equalsIgnoreCase("Only Me")) {
+                        continue; 
+                    }
+
+                    try (PreparedStatement pstmtFind = conn.prepareStatement(findUserSql)) {
+                        pstmtFind.setString(1, targetUsername);
+                        pstmtFind.setInt(2, currentRoomId);
+                        try (ResultSet rs = pstmtFind.executeQuery()) {
+                            if (rs.next()) {
+                                targetUserIds.add(rs.getInt("user_id"));
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Εισαγωγή ξεχωριστής ειδοποίησης ISSUES για κάθε user_id που βρέθηκε
+            for (int targetUserId : targetUserIds) {
+                try (PreparedStatement pstmtNotif = conn.prepareStatement(sqlNotification)) {
+                    pstmtNotif.setInt(1, targetUserId);
+                    pstmtNotif.setInt(2, currentRoomId);
+                    pstmtNotif.setString(3, "HOME ISSUE REPORT");
+                    pstmtNotif.setString(4, "Issue Approval");
+                    
+                    String structuralDetails = "Roomate '" + creator + "' added you as a payer for the new issue:\n" +
+                                               "Type: " + issueType;
+                    
+                    pstmtNotif.setString(5, structuralDetails);
+                    pstmtNotif.executeUpdate();
+                }
+            }
+            System.out.println("[NOTIFICATION ENGINE] Dispatched independent approval requests to all roommates.");
+        }
+        conn.commit(); // Οριστικοποίηση αλλαγών στη βάση δεδομένων
         
     } catch (Exception e) {
         ErrorScreen.show("Error saving to database: " + e.getMessage());
+        e.printStackTrace();
     }
 
-    // 3. ΕΛΕΓΧΟΣ ΠΡΙΝ ΤΗΝ ΕΜΦΑΝΙΣΗ: Προσθήκη στη λίστα του UI ΜΟΝΟ αν έγινε αυτόματα Accepted
+    // 3. Ενημέρωση της τοπικής λίστας του UI μόνο αν έγινε αυτόματα δεκτό
     if (calculatedApprovalStatus.equals("Accepted")) {
         HomeIssueScreen.allIssues.add(newIssue);
     }
     
     onCancel.run();
-}
+    }
 }
