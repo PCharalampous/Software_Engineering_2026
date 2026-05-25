@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>168</x>
+      <y>488</y>
+      <w>64</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Χρήστης</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>264</x>
+      <y>480</y>
+      <w>80</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Οθόνη
+	  
+	  
+	  
+	  Shopping List
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>848</x>
+      <y>944</y>
+      <w>72</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Entity Element
+Επιμερισμοί
+	      
+_umletcode=
+fg=red
+bg=red
+// Entity Symbol
+drawCircle(25, 50, 20)
+drawLine(5, 70, 45, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>640</x>
+      <y>208</y>
+      <w>96</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Προσθέτει προϊόν
+	     
+	     
+	     
+στο "Main List"    
+_umletcode=
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>440</x>
+      <y>328</y>
+      <w>80</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Εμφανίζει 
+	     
+	     
+	  
+οθόνη Item
+	     
+_umletcode=
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>512</y>
+      <w>48</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>360</y>
+      <w>176</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+Επιλέγει "+"
+δίπλα στο "Main List"
+</panel_attributes>
+    <additional_attributes>10.0;200.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>240</y>
+      <w>64</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>60.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>336</x>
+      <y>208</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Οθόνη
+	  
+	  
+	  
+	  Item
+	  
+_umletcode=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>240</y>
+      <w>184</w>
+      <h>296</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+Συμπληρώνει τα 
+στοιχεία του προϊόντος</panel_attributes>
+    <additional_attributes>10.0;350.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>232</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+Ορθό</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>240</y>
+      <w>104</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>640</x>
+      <y>480</y>
+      <w>112</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Μεταφέρει το προϊόν
+	     
+	     
+	     
+στα "Checked Items"
+	     
+_umletcode=
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>504</y>
+      <w>320</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+Επιλέγει ένα προϊόν
+από το "Main List"</panel_attributes>
+    <additional_attributes>10.0;20.0;380.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>504</x>
+      <y>208</y>
+      <w>56</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Ελέγχει
+
+
+
+ορθότητα
+	     
+_umletcode=
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>744</x>
+      <y>336</y>
+      <w>88</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;230.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>232</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+Πατάει "Confirm"</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>160</y>
+      <w>56</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Λάθος</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>648</x>
+      <y>552</y>
+      <w>80</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Ενεργοποιεί τη
+	     
+	     
+	  
+λειτουργεία 
+"Make a split"
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>416</x>
+      <y>104</y>
+      <w>64</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Επιστρέφει
+
+
+
+στην Οθόνη
+Item
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>136</y>
+      <w>40</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>512</y>
+      <w>328</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Επιλέγει "Add Receipt" και
+ανεβάζει την απόδειξη</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>840</x>
+      <y>560</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Εμφανίζει 
+	     
+	     
+	  
+οθόνη Split
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>584</y>
+      <w>136</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Επιλέγει 
+"Make a split"</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>640</x>
+      <y>104</y>
+      <w>104</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Ανανεώνει προϊόν 
+	     
+	     
+	  
+στο "Main List"  
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>392</x>
+      <y>1072</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Boundary Element
+	  Οθόνη
+	  
+	  
+	  
+	  Split
+	  
+_umletcode=
+fg=red
+bg=red
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>592</y>
+      <w>408</w>
+      <h>536</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>490.0;10.0;10.0;650.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>512</y>
+      <w>176</w>
+      <h>616</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Επιλέγει ποιος
+πλήρωσε για
+  τα ψώνια</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;750.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>680</x>
+      <y>1072</y>
+      <w>64</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Δημιουργεί
+	     
+	     
+	  
+επιμερισμό
+με γκρι 
+χρώμα
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>1096</y>
+      <w>248</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Συμπληρώνει τα στοιχεία 
+του επιμερισμού και πατάει "Confirm"</panel_attributes>
+    <additional_attributes>10.0;20.0;290.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>976</y>
+      <w>128</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;170.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>816</x>
+      <y>304</y>
+      <w>56</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+Προϊόντα
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(25, 50, 20)
+drawLine(5, 70, 45, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>832</x>
+      <y>1072</y>
+      <w>120</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Στέλνει ειδοποίηση
+	     
+	     
+	  
+με τίτλο "SHOPPING"
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>1104</y>
+      <w>112</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>672</x>
+      <y>320</y>
+      <w>72</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Διαγράφει το
+	     
+	     
+	  
+προϊόν
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>384</y>
+      <w>408</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Πατάει "Χ"</panel_attributes>
+    <additional_attributes>10.0;170.0;490.0;90.0;450.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>144</y>
+      <w>128</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Υπάρχει ήδη</panel_attributes>
+    <additional_attributes>10.0;130.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>512</y>
+      <w>280</w>
+      <h>488</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Eπιλέγει "Done" σε
+επιμερισμό με γρι χρώμα</panel_attributes>
+    <additional_attributes>10.0;10.0;330.0;590.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>600</x>
+      <y>944</y>
+      <w>80</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Αλλάζει τον
+	     
+	     
+	  
+επιμερισμό σε
+μάυρο χρώμα
+και τον
+κλειδώνει
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>512</y>
+      <w>184</w>
+      <h>304</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Eπιλέγει "Εdit" σε
+επιμερισμό με γρι χρώμα</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;360.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>392</x>
+      <y>800</y>
+      <w>64</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Εμφανίζει
+	     
+	     
+	  
+οθόνη Split
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>416</x>
+      <y>864</y>
+      <w>24</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>136</y>
+      <w>96</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>408</y>
+      <w>264</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Επιλέγει ένα προϊόν
+από τα "Checked Items"</panel_attributes>
+    <additional_attributes>10.0;140.0;310.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>584</x>
+      <y>368</y>
+      <w>72</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Εμφανίζει 
+	     
+	     
+	  
+ανανεωμένη
+οθόνη Item
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>240</y>
+      <w>208</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>240.0;220.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>520</x>
+      <y>96</y>
+      <w>72</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Boundary Element
+	  Οθόνη
+	  
+	  
+	  
+	  Σφάλματος
+	  
+_umletcode=
+fg=red
+bg=red
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)	 
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>472</x>
+      <y>128</y>
+      <w>64</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>976</x>
+      <y>960</y>
+      <w>72</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Entity Element
+Ειδοποιήσεις	      
+_umletcode=
+fg=red
+bg=red
+// Entity Symbol
+drawCircle(25, 50, 20)
+drawLine(5, 70, 45, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>944</x>
+      <y>1016</y>
+      <w>64</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;120.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>336</y>
+      <w>96</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;30.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>968</y>
+      <w>192</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Eπιλέγει "Done" σε
+επιμερισμό με γρι χρώμα</panel_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>512</y>
+      <w>264</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;
+Eπιλέγει "Delete" σε
+επιμερισμό με γρι χρώμα</panel_attributes>
+    <additional_attributes>10.0;10.0;310.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>584</x>
+      <y>656</y>
+      <w>80</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>fg=red
+bg=red
+// Control Element
+Διαγράφει τον
+	     
+	     
+	  
+επιμερισμό
+_umletcode=
+fg=red
+bg=red
+// Control Symbol
+drawCircle(30, 50, 20)
+drawLine(24, 31, 34, 21)
+drawLine(24, 31, 34, 41)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>656</x>
+      <y>688</y>
+      <w>208</w>
+      <h>312</h>
+    </coordinates>
+    <panel_attributes>fg=red
+lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;370.0</additional_attributes>
+  </element>
+</diagram>
