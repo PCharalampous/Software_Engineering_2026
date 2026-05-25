@@ -1,1 +1,0 @@
-project name: HOMY_project_software_engeneering
