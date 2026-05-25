@@ -288,7 +288,7 @@ public class HOMYApp extends Application {
               s.setScene(new Scene(new HBox(sb, new RewardScreen(sb)), 950, 600)); s.show(); } catch(Exception e){ e.printStackTrace(); }
     }
     
-    private static void openShopping() { 
+    public static void openShopping() { 
         mainStage.hide(); new ShoppingListScreen(() -> mainStage.show()).display(); 
     }
     
@@ -312,7 +312,7 @@ public class HOMYApp extends Application {
         
     }
     
-    private static void openCalendar() { 
+    public static void openCalendar() { 
         mainStage.hide(); new CalendarScreen(() -> mainStage.show()).display(); 
     }
     

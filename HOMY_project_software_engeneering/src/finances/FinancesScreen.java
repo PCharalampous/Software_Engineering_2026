@@ -318,13 +318,36 @@ public class FinancesScreen extends VBox {
                     pstmt.executeUpdate();
                 }
 
-                int totalRoommates = 1;
-                String countRoommatesSql = "SELECT COUNT(*) FROM users WHERE room_id = ?";
-                try (PreparedStatement pstmtCount = conn.prepareStatement(countRoommatesSql)) {
-                    pstmtCount.setInt(1, currentRoomId);
-                    try (ResultSet rs = pstmtCount.executeQuery()) {
-                        if (rs.next()) totalRoommates = rs.getInt(1);
+                int requiredApproveVotes = 1; 
+                String payersStr = bill.getPayers().trim();
+
+                if (payersStr.equalsIgnoreCase("All Roommates")) {
+                    int totalHouseRoommates = 1;
+                    String countRoommatesSql = "SELECT COUNT(*) FROM users WHERE room_id = ?";
+                    try (PreparedStatement pstmtCount = conn.prepareStatement(countRoommatesSql)) {
+                        pstmtCount.setInt(1, currentRoomId);
+                        try (ResultSet rs = pstmtCount.executeQuery()) {
+                            if (rs.next()) totalHouseRoommates = rs.getInt(1);
+                        }
                     }
+                    requiredApproveVotes = totalHouseRoommates - 1; 
+                } else {
+                    String[] targetedUsers = payersStr.split(",");
+                    requiredApproveVotes = targetedUsers.length;
+
+                    // 🌟 FIX: If the creator explicitly included themselves in the text list, 
+                    // subtract 1 because creators are blocked from voting.
+                    String creator = bill.getCreatorUsername() != null ? bill.getCreatorUsername().toLowerCase().trim() : "";
+                    for (String user : targetedUsers) {
+                        if (user.toLowerCase().trim().equalsIgnoreCase(creator)) {
+                            requiredApproveVotes--;
+                            break;
+                        }
+                    }
+                }
+
+                if (requiredApproveVotes < 1) {
+                    requiredApproveVotes = 1;
                 }
 
                 int currentApproveVotes = 0;
@@ -338,7 +361,7 @@ public class FinancesScreen extends VBox {
                     }
                 }
 
-                if (currentApproveVotes >= (totalRoommates - 1)) {
+                if (currentApproveVotes >= requiredApproveVotes) {
                     String finalizeSql = "UPDATE bills SET approval_status = 'Accepted' WHERE room_id = ? AND bill_type = ? AND bill_date = ?";
                     try (PreparedStatement pstmtFinal = conn.prepareStatement(finalizeSql)) {
                         pstmtFinal.setInt(1, currentRoomId);

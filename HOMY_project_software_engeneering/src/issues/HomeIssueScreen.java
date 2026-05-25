@@ -262,13 +262,36 @@ public class HomeIssueScreen extends VBox {
                     pstmt.executeUpdate();
                 }
 
-                int totalRoommates = 1;
-                String countRoommatesSql = "SELECT COUNT(*) FROM users WHERE room_id = ?";
-                try (PreparedStatement pstmtCount = conn.prepareStatement(countRoommatesSql)) {
-                    pstmtCount.setInt(1, currentRoomId);
-                    try (ResultSet rs = pstmtCount.executeQuery()) {
-                        if (rs.next()) totalRoommates = rs.getInt(1);
+                int requiredApproveVotes = 1; 
+                String payersStr = issue.getPayers().trim();
+
+                if (payersStr.equalsIgnoreCase("All Roommates")) {
+                    int totalHouseRoommates = 1;
+                    String countRoommatesSql = "SELECT COUNT(*) FROM users WHERE room_id = ?";
+                    try (PreparedStatement pstmtCount = conn.prepareStatement(countRoommatesSql)) {
+                        pstmtCount.setInt(1, currentRoomId);
+                        try (ResultSet rs = pstmtCount.executeQuery()) {
+                            if (rs.next()) totalHouseRoommates = rs.getInt(1);
+                        }
                     }
+                    requiredApproveVotes = totalHouseRoommates - 1; 
+                } else {
+                    String[] targetedUsers = payersStr.split(",");
+                    requiredApproveVotes = targetedUsers.length;
+
+                    // 🌟 FIX: If the reporter explicitly included themselves in the text list,
+                    // subtract 1 because reporters are blocked from voting.
+                    String reporter = issue.getReportedBy() != null ? issue.getReportedBy().toLowerCase().trim() : "";
+                    for (String user : targetedUsers) {
+                        if (user.toLowerCase().trim().equalsIgnoreCase(reporter)) {
+                            requiredApproveVotes--;
+                            break;
+                        }
+                    }
+                }
+
+                if (requiredApproveVotes < 1) {
+                    requiredApproveVotes = 1;
                 }
 
                 int currentApproveVotes = 0;
@@ -282,7 +305,7 @@ public class HomeIssueScreen extends VBox {
                     }
                 }
 
-                if (currentApproveVotes >= (totalRoommates - 1)) {
+                if (currentApproveVotes >= requiredApproveVotes) {
                     String finalizeSql = "UPDATE issues SET approval_status = 'Accepted' WHERE room_id = ? AND issue_type = ? AND issue_date = ?";
                     try (PreparedStatement pstmtFinal = conn.prepareStatement(finalizeSql)) {
                         pstmtFinal.setInt(1, currentRoomId);

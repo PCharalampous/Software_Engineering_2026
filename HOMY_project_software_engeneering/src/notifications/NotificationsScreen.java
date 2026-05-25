@@ -93,8 +93,14 @@ public class NotificationsScreen {
             System.out.println("[NAV DEBUG] Redirecting to Chores Module...");
             main.HOMYApp.openChores();
         }
-                
-          
+        else if (cleanTarget.contains("SHOPPING")) {
+            System.out.println("[NAV DEBUG] Redirecting to Shopping List Module...");
+            main.HOMYApp.openShopping();
+        }
+        else if (cleanTarget.contains("CALENDAR")) {
+            System.out.println("[NAV DEBUG] Redirecting to Calendar Module...");
+            main.HOMYApp.openCalendar();
+        }
     }
 
     // Βοηθητική μέθοδος για να κλείνουμε το Stage των Notifications απ' έξω
