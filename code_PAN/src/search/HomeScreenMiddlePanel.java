@@ -6,6 +6,7 @@ import entities.User;
 import myapplications.SuccessScreen;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -17,8 +18,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ui.ConfirmationScreen;
+import ui.ErrorScreen;
 import main.HOMYApp;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,11 +149,11 @@ public class HomeScreenMiddlePanel {
 		Label locLbl = new Label(String.format("📍 %s  •  👥 %d Roommates wanted", app.getLocation(), app.getRoommates()));
 		locLbl.setStyle("-fx-text-fill: #64748B; -fx-font-size: 12px;");
 
-		Label descLbl = new Label(app.getDescription());
+		Label descLbl = new Label();
 		descLbl.setStyle("-fx-text-fill: #1E293B; -fx-font-size: 13px;");
 		descLbl.setWrapText(true);
 
-		Button connectBtn = new Button("View & Connect");
+		Button connectBtn = new Button("Apply");
 		connectBtn.setMaxWidth(Double.MAX_VALUE);
 		connectBtn.setStyle("-fx-background-color: #0000FF; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;");
 		
@@ -171,15 +174,53 @@ public class HomeScreenMiddlePanel {
 							//
 						} else {
 							System.err.println("Αποτυχία δημιουργίας εκκρεμούς αιτήματος.");
+							ErrorScreen errScr = new ErrorScreen("Request failed", 
+	                                 "Your Request did not send! Something went wrong!");
+	                         errScr.show();
 						}
 					}
 				}
 			);
 			confirScr.show();
 		});
-
+		
+		// 2. NEW: VBox Card Click Action (Opens Details Popup)
+	    card.setOnMouseClicked(e -> {
+	        showApplicationDetailsPopup(app);
+	    });
+		
 		card.getChildren().addAll(row, locLbl, descLbl, connectBtn);
 		return card;
+	}
+	
+	private void showApplicationDetailsPopup(Application app) {
+	    Stage popupStage = new Stage();
+	    popupStage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with background windows
+	    popupStage.setTitle("Application Details: " + app.getTitle());
+
+	    VBox layout = new VBox(15);
+	    layout.setStyle("-fx-padding: 20; -fx-background-color: #F8FAFC;");
+
+	    // Add all the details you want the user to see
+	    Label titleLabel = new Label(app.getTitle());
+	    titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1E293B;");
+
+	    Label rentLabel = new Label("Rent: " + String.format("%.0f €/month", app.getRent()));
+	    rentLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #14B8A6;");
+
+	    Label detailsLabel = new Label("Full Description:\n" + app.getDescription());
+	    detailsLabel.setWrapText(true);
+	    detailsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #334155;");
+
+	    Button closeBtn = new Button("Close");
+	    closeBtn.setStyle("-fx-background-color: #64748B; -fx-text-fill: white; -fx-background-radius: 4; -fx-padding: 6 12;");
+	    closeBtn.setOnAction(e -> popupStage.close());
+
+	    layout.getChildren().addAll(titleLabel, rentLabel, detailsLabel, closeBtn);
+
+	    Scene scene = new Scene(layout, 400, 400);
+	    popupStage.setScene(scene);
+	    popupStage.showAndWait();
 	}
 	
 	private HBox rentRangeComponent() {

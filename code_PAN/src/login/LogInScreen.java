@@ -1,6 +1,8 @@
 package login;
 
 
+import javafx.scene.image.Image;
+
 import java.sql.Connection;
 
 import javafx.application.Application;
@@ -16,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 
 public class LogInScreen {
@@ -35,8 +39,26 @@ public class LogInScreen {
 		
 		Label label = new Label("Log In!");
         VBox root = new VBox(5);
-        Scene loginScene = new Scene(root, 500, 400);
+        Scene loginScene = new Scene(root, 600, 500);
         HBox hbox = new HBox(5);
+        try {
+            // 1. Load the image from the classpath
+            Image img = new Image(getClass().getResourceAsStream("logoHOMY.png"));
+            
+            // 2. Wrap it inside an ImageView node
+            ImageView imageView = new ImageView(img);
+            
+            // 3. Optional: Resize the image while maintaining its aspect ratio
+            imageView.setFitWidth(200);  // Set target width in pixels
+            imageView.setPreserveRatio(true); // Prevent stretching
+            imageView.setSmooth(true);        // Improves scaling quality
+            
+            // 4. Add it to your HBox alongside your other nodes
+            root.getChildren().add(imageView);
+            
+        } catch (NullPointerException e) {
+            System.err.println("Error: Could not find the image file! Check your file path.");
+        }
         
         logINstage.setScene(loginScene);
         logINstage.setTitle("HOMY Login Page");

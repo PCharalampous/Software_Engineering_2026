@@ -55,6 +55,7 @@ private Stage homeScrStage;
         
         homeScrStage.setResizable(false);
         homeScrStage.show();
+        homeScrStage.centerOnScreen();
         
     }
 

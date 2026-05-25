@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 //import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -33,12 +35,31 @@ private Stage primaryStage;
         Label label = new Label("Create Account!");
 
         VBox root = new VBox(5);
-        Scene loginScene = new Scene(root, 500, 400);
+        Scene loginScene = new Scene(root, 700, 600);
         HBox hbox = new HBox(5);
         
         primaryStage.setScene(loginScene);
         primaryStage.setTitle("HOMY Sign Up Page");
         
+        try {
+            // 1. Load the image from the classpath
+            Image img = new Image(getClass().getResourceAsStream("logoHOMY.png"));
+            
+            // 2. Wrap it inside an ImageView node
+            ImageView imageView = new ImageView(img);
+            
+            // 3. Optional: Resize the image while maintaining its aspect ratio
+            imageView.setFitWidth(200);  // Set target width in pixels
+            
+            imageView.setPreserveRatio(true); // Prevent stretching
+            imageView.setSmooth(true);        // Improves scaling quality
+            
+            // 4. Add it to your HBox alongside your other nodes
+            root.getChildren().add(imageView);
+            
+        } catch (NullPointerException e) {
+            System.err.println("Error: Could not find the image file! Check your file path.");
+        }
         
         innerPanel = new LogInPanel(primaryStage);
         innerPanel.addToPanelComponentsForSignUp();

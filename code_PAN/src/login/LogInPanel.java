@@ -117,14 +117,22 @@ public class LogInPanel extends GridPane {
                 	        // Αν ο χρήστης έχει ήδη δωμάτιο (είτε επειδή ήταν Owner είτε επειδή έγινε Accept)
                 	        System.out.println("Ο χρήστης ανήκει σε δωμάτιο. Ανακατεύθυνση στο Central Hub...");
                 	        main.HOMYApp.showCentralHub(); 
+                	        
                 	    } else {
                 	        // Αν δεν έχει δωμάτιο, τον πάει στην αρχική οθόνη αναζήτησης/δημιουργίας
                 	        HomeScreen homeScr = new HomeScreen(this.stage, this.conn);
+                	        
                 	        homeScr.createWindow();
                 	    }
                 	}
+                	else {
+                		 ErrorScreen errScr = new ErrorScreen("Log In Failed", 
+                                 "Your credentials are not correct make sure you have an accound otherwise create account choosing sign up");
+                         errScr.show();
+                	}
+                		
                 } catch (SQLException e1) {
-                    ErrorScreen errScr = new ErrorScreen("Log In Failed", 
+                	ErrorScreen errScr = new ErrorScreen("Log In Failed", 
                             "Database couldnt respond properly");
                     errScr.show();
                     e1.printStackTrace();

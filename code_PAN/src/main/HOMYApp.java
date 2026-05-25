@@ -50,7 +50,7 @@ public class HOMYApp extends Application {
     private static Stage financesStage;         
     private static Stage issuesStage;
     private static Runnable financesBackAction; 
-
+    
 //    private static List<Notification> notifications = new ArrayList<>();
 //    private static UnreadCounter unreadCounter;
     private static ManageNotificationsClass notificationManager;
@@ -100,6 +100,7 @@ public class HOMYApp extends Application {
     	
         mainStage.setTitle("HOMY - Central Hub");
         mainStage.setResizable(false);
+        
         
         VBox headerBox = new VBox(5);
         headerBox.setAlignment(Pos.CENTER);
@@ -231,6 +232,7 @@ public class HOMYApp extends Application {
         Scene hubScene = new Scene(root, 1150, 650);
         mainStage.setScene(hubScene);
         mainStage.show();
+        mainStage.centerOnScreen();
     }
 
     public static void main(String[] args) {

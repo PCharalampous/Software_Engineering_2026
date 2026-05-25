@@ -57,7 +57,11 @@ public class Application {
     // Getters
     public int getId() { return id; }
     public String getTitle() { return title; }
-    public String getDescription() { return description; }
+    public String getDescription() { 
+    	
+    	return this.address.concat("\n").concat(this.title).concat("\n").concat(this.description); 
+    }
+    
     public String getStatus() { return status; }
     public String getLocation() { return location; }
     public String getAddress() { return address; }
