@@ -24,7 +24,9 @@ public class FinancesScreen extends VBox {
     private final Runnable onBackToHub;
     private final Runnable onNavigateToCreate;
 
-    private final Set<String> votedBillKeys = new HashSet<>();
+    // 🌟 PERSISTENT SESSION TRACKING: Survives screen switching, works for 3+ roommates!
+    private static final Set<String> votedBillKeys = new HashSet<>();
+
     public static final ObservableList<Bill> allBills = FXCollections.observableArrayList();
 
     public FinancesScreen(Runnable onBackToHub, Runnable onNavigateToCreate) {
@@ -176,7 +178,8 @@ public class FinancesScreen extends VBox {
                     } else {
                         Bill bill = getTableRow().getItem();
                         String currentUsername = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getUsername() : "";
-                        
+                        String uniqueKey = currentUsername + "_" + bill.getType() + "_" + bill.getDate();
+
                         if ("Pending_Approval".equalsIgnoreCase(bill.getApprovalStatus())) {
                             
                             if (bill.getPayers().equalsIgnoreCase("Only Me")) {
@@ -187,10 +190,17 @@ public class FinancesScreen extends VBox {
                                 return;
                             }
 
-                            String billKey = bill.getType() + "_" + bill.getDate();
+                            if (currentUsername.equalsIgnoreCase(bill.getCreatorUsername())) {
+                                Label lbl = new Label("Waiting for Roommates");
+                                lbl.setStyle("-fx-text-fill: #f97316; -fx-font-style: italic; -fx-font-weight: bold;");
+                                centerContainer.getChildren().setAll(lbl);
+                                setGraphic(centerContainer);
+                                return;
+                            }
 
-                            if (currentUsername.equalsIgnoreCase(bill.getCreatorUsername()) || votedBillKeys.contains(billKey)) {
-                                Label lbl = new Label("Awaiting Roommates");
+                            // 🌟 RESTORED ORIGINAL FLOW: Shows your exact label text if the specific logged-in session has voted!
+                            if (votedBillKeys.contains(uniqueKey)) {
+                                Label lbl = new Label("Waiting for Roommates");
                                 lbl.setStyle("-fx-text-fill: #f97316; -fx-font-style: italic; -fx-font-weight: bold;");
                                 centerContainer.getChildren().setAll(lbl);
                                 setGraphic(centerContainer);
@@ -201,7 +211,7 @@ public class FinancesScreen extends VBox {
                                                  || bill.getPayers().toLowerCase().contains(currentUsername.toLowerCase());
                             
                             if (!isTargetPayer) {
-                                Label lbl = new Label("Awaiting Roommates");
+                                Label lbl = new Label("Waiting for Roommates");
                                 lbl.setStyle("-fx-text-fill: #f97316; -fx-font-style: italic; -fx-font-weight: bold;");
                                 centerContainer.getChildren().setAll(lbl);
                                 setGraphic(centerContainer);
@@ -209,11 +219,11 @@ public class FinancesScreen extends VBox {
                             }
 
                             btnCheck.setOnAction(e -> {
-                                votedBillKeys.add(billKey);
+                                votedBillKeys.add(uniqueKey);
                                 handleVote(bill, true);
                             });
                             btnCross.setOnAction(e -> {
-                                votedBillKeys.add(billKey);
+                                votedBillKeys.add(uniqueKey);
                                 handleVote(bill, false);
                             });
                             centerContainer.getChildren().setAll(pane);
@@ -253,19 +263,19 @@ public class FinancesScreen extends VBox {
                 pstmt.setInt(1, currentRoomId);
                 try (ResultSet rs = pstmt.executeQuery()) {
                     while (rs.next()) {
-                        loadedBills.add(new Bill(
+                        Bill bill = new Bill(
                             rs.getString("bill_type"),
                             rs.getDouble("amount"),
                             rs.getString("bill_date"),
                             rs.getString("payers"),
                             rs.getString("bill_status"),
                             rs.getString("approval_status")
-                        ));
+                        );
+                        loadedBills.add(bill);
                     }
                 }
             }
 
-            // 🌟 PARSER FIXED: Parses username directly out of the Multi-line 'detail' column data
             try (PreparedStatement pstmtNotes = conn.prepareStatement(notesSql)) {
                 pstmtNotes.setInt(1, currentRoomId);
                 try (ResultSet rsNotes = pstmtNotes.executeQuery()) {
@@ -347,7 +357,6 @@ public class FinancesScreen extends VBox {
                     }
                 }
             } else {
-                // 1. Mark bill as declined inside database
                 String rejectSql = "UPDATE bills SET reject_votes = reject_votes + 1, approval_status = 'Declined' WHERE room_id = ? AND bill_type = ? AND bill_date = ?";
                 try (PreparedStatement pstmt = conn.prepareStatement(rejectSql)) {
                     pstmt.setInt(1, currentRoomId);
@@ -356,7 +365,6 @@ public class FinancesScreen extends VBox {
                     pstmt.executeUpdate();
                 }
 
-                // 2. 🌟 NEW ALERT CODE: Dynamic alert sent straight to the bill creator's dashboard notification panel
                 String targetCreator = bill.getCreatorUsername();
                 if (targetCreator != null && !targetCreator.isEmpty()) {
                     int creatorUserId = 0;
