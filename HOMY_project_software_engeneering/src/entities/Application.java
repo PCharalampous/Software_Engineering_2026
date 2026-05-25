@@ -58,11 +58,7 @@ public class Application {
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getDescription() { 
-        // Handle the null address dynamically
-        String displayAddress = (this.address != null) ? this.address : "No address specified";
-        
-        // Using string templates or formatting keeps things clean and crash-proof
-        return displayAddress + "\n" + this.title + "\n" + this.description;
+        return this.description; 
     }
     
     public String getHomeScreenDescription() { 
