@@ -196,7 +196,7 @@ public class NewBillScreen extends VBox {
             }
 
             String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status, approval_status, approve_votes, reject_votes) VALUES (?, ?, ?, ?, ?, 'Pending', ?, 0, 0)";
-            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 0900, 'BILL')";
+            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 2359, 'BILL')";
             String notificationSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, 'FINANCES', '#25880d', 0)";  
             String findUserSql = "SELECT user_id FROM users WHERE username = ? AND room_id = ?";
 
