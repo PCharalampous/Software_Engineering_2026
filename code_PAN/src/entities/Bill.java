@@ -1,6 +1,7 @@
 package entities;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Bill {
@@ -10,6 +11,10 @@ public class Bill {
     private final SimpleStringProperty payers;
     private final SimpleStringProperty status; // "Pending" or "Paid"
     private final SimpleStringProperty approvalStatus;
+    
+    // 🌟 Added Option A fields to track vote counts persistently from DB
+    private final SimpleIntegerProperty approveVotes;
+    private final SimpleIntegerProperty rejectVotes;
     
     // Purely internal Java tracker — no database column needed!
     private String creatorUsername = ""; 
@@ -21,6 +26,8 @@ public class Bill {
         this.payers = new SimpleStringProperty(payers);
         this.status = new SimpleStringProperty(status);
         this.approvalStatus = new SimpleStringProperty(approvalStatus);
+        this.approveVotes = new SimpleIntegerProperty(0);
+        this.rejectVotes = new SimpleIntegerProperty(0);
     }
 
     public String getType() { return type.get(); }
@@ -40,6 +47,15 @@ public class Bill {
     
     public String getApprovalStatus() { return approvalStatus.get(); }
     public SimpleStringProperty approvalStatusProperty() { return approvalStatus; }
+
+    // 🌟 Option A Getters/Setters/Properties for votes tracking
+    public int getApproveVotes() { return approveVotes.get(); }
+    public SimpleIntegerProperty approveVotesProperty() { return approveVotes; }
+    public void setApproveVotes(int votes) { this.approveVotes.set(votes); }
+
+    public int getRejectVotes() { return rejectVotes.get(); }
+    public SimpleIntegerProperty rejectVotesProperty() { return rejectVotes; }
+    public void setRejectVotes(int votes) { this.rejectVotes.set(votes); }
     
     public String getCreatorUsername() { return creatorUsername; }
     public void setCreatorUsername(String creatorUsername) { this.creatorUsername = creatorUsername; }
