@@ -101,6 +101,14 @@ public class NotificationsScreen {
             System.out.println("[NAV DEBUG] Redirecting to Calendar Module...");
             main.HOMYApp.openCalendar();
         }
+        else if (cleanTarget.contains("FINANCES")) {
+            System.out.println("[NAV DEBUG] Redirecting to Finances Module...");
+            main.HOMYApp.openFinances();
+        }
+        else if (cleanTarget.contains("HOME ISSUE REPORT")) {
+            System.out.println("[NAV DEBUG] Redirecting to Home issue report Module...");
+            main.HOMYApp.openIssues();
+        }
     }
 
     // Βοηθητική μέθοδος για να κλείνουμε το Stage των Notifications απ' έξω
