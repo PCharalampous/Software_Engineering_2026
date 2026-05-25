@@ -488,7 +488,7 @@ public class CalendarScreen {
             } else if (ev.getType().equals("ISSUE")) {
                 timeAndTitle.setTextFill(Color.web("#1D4ED8")); 
             } else if (ev.getIsAccepted() == 0) {
-                timeAndTitle.setTextFill(Color.web("#D97706")); 
+                timeAndTitle.setTextFill(Color.web("#34D399")); 
             } else if (ev.getIsAccepted() == 1) {
                 timeAndTitle.setTextFill(Color.web("#047857")); 
             }

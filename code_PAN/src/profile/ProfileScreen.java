@@ -41,6 +41,7 @@ public class ProfileScreen {
     // Πεδία για τα δυναμικά δεδομένα του προφίλ
     private ManageProfileClass manager;
     private List<Request> incomingRequests;
+    private User sessionUser;
     
     public ProfileScreen() {
         this.container = new BorderPane();
@@ -49,7 +50,7 @@ public class ProfileScreen {
         };
 
         // 1. Παίρνουμε τον τρέχοντα χρήστη από το "session" της Authentication
-        User sessionUser = Authentication.getCurrentUser();
+        sessionUser = Authentication.getCurrentUser();
         
         // Βάζουμε ένα fallback ID (π.χ. 1) σε περίπτωση που τρέχεις την οθόνη 
         // απευθείας από το VS Code (χωρίς να κάνεις login) για να μη "σκάσει" με NullPointerException.
@@ -118,7 +119,7 @@ public class ProfileScreen {
             statCard("HOME-Y", p.flatName), 
             statCard("MEMBERS", String.valueOf(p.members))
         );
-        header.getChildren().addAll(makeAvatar("MK", 80), lblName, lblUser, stats);
+        header.getChildren().addAll(makeAvatar(sessionUser.getUsername().substring(0, 1).toUpperCase(), 80), lblName, lblUser, stats);
 
         // --- Bio Section ---
         VBox bioSec = new VBox(4);
