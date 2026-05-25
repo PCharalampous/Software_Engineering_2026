@@ -320,7 +320,7 @@ public class HOMYApp extends Application {
         try { Stage s = new Stage(); s.setOnHiding(e -> mainStage.show()); mainStage.hide(); ProfileScreen.FXBootstrap bootstrap = new ProfileScreen.FXBootstrap(); bootstrap.start(s); } catch(Exception e){ e.printStackTrace(); }
     }
 
-    private static void openFinances() { 
+    public static void openFinances() { 
         financesStage = new Stage(); financesBackAction = () -> { financesStage.close(); mainStage.show(); }; financesStage.setOnHiding(w -> mainStage.show()); mainStage.hide();
         financesStage.setScene(new Scene(new FinancesScreen(() -> handleFinancesBack(), () -> openNewBillForm()), 850, 650)); financesStage.show(); 
     }
@@ -329,7 +329,7 @@ public class HOMYApp extends Application {
     private static void openNewBillForm() { setFinancesRootProgrammatic(new NewBillScreen(() -> setFinancesRootProgrammatic(new FinancesScreen(() -> handleFinancesBack(), () -> openNewBillForm())))); }
     public static void handleFinancesBack() { if (financesBackAction != null) financesBackAction.run(); }
 
-    private static void openIssues() { 
+    public static void openIssues() { 
         issuesStage = new Stage(); issuesStage.setOnHiding(w -> mainStage.show()); mainStage.hide();
         issuesStage.setScene(new Scene(new HomeIssueScreen(() -> { issuesStage.close(); mainStage.show(); }, () -> openNewIssueForm(), () -> openNewScheduleForm()), 1180, 720)); issuesStage.show(); 
     }
