@@ -34,12 +34,10 @@ public class NewBillScreen extends VBox {
         this.onCancelAction = onCancelAction;
         this.setSpacing(0);
         this.setStyle("-fx-background-color: #F3F4F6;");
-        
         buildUI();
     }
 
     private void buildUI() {
-        // --- Header ---
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER_LEFT);
         header.setPadding(new Insets(15, 20, 15, 20));
@@ -68,7 +66,6 @@ public class NewBillScreen extends VBox {
         datePicker = new DatePicker(LocalDate.now());
         datePicker.setMaxWidth(Double.MAX_VALUE);
 
-        // --- Multi-Select Payers Component ---
         payersField = new TextField();
         payersField.setEditable(false);
         payersField.setPromptText("Click + to select payers...");
@@ -78,7 +75,6 @@ public class NewBillScreen extends VBox {
         payersMenuButton = new MenuButton("+");
         payersMenuButton.setStyle("-fx-background-color: #14B8A6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0 4 4 0; -fx-padding: 7 14; -fx-cursor: hand;");
         
-        // Φόρτωση δυναμικών συγκατοίκων από τη Βάση Δεδομένων
         setupDynamicPayersDropdown();
 
         HBox payersContainer = new HBox(0, payersField, payersMenuButton);
@@ -92,7 +88,6 @@ public class NewBillScreen extends VBox {
         formCard.getChildren().add(grid);
         this.getChildren().add(formCard);
 
-        // --- Bottom Actions ---
         HBox bottomArea = new HBox(12);
         bottomArea.setPadding(new Insets(0, 50, 20, 50));
         bottomArea.setAlignment(Pos.CENTER_RIGHT);
@@ -118,7 +113,6 @@ public class NewBillScreen extends VBox {
         }
 
         List<String> roommates = new ArrayList<>();
-        // Φέρνουμε όλους τους χρήστες που ανήκουν στο ίδιο room_id
         String sql = "SELECT username FROM users WHERE room_id = ?";
 
         try (Connection conn = DatabaseManager.getConnection();
@@ -138,21 +132,17 @@ public class NewBillScreen extends VBox {
         List<String> selectedPayers = new ArrayList<>();
         payersMenuButton.getItems().clear();
 
-        // 1. Προσθήκη επιλογής "All Roommates"
         CheckMenuItem itemAll = new CheckMenuItem("All Roommates");
         payersMenuButton.getItems().add(itemAll);
 
-        // Λίστα για να κρατάμε αναφορές στα υπόλοιπα CheckMenuItems των χρηστών
         List<CheckMenuItem> userItems = new ArrayList<>();
 
-        // 2. Δημιουργία CheckMenuItem για κάθε πραγματικό συγκατοίκο
         for (String name : roommates) {
             CheckMenuItem userItem = new CheckMenuItem(name);
             userItems.add(userItem);
             payersMenuButton.getItems().add(userItem);
         }
 
-        // Λογική ανανέωσης του κειμένου
         Runnable updatePayersText = () -> {
             if (itemAll.isSelected()) {
                 payersField.setText("All Roommates");
@@ -172,7 +162,6 @@ public class NewBillScreen extends VBox {
             }
         };
 
-        // Event Handlers
         itemAll.setOnAction(e -> updatePayersText.run());
         for (CheckMenuItem ui : userItems) {
             ui.setOnAction(e -> {
@@ -191,13 +180,12 @@ public class NewBillScreen extends VBox {
         try {
             double amount = Double.parseDouble(amountField.getText());
             String type = typeField.getText().trim();
-            String date = datePicker.getValue().toString();
+            String date = datePicker.getValue() != null ? datePicker.getValue().toString() : LocalDate.now().toString();
             String payers = payersField.getText();
 
-            // 1. Υπολογισμός έγκρισης βάσει επιλεγμένων ατόμων
             String currentUsername = (entities.Authentication.getCurrentUser() != null) ? entities.Authentication.getCurrentUser().getUsername() : "";
+            int currentUserId = (entities.Authentication.getCurrentUser() != null) ? entities.Authentication.getCurrentUser().getId() : 0;        
             String calculatedApprovalStatus = "Pending_Approval";
-            
             if (payers.equalsIgnoreCase("Only Me") || payers.equalsIgnoreCase(currentUsername)) {
                 calculatedApprovalStatus = "Accepted";
             }
@@ -207,9 +195,10 @@ public class NewBillScreen extends VBox {
                 currentRoomId = entities.Authentication.getCurrentUser().getRoomId();
             }
 
-            // 2. Προσθήκη της στήλης approval_status στην INSERT
-            String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status, approval_status) VALUES (?, ?, ?, ?, ?, 'Pending', ?)";
-            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 2359, 'BILL')";
+            String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status, approval_status, approve_votes, reject_votes) VALUES (?, ?, ?, ?, ?, 'Pending', ?, 0, 0)";
+            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 0900, 'BILL')";
+            String notificationSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, 'FINANCES', '#25880d', 0)";  
+            String findUserSql = "SELECT user_id FROM users WHERE username = ? AND room_id = ?";
 
             try (Connection conn = DatabaseManager.getConnection()) {
                 conn.setAutoCommit(false); 
@@ -220,11 +209,10 @@ public class NewBillScreen extends VBox {
                     pstmt1.setDouble(3, amount);
                     pstmt1.setString(4, date);
                     pstmt1.setString(5, payers);
-                    pstmt1.setString(6, calculatedApprovalStatus); // ← 6η Παράμετρος
+                    pstmt1.setString(6, calculatedApprovalStatus); 
                     pstmt1.executeUpdate();
                 }
 
-                // Προσθήκη στο ημερολόγιο ΜΟΝΟ αν έχει εγκριθεί ήδη
                 if (calculatedApprovalStatus.equals("Accepted")) {
                     try (PreparedStatement pstmt2 = conn.prepareStatement(calendarSql)) {
                         pstmt2.setInt(1, currentRoomId);
@@ -233,20 +221,69 @@ public class NewBillScreen extends VBox {
                         pstmt2.setString(4, date);
                         pstmt2.executeUpdate();
                     }
+                } else {
+                    String creator = currentUsername.isEmpty() ? "A roommate" : currentUsername;
+                    List<Integer> targetUserIds = new ArrayList<>();
+
+                    if (payers.trim().equalsIgnoreCase("All Roommates")) {
+                        String findAllRoommatesSql = "SELECT user_id FROM users WHERE room_id = ? AND user_id != ?";
+                        try (PreparedStatement pstmtAll = conn.prepareStatement(findAllRoommatesSql)) {
+                            pstmtAll.setInt(1, currentRoomId);
+                            pstmtAll.setInt(2, currentUserId);
+                            try (ResultSet rs = pstmtAll.executeQuery()) {
+                                while (rs.next()) {
+                                    targetUserIds.add(rs.getInt("user_id"));
+                                }
+                            }
+                        }
+                    } else {
+                        String[] targetUsers = payers.split(",");
+                        for (String userRaw : targetUsers) {
+                            String targetUsername = userRaw.trim();
+                            if (targetUsername.equalsIgnoreCase(currentUsername) || targetUsername.equalsIgnoreCase("Only Me")) {
+                                continue; 
+                            }
+                            try (PreparedStatement pstmtFind = conn.prepareStatement(findUserSql)) {
+                                pstmtFind.setString(1, targetUsername);
+                                pstmtFind.setInt(2, currentRoomId);
+                                try (ResultSet rs = pstmtFind.executeQuery()) {
+                                    if (rs.next()) {
+                                        targetUserIds.add(rs.getInt("user_id"));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (int targetUserId : targetUserIds) {
+                        try (PreparedStatement pstmtNotif = conn.prepareStatement(notificationSql)) {
+                            pstmtNotif.setInt(1, targetUserId);
+                            pstmtNotif.setInt(2, currentRoomId);
+                            pstmtNotif.setString(3, "FINANCES");
+                            
+                            // 🌟 MATCHED SCREENSHOT LAYOUT DIRECTLY
+                            pstmtNotif.setString(4, "Bill Approval"); // "Bill Approval" text goes back to bottom sub-header
+                            
+                            String structuralDetails = creator + " added you as a payer for the new bill:\n" +
+                                                       "Type: " + type + "\n" +
+                                                       "Amount: " + amount + "€";
+                            pstmtNotif.setString(5, structuralDetails); // Multi-line block into details popup panel
+                            pstmtNotif.executeUpdate();
+                        }
+                    }
                 }
 
                 conn.commit(); 
                 
-                // Ενημέρωση του UI τοπικά ΜΟΝΟ αν έγινε αυτόματα Accepted
-                if (calculatedApprovalStatus.equals("Accepted")) {
-                    FinancesScreen.allBills.add(new Bill(type, amount, date, payers, "Pending", calculatedApprovalStatus));
-                }
+                Bill newlyCreatedBill = new Bill(type, amount, date, payers, "Pending", calculatedApprovalStatus);
+                newlyCreatedBill.setCreatorUsername(currentUsername);
                 
+                FinancesScreen.allBills.add(newlyCreatedBill);
                 onCancelAction.run();
                 
             } catch (Exception ex) {
-                ErrorScreen.show("Database error: " + ex.getMessage());
                 ex.printStackTrace();
+                ErrorScreen.show("Database error: " + ex.getMessage());
             }
         } catch (NumberFormatException e) {
             ErrorScreen.show("Invalid amount format.");
