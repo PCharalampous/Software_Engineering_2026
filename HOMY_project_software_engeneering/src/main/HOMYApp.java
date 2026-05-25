@@ -3,9 +3,7 @@ package main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -39,8 +37,6 @@ import search.HomeScreen;
 import search.HomeScreenLeftPanel;
 import entities.Notification;
 import entities.UnreadCounter;
-import entities.Bill;
-import entities.Issue;
 import entities.Authentication;
 
 public class HOMYApp extends Application {
@@ -53,10 +49,6 @@ public class HOMYApp extends Application {
     private static Stage issuesStage;
     private static Runnable financesBackAction; 
     
-//    private static List<Notification> notifications = new ArrayList<>();
-//    private static UnreadCounter unreadCounter;
-    private static ManageNotificationsClass notificationManager;
-    
     //----------------------------------------------------
     private static int currentUserId;
     private static int currentUserRoomId;
@@ -64,7 +56,6 @@ public class HOMYApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         mainStage = primaryStage;
-        //initMockData();
         
         LogInScreen loginScr = new LogInScreen(primaryStage);
         loginScr.createWindow();
@@ -74,7 +65,7 @@ public class HOMYApp extends Application {
     }
     
     public static void showCentralHub() {
-    	//-------------------------------------------------
+    //-------------------------------------------------
     	if (Authentication.getCurrentUser() != null) {
             currentUserId = Authentication.getCurrentUser().getId();
             try {
@@ -245,6 +236,7 @@ public class HOMYApp extends Application {
 
             // 4. Add it to your HBox alongside your other nodes
             headerBox.getChildren().add(0,imageView);
+            headerBox.setAlignment(Pos.BASELINE_LEFT);
 
         } catch (NullPointerException e) {
             System.err.println("Error: Could not find the image file! Check your file path.");
