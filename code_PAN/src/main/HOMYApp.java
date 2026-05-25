@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -228,6 +230,26 @@ public class HOMYApp extends Application {
         root.setRight(profileSidebar);
         
         root.setLeft(homeleftPanel.getLeftPanel());
+        
+        try {
+            // 1. Load the image from the classpath
+            Image img = new Image(HOMYApp.class.getResourceAsStream("logoHOMY.png"));
+
+            // 2. Wrap it inside an ImageView node
+            ImageView imageView = new ImageView(img);
+
+            // 3. Optional: Resize the image while maintaining its aspect ratio
+            imageView.setFitWidth(100);  // Set target width in pixels
+
+            imageView.setPreserveRatio(true); // Prevent stretching
+            imageView.setSmooth(true);        // Improves scaling quality
+
+            // 4. Add it to your HBox alongside your other nodes
+            headerBox.getChildren().add(0,imageView);
+
+        } catch (NullPointerException e) {
+            System.err.println("Error: Could not find the image file! Check your file path.");
+        }
 
         Scene hubScene = new Scene(root, 1150, 650);
         mainStage.setScene(hubScene);
