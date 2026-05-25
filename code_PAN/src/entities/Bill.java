@@ -9,8 +9,10 @@ public class Bill {
     private final SimpleStringProperty date;
     private final SimpleStringProperty payers;
     private final SimpleStringProperty status; // "Pending" or "Paid"
-    // Νέο πεδίο έγκρισης
     private final SimpleStringProperty approvalStatus;
+    
+    // Purely internal Java tracker — no database column needed!
+    private String creatorUsername = ""; 
 
     public Bill(String type, double amount, String date, String payers, String status, String approvalStatus) {
         this.type = new SimpleStringProperty(type);
@@ -39,6 +41,9 @@ public class Bill {
     public String getApprovalStatus() { return approvalStatus.get(); }
     public SimpleStringProperty approvalStatusProperty() { return approvalStatus; }
     
+    public String getCreatorUsername() { return creatorUsername; }
+    public void setCreatorUsername(String creatorUsername) { this.creatorUsername = creatorUsername; }
+
     public void setStatus(String status) { this.status.set(status); }
     public void setApprovalStatus(String approvalStatus) { this.approvalStatus.set(approvalStatus); }
     public void setDate(String date) { this.date.set(date); }
