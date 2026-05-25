@@ -105,7 +105,7 @@ public class NotificationsScreen {
             System.out.println("[NAV DEBUG] Redirecting to Finances Module...");
             main.HOMYApp.openFinances();
         }
-        else if (cleanTarget.contains("HOME ISSUE REPORT")) {
+        else if (cleanTarget.contains("ISSUE")) {
             System.out.println("[NAV DEBUG] Redirecting to Home issue report Module...");
             main.HOMYApp.openIssues();
         }
