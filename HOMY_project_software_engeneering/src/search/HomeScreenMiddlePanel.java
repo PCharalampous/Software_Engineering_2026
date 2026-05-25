@@ -237,18 +237,18 @@ public class HomeScreenMiddlePanel {
 		minVal.valueProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					minValText.setText(String.valueOf(newValue.intValue()));
-					performSearch();
+					//performSearch();
 				}
 		);
 		
 		maxVal.valueProperty().addListener(
 				(observable, oldValue, newValue) -> {
 					maxValText.setText(String.valueOf(newValue.intValue()));
-					performSearch();
+					//performSearch();
 				}
 		);
 		
-		guestsSpin.valueProperty().addListener((obs, oldVal, newVal) -> performSearch());
+		//guestsSpin.valueProperty().addListener((obs, oldVal, newVal) -> performSearch());
 		
 		minValText.setEditable(false);
 		maxValText.setEditable(false);
