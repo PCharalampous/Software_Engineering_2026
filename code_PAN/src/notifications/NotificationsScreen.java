@@ -80,6 +80,30 @@ public class NotificationsScreen {
         primaryStage.show();
     }
 
+    public void handleRedirect(String target) {
+        if (target == null) return;
+        
+        String cleanTarget = target.toUpperCase().trim();
+        
+        if (backAction != null) {
+            backAction.run(); // Αυτό εκτελεί το () -> mainStage.show() που ορίστηκε στην HOMYApp
+        }
+        
+        if (cleanTarget.contains("CHORE")) {
+            System.out.println("[NAV DEBUG] Redirecting to Chores Module...");
+            main.HOMYApp.openChores();
+        }
+                
+          
+    }
+
+    // Βοηθητική μέθοδος για να κλείνουμε το Stage των Notifications απ' έξω
+    public void closeScreen() {
+        if (primaryStage != null) {
+            primaryStage.close();
+        }
+    }
+    
     public void refreshList() {
         if (notifListVBox == null) return;
         

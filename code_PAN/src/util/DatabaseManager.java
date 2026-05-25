@@ -42,7 +42,7 @@ public class DatabaseManager {
 
                 // Δημιουργεί τη σύνδεση με το Clever Cloud
                 connection = DriverManager.getConnection(url, user, password);
-                System.out.println("Επιτυχής σύνδεση στην κοινή βάση (Clever Cloud) μέσω του DatabaseManager!");
+                //System.out.println("Επιτυχής σύνδεση στην κοινή βάση (Clever Cloud) μέσω του DatabaseManager!");
             }
         } catch (Exception e) {
             System.err.println("Αποτυχία σύνδεσης μέσω του DatabaseManager!");

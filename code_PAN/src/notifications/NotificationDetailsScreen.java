@@ -1,6 +1,10 @@
 package notifications;
 
 import ui.ConfirmationScreen;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import entities.Notification;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,16 +50,55 @@ public class NotificationDetailsScreen {
         btnDel.setStyle("-fx-background-color:white; -fx-text-fill:#1A1A1A; -fx-border-color:#1A1A1A; -fx-border-width:1; -fx-font-weight:bold; -fx-padding:10 16; -fx-cursor:hand;");
         btnDel.setMaxWidth(Double.MAX_VALUE);
         
-        // selectGoTo() -> TargetSectionScreen
+     // selectGoTo() -> Πραγματικό Redirect
         btnGoTo.setOnAction(e -> {
-            dlg.close();
-            showTargetSectionMockup(notification.target);
+            dlg.close(); // Κλείνει το μικρό παράθυρο των λεπτομερειών
+            
+            // Κλείνουμε και το parent screen των ειδοποιήσεων για να φανεί η νέα οθόνη
+            if (parentScreen != null) {
+                parentScreen.closeScreen(); 
+                parentScreen.handleRedirect(notification.target);
+            }
         });
         
         // --- ΕΔΩ ΕΓΙΝΕ Η ΔΙΟΡΘΩΣΗ ---
         btnDel.setOnAction(e -> {
-            // Μετατρέπουμε το parentScreen σε Runnable Lambda () -> parentScreen.refreshList()
-            ConfirmationScreen confScreen = new ConfirmationScreen(dlg, ownerStage, notification, manager, () -> parentScreen.refreshList());
+            // Δημιουργούμε ένα Runnable που θα εκτελεστεί ΜΟΝΟ αν ο χρήστης πατήσει "Yes/Confirm" στο confirmation screen
+            Runnable deleteAction = () -> {
+                // 1. Διαγραφή από τη Βάση Δεδομένων
+                String deleteSql = "DELETE FROM notifications WHERE notification_id = ?"; 
+                // Σημείωση: Αν ο πίνακας σου λέγεται 'notifications' και το ID 'notification_id', το αφήνεις έτσι.
+                // Αν η κλάση σου n.getId() δεν υπάρχει, χρησιμοποίησε το property που έχεις για το ID της ειδοποίησης (π.χ. notification.id)
+                
+                try (Connection conn = util.DatabaseManager.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(deleteSql)) {
+                    
+                    // Αν η κλάση Notification έχει getter, βάλε notification.getId(). 
+                    // Αν είναι public field, βάλε notification.id
+                	ps.setInt(1, notification.id);
+                    
+                    int rowsDeleted = ps.executeUpdate();
+                    System.out.println("[DB DEBUG] Notification deleted from DB. Rows affected: " + rowsDeleted);
+                    
+                } catch (Exception ex) {
+                    System.err.println("[ERROR] Failed to delete notification from database:");
+                    ex.printStackTrace();
+                }
+
+                // 2. Αφαίρεση από τη λίστα του manager στη RAM (αν χρειάζεται, προαιρετικά)
+                if (manager != null) {
+                    manager.queryPendingEvents().remove(notification);
+                }
+
+                // 3. Κλείσιμο του λεπτομερούς παραθύρου και ανανέωση της κεντρικής λίστας του UI
+                dlg.close();
+                if (parentScreen != null) {
+                    parentScreen.refreshList();
+                }
+            };
+
+            // Ανοίγουμε το ConfirmationScreen περνώντας του την έξυπνη deleteAction που φτιάξαμε
+            ConfirmationScreen confScreen = new ConfirmationScreen(dlg, ownerStage, notification, manager, deleteAction);
             confScreen.show();
         });
         
@@ -72,4 +115,5 @@ public class NotificationDetailsScreen {
         b.setOnAction(e -> dlg.close()); body.getChildren().add(b);
         dlg.setScene(new Scene(body, 250, 150)); dlg.setTitle(target); dlg.showAndWait();
     }
+    
 }

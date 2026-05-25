@@ -10,8 +10,9 @@ import java.util.List;
 import javafx.scene.control.Alert;
 
 public class Notification {
-    // Πεδία δεδομένων
-    public String category;
+    // Πεδία δεδομένων (τα κρατάμε public για συμβατότητα, αλλά προσθέτουμε και getters)
+	public int id;
+	public String category;
     public String text;
     public String detail;
     public String target;
@@ -19,32 +20,34 @@ public class Notification {
     public boolean read;
 
     // --- Constructor: Δημιουργία αντικειμένου ειδοποίησης ---
-    public Notification(String cat, String txt, String det, String tgt, String tc) {
+    public Notification(int id, String cat, String txt, String det, String tgt, String tc) {
+    	this.id = id;
         this.category = cat;
         this.text = txt;
         this.detail = det;
         this.target = tgt;
         this.tagColor = tc;
-        this.read = false; 
+        this.read = false; // Αρχικά κάθε νέα ειδοποίηση είναι μη διαβασμένη
     }
-    
     //-----------------------------------------------------------------------------------------------
     public static boolean createNotification(Connection conn, String category, String text, 
             String detail, String targetScreen, String tagColor) {
 
+		// Automatically retrieve the user ID from the active Authentication context
 		if (entities.Authentication.getCurrentUser() == null) {
 			System.err.println("Error creating notification: No authenticated user found.");
 			return false;
 		}
 		int userId = entities.Authentication.getCurrentUser().getId();
 		
+		// Forward the parameters straight to Method A to avoid code duplication!
 		return createNotification(conn, userId, category, text, detail, targetScreen, tagColor);
 	}
-    
     //------
     public static boolean createNotification(Connection conn, int userId ,String category, String text, 
             String detail, String targetScreen, String tagColor) {
 
+		// 1. Automatically retrieve the user ID from the active Authentication context
 		if (entities.Authentication.getCurrentUser() == null) {
 			System.err.println("Error creating notification: No authenticated user found.");
 			return false;
@@ -52,11 +55,13 @@ public class Notification {
 		
 		Integer roomId = null;
 		
+		// 2. Query the 'users' table to fetch this user's current room_id
 		String roomSql = "SELECT room_id FROM users WHERE user_id = ?";
 			try (PreparedStatement roomStmt = conn.prepareStatement(roomSql)) {
 				roomStmt.setInt(1, userId);
 			try (var rs = roomStmt.executeQuery()) {
 				if (rs.next()) {
+					// getObject allows handling NULL values safely if a user isn't in a room
 					roomId = (Integer) rs.getObject("room_id"); 
 				}
 			}
@@ -66,6 +71,7 @@ public class Notification {
 			return false;
 		}
 		
+		// 3. Prepare the notification insertion string
 		String insertSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, " +
 		"detail, target_screen, tag_color, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, FALSE)";
 		
@@ -73,6 +79,7 @@ public class Notification {
 		
 		pstmt.setInt(1, userId);
 		
+		// Handle cases where room_id might be NULL in the database safely
 		if (roomId != null) {
 			pstmt.setInt(2, roomId);
 		} else {
@@ -94,14 +101,15 @@ public class Notification {
 			return false;
 		}
 	}
-    
     //----------
     /**
      * Overloaded Method C: Sends a notification to ALL users belonging to a specific room.
+     * It looks up the current user's room, finds all members, and loops over them.
      */
     public static boolean createNotificationToRoom(Connection conn, String category, String text, 
                                                    String detail, String targetScreen, String tagColor) {
         
+        // 1. Get current logged-in user to identify which room we are targeting
         if (entities.Authentication.getCurrentUser() == null) {
             System.err.println("Error: No authenticated user found to identify the room context.");
             return false;
@@ -109,6 +117,7 @@ public class Notification {
         int currentUserId = entities.Authentication.getCurrentUser().getId();
         Integer roomId = null;
 
+        // 2. Step A: Find the room_id of the current user
         String getRoomSql = "SELECT room_id FROM users WHERE user_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(getRoomSql)) {
             stmt.setInt(1, currentUserId);
@@ -122,11 +131,13 @@ public class Notification {
             return false;
         }
 
+        // If the user isn't assigned to any room, we can't blast a notification
         if (roomId == null || roomId == 0) {
             System.err.println("Error: Current user does not belong to any room.");
             return false;
         }
 
+        // 3. Step B: Fetch all user_ids belonging to this specific room
         List<Integer> roommateIds = new ArrayList<>();
         String getMembersSql = "SELECT user_id FROM users WHERE room_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(getMembersSql)) {
@@ -141,8 +152,10 @@ public class Notification {
             return false;
         }
 
+        // 4. Step C: Loop through every user ID found and call your single-user method
         boolean allSucceeded = true;
         for (int memberId : roommateIds) {
+            // Reuses your existing 7-parameter overload!
             boolean individualSuccess = createNotification(conn, memberId, category, text, detail, targetScreen, tagColor);
             
             if (!individualSuccess) {
@@ -153,13 +166,12 @@ public class Notification {
 
         return allSucceeded;
     }
-    
     //----------
-    // ΔΙΟΡΘΩΘΗΚΕ: Προστέθηκε το φίλτρο 'AND category != 'CALENDAR_VOTE'' ώστε να μην εμφανίζονται στην οθόνη
     public static List<Notification> fetchNotificationsForUser(Connection conn, int userId, int roomId) {
         List<Notification> list = new ArrayList<>();
         
-        String sql = "SELECT category, notification_text, detail, target_screen, tag_color, is_read " +
+        // ΠΡΟΣΘΗΚΗ: Βάζουμε και το notification_id στο SELECT
+        String sql = "SELECT notification_id, category, notification_text, detail, target_screen, tag_color, is_read " +
                      "FROM notifications WHERE user_id = ? AND room_id = ? AND category != 'CALENDAR_VOTE' " +
                      "ORDER BY created_at DESC";
 
@@ -169,7 +181,9 @@ public class Notification {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
+                    // Χρήση του νέου constructor με το notification_id
                     Notification n = new Notification(
+                        rs.getInt("notification_id"), // <-- Διαβάζουμε το ID
                         rs.getString("category"),
                         rs.getString("notification_text"),
                         rs.getString("detail"),
@@ -178,7 +192,6 @@ public class Notification {
                     );
                     
                     n.setRead(rs.getBoolean("is_read"));
-                    
                     list.add(n);
                 }
             }
@@ -193,7 +206,8 @@ public class Notification {
     
 
     /**
-     * Εμφανίζει ένα JavaFX Alert χρησιμοποιώντας τα δεδομένα αυτού του Notification.
+     * Εμφανίζει ένα JavaFX Alert χρησιμοποιώντας τα δεδομένα 
+     * αυτού του συγκεκριμένου αντικειμένου Notification.
      */
     public void showAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -204,7 +218,8 @@ public class Notification {
     }
 
     /**
-     * Static μέθοδος για γρήγορη εμφάνιση ενός απλού μηνύματος σε JavaFX Alert.
+     * Static μέθοδος για γρήγορη εμφάνιση 
+     * ενός απλού μηνύματος σε JavaFX Alert χωρίς τη δημιουργία αντικειμένου.
      */
     public static void makeNotification(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -215,7 +230,8 @@ public class Notification {
     }
 
     /**
-     * Static μέθοδος για την προσομοίωση/καταγραφή αποστολής ειδοποίησης στην κονσόλα.
+     * ΝΕΑ Static μέθοδος (από το usecase7) για την προσομοίωση/καταγραφή
+     * αποστολής μιας ειδοποίησης στο σύστημα μέσω της κονσόλας.
      */
     public static void makeNotification(String title, String message) {
         System.out.println("====== [NOTIFICATION TRIGGERED] ======");
@@ -224,7 +240,7 @@ public class Notification {
         System.out.println("=======================================");
     }
 
-    // --- Getters & Setters ---
+    // --- Getters: Απαραίτητοι για τη μεταφορά δεδομένων σε screens άλλων πακέτων ---
     public String getCategory() { return category; }
     public String getText() { return text; }
     public String getDetail() { return detail; }

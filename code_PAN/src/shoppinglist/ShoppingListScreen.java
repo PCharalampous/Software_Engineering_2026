@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser; 
 import javafx.stage.Modality;         
 import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 
 import java.io.File; 
 import java.sql.*; 
@@ -34,12 +36,11 @@ public class ShoppingListScreen {
     private List<Item> checkedList = new ArrayList<>();
     private List<Allocation> historyList = new ArrayList<>();
     
-    // Δυναμική λίστα για την αποθήκευση των ονομάτων των συγκατοίκων
     private List<String> roommateNames = new ArrayList<>();
 
-    private VBox mainListContainer = new VBox(5);
-    private VBox checkedListContainer = new VBox(5);
-    private VBox historyContainer = new VBox(10);
+    private VBox mainListContainer = new VBox(8);
+    private VBox checkedListContainer = new VBox(8);
+    private VBox historyContainer = new VBox(12);
 
     private ScrollPane mainListScrollPane = new ScrollPane();
     private ScrollPane checkedListScrollPane = new ScrollPane();
@@ -48,20 +49,17 @@ public class ShoppingListScreen {
     private Stage primaryStage;
     private Runnable backAction; 
     
-    // Το room_id ορίζεται πλέον δυναμικά
     private int currentRoomId;
 
     public ShoppingListScreen(Runnable backAction) {
         this.backAction = backAction;
         
-        // Ανάκτηση του room_id του συνδεδεμένου χρήστη από το Authentication
         if (entities.Authentication.getCurrentUser() != null) {
             this.currentRoomId = entities.Authentication.getCurrentUser().getRoomId(); 
         } else {
-            this.currentRoomId = 1; // Fallback τιμή για δοκιμές αν δεν υπάρχει session
+            this.currentRoomId = 1; 
         }
         
-        // Φόρτωση των συγκατοίκων του συγκεκριμένου δωματίου από τη βάση δεδομένων
         loadRoommatesFromDatabase();
     }
 
@@ -81,10 +79,9 @@ public class ShoppingListScreen {
             e.printStackTrace();
         }
         
-        // Αν για κάποιο λόγο η βάση επιστρέψει άδεια λίστα, βάζουμε default τιμές για ασφάλεια
-        if (roommateNames.isEmpty()) {
-            roommateNames.addAll(List.of("Giannis", "Manos", "Makis"));
-        }
+//        if (roommateNames.isEmpty()) {
+//            roommateNames.addAll(List.of("Giannis", "Manos", "Makis"));
+//        }
     }
 
     public void display() {
@@ -95,7 +92,9 @@ public class ShoppingListScreen {
 
         // --- ΚΕΦΑΛΙΔΑ ---
         Button backBtn = new Button("←");
-        backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 18px; -fx-cursor: hand;");
+        backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 20px; -fx-text-fill: #475569; -fx-cursor: hand; -fx-padding: 0 10 0 0;");
+        backBtn.setOnMouseEntered(e -> backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 20px; -fx-text-fill: #1E293B; -fx-cursor: hand; -fx-padding: 0 10 0 0;"));
+        backBtn.setOnMouseExited(e -> backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 20px; -fx-text-fill: #475569; -fx-cursor: hand; -fx-padding: 0 10 0 0;"));
         backBtn.setOnAction(e -> {
             primaryStage.close();
             if (backAction != null) {
@@ -105,25 +104,30 @@ public class ShoppingListScreen {
 
         Label headerLabel = new Label("Shopping List");
         headerLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 26));
+        headerLabel.setTextFill(Color.web("#1E293B"));
         
-        HBox headerBox = new HBox(10, backBtn, headerLabel);
+        HBox headerBox = new HBox(5, backBtn, headerLabel);
         headerBox.setAlignment(Pos.CENTER_LEFT);
-        headerBox.setPadding(new Insets(15));
-        headerBox.setStyle("-fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-width: 0 0 1px 0;");
+        headerBox.setPadding(new Insets(15, 20, 15, 20));
+        headerBox.setStyle("-fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-width: 0 0px 1px 0;");
 
         // --- ΑΡΙΣΤΕΡΗ ΣΤΗΛΗ (Lists) ---
-        VBox leftColumn = new VBox(10); 
-        leftColumn.setPadding(new Insets(10));
-        leftColumn.setMinWidth(260);
+        VBox leftColumn = new VBox(12); 
+        leftColumn.setPadding(new Insets(15));
+        leftColumn.setMinWidth(280);
         leftColumn.setStyle("-fx-border-color: #E2E8F0; -fx-border-width: 0 1px 0 0;");
 
-        Label mainListTitle = new Label("Main List ");
-        mainListTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        Label mainListTitle = new Label("Main List");
+        mainListTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        mainListTitle.setTextFill(Color.web("#334155"));
+        
         Button addItemBtn = new Button("+");
-        addItemBtn.setStyle("-fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;");
+        addItemBtn.setStyle("-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px; -fx-min-width: 26px; -fx-min-height: 26px; -fx-max-width: 26px; -fx-max-height: 26px; -fx-padding: 0;");
+        addItemBtn.setOnMouseEntered(e -> addItemBtn.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px; -fx-min-width: 26px; -fx-min-height: 26px; -fx-max-width: 26px; -fx-max-height: 26px; -fx-padding: 0;"));
+        addItemBtn.setOnMouseExited(e -> addItemBtn.setStyle("-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px; -fx-min-width: 26px; -fx-min-height: 26px; -fx-max-width: 26px; -fx-max-height: 26px; -fx-padding: 0;"));
         addItemBtn.setOnAction(e -> addInMainList());
 
-        HBox mainTitleBox = new HBox(5, mainListTitle, addItemBtn);
+        HBox mainTitleBox = new HBox(8, mainListTitle, addItemBtn);
         mainTitleBox.setAlignment(Pos.CENTER_LEFT);
 
         mainListScrollPane.setContent(mainListContainer);
@@ -131,12 +135,13 @@ public class ShoppingListScreen {
         mainListScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
         mainListScrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent;");
         
-        mainListScrollPane.setPrefHeight(140);
-        mainListScrollPane.setMinHeight(140);
-        mainListScrollPane.setMaxHeight(140);
+        mainListScrollPane.setPrefHeight(160);
+        mainListScrollPane.setMinHeight(160);
+        mainListScrollPane.setMaxHeight(160);
 
-        Label checkedListTitle = new Label("Checked items:");
-        checkedListTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        Label checkedListTitle = new Label("Checked Items");
+        checkedListTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        checkedListTitle.setTextFill(Color.web("#334155"));
 
         checkedListScrollPane.setContent(checkedListContainer);
         checkedListScrollPane.setFitToWidth(true);
@@ -147,33 +152,36 @@ public class ShoppingListScreen {
         leftColumn.getChildren().addAll(mainTitleBox, mainListScrollPane, checkedListTitle, checkedListScrollPane);
 
         // --- ΔΕΞΙΑ ΣΤΗΛΗ (Receipt & History) ---
-        VBox rightColumn = new VBox(10); 
-        rightColumn.setPadding(new Insets(10, 0, 10, 10));
-        rightColumn.setMinWidth(280);
+        VBox rightColumn = new VBox(12); 
+        rightColumn.setPadding(new Insets(15));
+        rightColumn.setMinWidth(300);
 
-        Label addReceiptLabel = new Label("Add receipt:");
-        addReceiptLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
-        VBox.setMargin(addReceiptLabel, new Insets(0, 10, 0, 0)); 
+        Label addReceiptLabel = new Label("Add Receipt");
+        addReceiptLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        addReceiptLabel.setTextFill(Color.web("#334155"));
 
         StackPane receiptBox = new StackPane();
-        receiptBox.setPrefHeight(60); 
-        receiptBox.setMinHeight(60);
-        receiptBox.setMaxHeight(60);
+        receiptBox.setPrefHeight(65); 
+        receiptBox.setMinHeight(65);
+        receiptBox.setMaxHeight(65);
         receiptBox.setMaxWidth(Double.MAX_VALUE);
-        receiptBox.setStyle("-fx-border-color: #CBD5E1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #ffffff; -fx-cursor: hand;");
-        VBox.setMargin(receiptBox, new Insets(0, 10, 0, 0)); 
+        receiptBox.setStyle("-fx-border-color: #CBD5E1; -fx-border-style: dashed; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #ffffff; -fx-cursor: hand;");
+        receiptBox.setOnMouseEntered(e -> receiptBox.setStyle("-fx-border-color: #3B82F6; -fx-border-style: dashed; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #EFF6FF; -fx-cursor: hand;"));
+        receiptBox.setOnMouseExited(e -> receiptBox.setStyle("-fx-border-color: #CBD5E1; -fx-border-style: dashed; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #ffffff; -fx-cursor: hand;"));
 
-        Label bigPlus = new Label("+");
-        bigPlus.setFont(Font.font("Segoe UI", 28)); 
+        Label bigPlus = new Label("+ Upload Invoice Image");
+        bigPlus.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 14)); 
+        bigPlus.setTextFill(Color.web("#64748B"));
         receiptBox.getChildren().add(bigPlus);
         receiptBox.setOnMouseClicked(e -> addReceipt());
 
-        Label historyTitle = new Label("History");
-        historyTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        Label historyTitle = new Label("History & Allocations");
+        historyTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        historyTitle.setTextFill(Color.web("#1E293B"));
         HBox historyHeader = new HBox(historyTitle);
-        historyHeader.setAlignment(Pos.CENTER);
-        historyHeader.setStyle("-fx-border-color: #E2E8F0; -fx-border-width: 1px 0 1px 0; -fx-padding: 5px;");
-        VBox.setMargin(historyHeader, new Insets(0, 10, 0, 0)); 
+        historyHeader.setAlignment(Pos.CENTER_LEFT);
+        historyHeader.setPadding(new Insets(10, 0, 5, 0));
+        historyHeader.setStyle("-fx-border-color: #E2E8F0; -fx-border-width: 0 0 1px 0;"); 
 
         historyScrollPane.setContent(historyContainer);
         historyScrollPane.setFitToWidth(true);
@@ -181,7 +189,7 @@ public class ShoppingListScreen {
         historyScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         historyScrollPane.setStyle("-fx-background-color: transparent; -fx-viewport-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;");
 
-        historyContainer.setPadding(new Insets(0, 10, 0, 0));
+        historyContainer.setPadding(new Insets(5, 0, 0, 0));
         historyContainer.setStyle("-fx-background-color: transparent;");
         
         VBox.setVgrow(historyContainer, Priority.ALWAYS);
@@ -194,14 +202,14 @@ public class ShoppingListScreen {
         BorderPane root = new BorderPane();
         root.setTop(headerBox);
         HBox centerLayout = new HBox(leftColumn, rightColumn);
-        root.setStyle("-fx-background-color: #F8FAF9;");
+        root.setStyle("-fx-background-color: #F8FAFC;");
         
         VBox.setVgrow(centerLayout, Priority.ALWAYS);
         root.setCenter(centerLayout);
 
         updateUI();
 
-        Scene scene = new Scene(root, 580, 650);
+        Scene scene = new Scene(root, 620, 680);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -277,33 +285,56 @@ public class ShoppingListScreen {
         historyContainer.getChildren().clear();
 
         for (Item item : mainList) {
-            HBox row = new HBox(10);
+            HBox row = new HBox(12);
             row.setAlignment(Pos.CENTER_LEFT);
+            row.setPadding(new Insets(6, 10, 6, 10));
+            row.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8; -fx-border-width: 1;");
+            
             CheckBox cb = new CheckBox();
+            cb.setCursor(Cursor.HAND);
+            
             Label lbl = new Label(item.getName() + " x" + item.getQuantity());
-            lbl.setFont(Font.font("Segoe UI", 14));
-            Button deleteBtn = new Button("X");
-            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-weight: bold; -fx-cursor: hand;");
+            lbl.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 14));
+            lbl.setTextFill(Color.web("#334155"));
+            
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            
+            Button deleteBtn = new Button("✕");
+            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;");
+            deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;"));
+            deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;"));
             
             cb.setOnAction(e -> selectFromMainList(item));
             deleteBtn.setOnAction(e -> deleteItem(item));
 
-            row.getChildren().addAll(cb, lbl, deleteBtn);
+            row.getChildren().addAll(cb, lbl, spacer, deleteBtn);
             mainListContainer.getChildren().add(row);
         }
 
         for (Item item : checkedList) {
-            HBox row = new HBox(10);
+            HBox row = new HBox(12);
             row.setAlignment(Pos.CENTER_LEFT);
+            row.setPadding(new Insets(6, 10, 6, 10));
+            row.setStyle("-fx-background-color: #F1F5F9; -fx-background-radius: 8; -fx-opacity: 0.75;");
+            
             CheckBox cb = new CheckBox();
             cb.setSelected(true);
+            cb.setCursor(Cursor.HAND);
             
             Text text = new Text(item.getName());
             text.setStrikethrough(true);
             text.setFont(Font.font("Segoe UI", 14));
+            text.setFill(Color.web("#64748B"));
+            text.setStyle("-fx-cursor: hand;");
 
-            Button deleteBtn = new Button("X");
-            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: red; -fx-font-weight: bold; -fx-cursor: hand;");
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            Button deleteBtn = new Button("✕");
+            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;");
+            deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;"));
+            deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;"));
 
             text.setOnMouseClicked(e -> selectFromChecked(item));
             
@@ -325,16 +356,25 @@ public class ShoppingListScreen {
             
             deleteBtn.setOnAction(e -> deleteItem(item));
 
-            row.getChildren().addAll(cb, text, deleteBtn);
+            row.getChildren().addAll(cb, text, spacer, deleteBtn);
             checkedListContainer.getChildren().add(row);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (Allocation alloc : historyList) {
-            VBox allocBox = new VBox(3);
-            allocBox.setPadding(new Insets(5));
-            allocBox.setStyle("-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1px 0;"); 
-            allocBox.setMaxWidth(Double.MAX_VALUE);
+            VBox allocBox = new VBox(6);
+            allocBox.setPadding(new Insets(10, 12, 10, 12));
+            
+            // ΔΙΟΡΘΩΘΗΚΕ: Τα εκκρεμή allocations (isDone == false) έχουν πλέον γκρίζο περίγραμμα (#CBD5E1)
+            if (alloc.isDone()) {
+                allocBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 10; -fx-border-color: #E2E8F0; -fx-border-radius: 10; -fx-border-width: 1;");
+            } else {
+                allocBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 10; -fx-border-color: #CBD5E1; -fx-border-radius: 10; -fx-border-width: 1.5;");
+            }
+            
+            DropShadow cardShadow = new DropShadow(6, Color.web("#000000", 0.03));
+            cardShadow.setOffsetY(1);
+            allocBox.setEffect(cardShadow);
             
             if (alloc.getImageFile() != null) {
                 allocBox.setCursor(Cursor.HAND);
@@ -342,19 +382,31 @@ public class ShoppingListScreen {
             }
             
             String dateStr = alloc.getDate().format(formatter);
-            Label dateLabel = new Label(dateStr + " - Total: €" + String.format("%.2f", alloc.getTotalAmount()));
-            dateLabel.setStyle(alloc.isDone() ? "-fx-text-fill: black; -fx-font-weight: bold;" : "-fx-text-fill: gray;");
+            Label dateLabel = new Label(dateStr + "  •  Total: €" + String.format("%.2f", alloc.getTotalAmount()));
+            
+            if (alloc.isDone()) {
+                dateLabel.setStyle("-fx-text-fill: #0F172A; -fx-font-weight: bold; -fx-font-size: 14px;");
+            } else {
+                dateLabel.setStyle("-fx-text-fill: #64748B; -fx-font-weight: bold; -fx-font-size: 14px;"); // Γκρίζο κείμενο τίτλου για τα εκκρεμή
+            }
 
             GridPane membersGrid = new GridPane();
-            membersGrid.setHgap(20);
+            membersGrid.setHgap(30);
+            membersGrid.setVgap(3);
             int rowIdx = 0;
             for (String member : alloc.getMemberAmounts().keySet()) {
                 Label nameL = new Label(member);
                 Label amtL = new Label("€" + String.format("%.2f", alloc.getMemberAmounts().get(member)));
                 
-                if (!alloc.isDone()) {
-                    nameL.setStyle("-fx-text-fill: gray;");
-                    amtL.setStyle("-fx-text-fill: gray;");
+                nameL.setFont(Font.font("Segoe UI", 12));
+                amtL.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 12));
+                
+                if (alloc.isDone()) {
+                    nameL.setStyle("-fx-text-fill: #475569;");
+                    amtL.setStyle("-fx-text-fill: #334155;");
+                } else {
+                    nameL.setStyle("-fx-text-fill: #94A3B8;");
+                    amtL.setStyle("-fx-text-fill: #64748B;");
                 }
                 
                 membersGrid.add(nameL, 0, rowIdx);
@@ -362,12 +414,25 @@ public class ShoppingListScreen {
                 rowIdx++;
             }
 
-            HBox actions = new HBox(5);
-            actions.setPadding(new Insets(5, 0, 5, 0));
+            HBox actions = new HBox(8);
+            actions.setPadding(new Insets(4, 0, 0, 0));
             if (!alloc.isDone()) {
                 Button doneBtn = new Button("Done");
                 Button editBtn = new Button("Edit");
                 Button deleteBtn = new Button("Delete");
+
+                String btnBase = "-fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-font-size: 11px; -fx-background-radius: 6; -fx-padding: 4 10; -fx-cursor: hand;";
+                doneBtn.setStyle(btnBase + "-fx-background-color: #10B981; -fx-text-fill: white;");
+                doneBtn.setOnMouseEntered(e -> doneBtn.setStyle(btnBase + "-fx-background-color: #059669; -fx-text-fill: white;"));
+                doneBtn.setOnMouseExited(e -> doneBtn.setStyle(btnBase + "-fx-background-color: #10B981; -fx-text-fill: white;"));
+
+                editBtn.setStyle(btnBase + "-fx-background-color: #3B82F6; -fx-text-fill: white;");
+                editBtn.setOnMouseEntered(e -> editBtn.setStyle(btnBase + "-fx-background-color: #2563EB; -fx-text-fill: white;"));
+                editBtn.setOnMouseExited(e -> editBtn.setStyle(btnBase + "-fx-background-color: #3B82F6; -fx-text-fill: white;"));
+
+                deleteBtn.setStyle(btnBase + "-fx-background-color: #EF4444; -fx-text-fill: white;");
+                deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle(btnBase + "-fx-background-color: #DC2626; -fx-text-fill: white;"));
+                deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle(btnBase + "-fx-background-color: #EF4444; -fx-text-fill: white;"));
 
                 doneBtn.setOnMouseClicked(evt -> evt.consume());
                 editBtn.setOnMouseClicked(evt -> evt.consume());
@@ -413,7 +478,7 @@ public class ShoppingListScreen {
             
             Label receiverInfoLabel = new Label("Paid by: " + alloc.getReceiver());
             receiverInfoLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
-            receiverInfoLabel.setStyle("-fx-text-fill: #1E293B; -fx-padding: 8px; -fx-background-color: #F1F5F9;");
+            receiverInfoLabel.setStyle("-fx-text-fill: #1E293B; -fx-padding: 10px; -fx-background-color: #F1F5F9;");
             container.getChildren().addAll(receiverInfoLabel, imageView);
 
             ScrollPane scrollPane = new ScrollPane(container);
@@ -515,7 +580,6 @@ public class ShoppingListScreen {
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
 
         if (selectedFile != null) {
-            // Περνάμε τη δυναμική λίστα συγκατοίκων
             SplitScreen splitScreen = new SplitScreen(roommateNames);
             Allocation newAlloc = splitScreen.insertAllocationStatus(primaryStage, selectedFile, null); 
             returnAllocation(newAlloc);
@@ -581,7 +645,6 @@ public class ShoppingListScreen {
 
     public void selectEdit(Allocation alloc) {
         if (alloc != null) {
-            // Περνάμε τη δυναμική λίστα συγκατοίκων και στο Edit Mode
             SplitScreen splitScreen = new SplitScreen(roommateNames);
             
             Allocation updatedAlloc = splitScreen.insertAllocationStatus(primaryStage, alloc.getImageFile(), alloc);

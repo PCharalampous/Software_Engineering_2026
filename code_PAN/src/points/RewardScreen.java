@@ -5,7 +5,6 @@ import entities.Point;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
@@ -35,7 +34,7 @@ public class RewardScreen extends VBox {
         title.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1E3A5F;");
         Pane space = new Pane(); HBox.setHgrow(space, Priority.ALWAYS);
         
-        Button proposeBtn = new Button("+ New Reward");
+        Button proposeBtn = new Button("+ Propose Pass");
         proposeBtn.setStyle("-fx-background-color: #4F46E5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;");
         proposeBtn.setOnAction(e -> {
             NewRewardScreen form = new NewRewardScreen((name, cost) -> 
@@ -48,41 +47,7 @@ public class RewardScreen extends VBox {
         this.getChildren().addAll(titleRow, container);
         
         updateRoommatesCount();
-        loadVotesFromDatabase();
         loadRewardsFromDatabase();
-    }
-    
-    private void loadVotesFromDatabase() {
-        votedRewardIdsInSession.clear();
-        String currentUsername = pointSidebar.getCurrentUser().trim();
-        int roomId = pointSidebar.getCurrentRoomId();
-        
-        String query = "SELECT description FROM chore_reports WHERE room_id = ? AND (title = ? OR title = ?)";
-        
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            ps.setInt(1, roomId);
-            ps.setString(2, "REWARD_APPROVE_" + currentUsername);
-            ps.setString(3, "REWARD_REJECT_" + currentUsername);
-            
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    String desc = rs.getString("description"); // Format: "RewardID:X"
-                    if (desc != null && desc.startsWith("RewardID:")) {
-                        try {
-                            int id = Integer.parseInt(desc.substring(9));
-                            votedRewardIdsInSession.add(id);
-                        } catch (NumberFormatException e) {
-                            // Παράβλεψε κακώς μορφοποιημένα logs
-                        }
-                    }
-                }
-            }
-            System.out.println("[DEBUG] Loaded " + votedRewardIdsInSession.size() + " existing reward votes for " + currentUsername);
-        } catch (Exception e) { 
-            e.printStackTrace(); 
-        }
     }
 
     private void updateRoommatesCount() {
@@ -108,9 +73,8 @@ public class RewardScreen extends VBox {
 
     private void loadRewardsFromDatabase() {
         container.getChildren().clear();
-        updateRoommatesCount(); 
-        loadVotesFromDatabase(); // <-- ΠΡΟΣΘΗΚΗ ΕΔΩ: Φρεσκάρει τις κλειδωμένες ψήφους από τη βάση
-
+        updateRoommatesCount(); // Ενημέρωση του count για το σωστό δωμάτιο
+        
         List<Reward> tempRewards = new ArrayList<>();
         // Φιλτράρουμε τα rewards ΜΟΝΟ για το τρέχον δωμάτιο
         String query = "SELECT * FROM rewards WHERE room_id = ?";
@@ -158,23 +122,6 @@ public class RewardScreen extends VBox {
         Pane spacer = new Pane(); HBox.setHgrow(spacer, Priority.ALWAYS);
         card.getChildren().addAll(icon, txt, spacer);
 
-        String currentUsername = pointSidebar.getCurrentUser().trim();
-
-        // --- ΔΗΛΩΣΗ ΤΗΣ ΜΕΤΑΒΛΗΤΗΣ ΕΔΩ (ΕΞΩ ΑΠΟ ΤΑ BLOCKS) ΓΙΑ ΝΑ ΕΙΝΑΙ ΠΑΝΤΟΥ ΟΡΑΤΗ ---
-        boolean isCreator = false;
-        String checkCreatorSql = "SELECT COUNT(*) FROM chore_reports WHERE title = ? AND description = ?";
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(checkCreatorSql)) {
-            ps.setString(1, "REWARD_CREATOR_" + currentUsername);
-            ps.setString(2, "RewardID:" + r.getRewardId());
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    isCreator = true;
-                }
-            }
-        } catch (Exception ex) { ex.printStackTrace(); }
-        // ----------------------------------------------------------------------------
-
         if (r.isAvailable()) {
             Button buyBtn = new Button("BUY");
             buyBtn.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;");
@@ -189,8 +136,7 @@ public class RewardScreen extends VBox {
             card.getChildren().add(activeActionsBox);
         } 
         else {
-            int expectedVotes = totalRoommatesCount - 1;
-            Label voteLbl = new Label("VOTE (" + (r.getApproveVotes() + r.getRejectVotes()) + "/" + expectedVotes + "): ");
+            Label voteLbl = new Label("VOTE (" + (r.getApproveVotes() + r.getRejectVotes()) + "/" + totalRoommatesCount + "): ");
             voteLbl.setStyle("-fx-font-size: 11; -fx-text-fill: #4F46E5; -fx-font-weight: bold;");
             
             Button yesBtn = new Button("✓");
@@ -199,14 +145,9 @@ public class RewardScreen extends VBox {
             Button noBtn = new Button("✕");
             noBtn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #DC2626; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;");
 
-            // Τώρα το `isCreator` αναγνωρίζεται κανονικά εδώ χωρίς error!
-            if (votedRewardIdsInSession.contains(r.getRewardId()) || isCreator) {
+            if (votedRewardIdsInSession.contains(r.getRewardId())) {
                 yesBtn.setDisable(true);
                 noBtn.setDisable(true);
-                if (isCreator) {
-                    voteLbl.setText("YOUR PROPOSAL: ");
-                    voteLbl.setStyle("-fx-font-size: 11; -fx-text-fill: #6B7280; -fx-font-weight: bold;");
-                }
             } else {
                 yesBtn.setDisable(false);
                 noBtn.setDisable(false);
@@ -262,7 +203,6 @@ public class RewardScreen extends VBox {
             conn.commit();
         } catch (Exception e) { e.printStackTrace(); }
         
-        votedRewardIdsInSession.remove(Integer.valueOf(r.getRewardId()));
         loadRewardsFromDatabase();
     }
 
@@ -368,24 +308,19 @@ public class RewardScreen extends VBox {
                     int rej = rs.getInt("reject_votes");
                     int totalVotesLogged = app + rej;
 
-                    // Οι ενεργοί ψηφοφόροι είναι όλοι οι συγκάτοικοι ΜΕΙΟΝ ο δημιουργός της πρότασης
-                    int activeVotersCount = totalRoommatesCount - 1;
-
-                    // Αν το δωμάτιο έχει μόνο 1 άτομο συνολικά, αφήνουμε το activeVotersCount = 1 για ασφάλεια
-                    if (activeVotersCount <= 0) activeVotersCount = 1;
-
-                    // Το αποτέλεσμα κλειδώνει όταν ψηφίσουν όλοι οι ενεργοί ψηφοφόροι
-                    if (totalVotesLogged >= activeVotersCount) {
-                        // Υπολογισμός πλειοψηφίας επί των ενεργών ψηφοφόρων
-                        int majorityNeeded = (activeVotersCount / 2) + 1; 
+                    if (totalVotesLogged >= totalRoommatesCount) {
+                        int majorityNeeded = (totalRoommatesCount / 2) + 1; 
 
                         if (app >= majorityNeeded) {
                             String approveSql = "UPDATE rewards SET is_available = TRUE WHERE reward_id = ?";
                             try (PreparedStatement psApp = conn.prepareStatement(approveSql)) {
                                 psApp.setInt(1, rewardId);
                                 psApp.executeUpdate();
-                                System.out.println("Reward approved by majority of active voters (" + app + "/" + activeVotersCount + ")!");
+                                System.out.println("Reward approved by strict majority of all members!");
                             }
+                            
+                            // ΔΙΟΡΘΩΣΗ: Αφαιρούμε το ID από τα voted της τρέχουσας συνεδρίας 
+                            // για να εμφανιστεί αμέσως το κουμπί BUY καθαρό για όλους!
                             votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                             
                         } else {
@@ -411,46 +346,19 @@ public class RewardScreen extends VBox {
         String[] colors = {"#FEF08A", "#A7F3D0", "#BBF7D0", "#FED7AA", "#E9D5FF"};
         String chosenColor = colors[(int) (Math.random() * colors.length)];
 
+        // Χρησιμοποιούμε το ID από το sidebar που είναι πλέον σωστό!
         int roomId = pointSidebar.getCurrentRoomId(); 
-        String currentUsername = pointSidebar.getCurrentUser().trim();
 
         String query = "INSERT INTO rewards (room_id, reward_name, cost, is_available, approve_votes, reject_votes, ui_color) VALUES (?, ?, ?, FALSE, 0, 0, ?)";
-        
-        // Log query για τον δημιουργό (συνδέουμε ένα εικονικό ή υπαρκτό chore_id, χρησιμοποιούμε το ίδιο subquery όπως στο handleVote)
-        String logCreatorSql = "INSERT INTO chore_reports (chore_id, room_id, title, description) " +
-                               "VALUES ((SELECT chore_id FROM chores WHERE room_id = ? LIMIT 1), ?, ?, ?)";
-
-        try (Connection conn = DatabaseManager.getConnection()) {
-            conn.setAutoCommit(false);
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, roomId);
+            ps.setString(2, name);
+            ps.setInt(3, cost);
+            ps.setString(4, chosenColor);
+            ps.executeUpdate();
             
-            int generatedRewardId = -1;
-            try (PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, roomId);
-                ps.setString(2, name);
-                ps.setInt(3, cost);
-                ps.setString(4, chosenColor);
-                ps.executeUpdate();
-                
-                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        generatedRewardId = generatedKeys.getInt(1);
-                    }
-                }
-            }
-
-            // Αν πήραμε επιτυχώς το ID, καταγράφουμε ποιος το έφτιαξε
-            if (generatedRewardId != -1) {
-                try (PreparedStatement psLog = conn.prepareStatement(logCreatorSql)) {
-                    psLog.setInt(1, roomId);
-                    psLog.setInt(2, roomId);
-                    psLog.setString(3, "REWARD_CREATOR_" + currentUsername);
-                    psLog.setString(4, "RewardID:" + generatedRewardId);
-                    psLog.executeUpdate();
-                }
-            }
-
-            conn.commit();
-            System.out.println("[DB] New reward proposal and creator log inserted for room: " + roomId);
+            System.out.println("[DB] New reward proposal inserted for room: " + roomId);
             loadRewardsFromDatabase(); 
         } catch (Exception e) { 
             System.err.println("Database error during insertProposalIntoDatabase:");

@@ -17,7 +17,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
+import points.PointScreen;
+import points.RewardScreen;
 import login.LogInScreen;
 import chores.ChoreScreen;
 import notifications.ManageNotificationsClass;
@@ -30,8 +31,6 @@ import ui.ConfirmationScreen;
 import issues.NewIssueScreen;
 import issues.NewScheduleScreen;
 import profile.ProfileScreen;
-import points.PointScreen;
-import points.RewardScreen;
 import shoppinglist.ShoppingListScreen;
 import util.DatabaseManager;
 import search.HomeScreen;
@@ -256,7 +255,7 @@ public class HOMYApp extends Application {
         super.stop();
     }
     
-    private static void openChores() { 
+    public static void openChores() { 
         try { Stage s = new Stage(); s.setOnHiding(e -> mainStage.show()); mainStage.hide(); new ChoreScreen(() -> mainStage.show()).start(s); } catch(Exception e){ e.printStackTrace(); } 
     }
     

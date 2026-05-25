@@ -209,7 +209,7 @@ public class NewBillScreen extends VBox {
 
             // 2. Προσθήκη της στήλης approval_status στην INSERT
             String billSql = "INSERT INTO bills (room_id, bill_type, amount, bill_date, payers, bill_status, approval_status) VALUES (?, ?, ?, ?, ?, 'Pending', ?)";
-            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 0900, 'BILL')";
+            String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 2359, 'BILL')";
 
             try (Connection conn = DatabaseManager.getConnection()) {
                 conn.setAutoCommit(false); 

@@ -38,7 +38,7 @@ public class NewRewardScreen {
         Label header = new Label("Add New Reward");
         header.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
         header.setTextFill(Color.web("#111827"));
-        Label subTitle = new Label("New Reward for the apartment.");
+        Label subTitle = new Label("Propose a new pass for the apartment.");
         subTitle.setFont(Font.font("Segoe UI", 13));
         subTitle.setTextFill(Color.web("#6B7280"));
         headerBox.getChildren().addAll(header, subTitle);
@@ -62,7 +62,7 @@ public class NewRewardScreen {
         cancelBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #4B5563; -fx-font-weight: bold; -fx-cursor: hand;");
         cancelBtn.setOnAction(e -> stage.close());
 
-        Button saveBtn = new Button("Add");
+        Button saveBtn = new Button("Propose");
         saveBtn.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold; -fx-padding: 8 20; -fx-cursor: hand;");
         
         saveBtn.setOnAction(e -> {

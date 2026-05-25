@@ -15,6 +15,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
 
 import util.DatabaseManager; 
 import java.sql.*;
@@ -51,7 +52,7 @@ public class CalendarScreen {
 
     public void display() {
         this.primaryStage = new Stage();
-        Scene scene = new Scene(root, 420, 550); 
+        Scene scene = new Scene(root, 440, 600); 
         primaryStage.setTitle("HOMY - Calendar");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
@@ -124,7 +125,6 @@ public class CalendarScreen {
             stmt.setInt(1, ev.getEventId());
             int rowsAffected = stmt.executeUpdate();
             
-            // ΔΙΟΡΘΩΘΗΚΕ: Αποστολή ειδοποίησης χωρίς να αναφέρεται ποιος το διέγραψε
             if (rowsAffected > 0) {
                 String notifText = "Διαγραφή event στο ημερολόγιο";
                 String notifDetail = "Το συμβάν '" + ev.getName() + "' διαγράφηκε.";
@@ -194,8 +194,6 @@ public class CalendarScreen {
             }
 
             if (noVotes >= (totalRoommates / 2.0)) {
-                // Αν απορριφθεί από την ψηφοφορία, καλείται η deleteEventFromDatabase
-                // η οποία πλέον στέλνει την ειδοποίηση "Το συμβάν '...' διαγράφηκε." αυτόματα.
                 deleteEventFromDatabase(ev);
                 return;
             }
@@ -228,14 +226,17 @@ public class CalendarScreen {
 
     private void createUI() {
         root = new BorderPane();
-        root.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: white;");
-        root.setPadding(new Insets(10));
+        root.setStyle("-fx-background-color: #F8FAFC;");
+        root.setPadding(new Insets(15));
 
-        VBox headerBox = new VBox(5);
+        VBox headerBox = new VBox(10);
         headerBox.setAlignment(Pos.CENTER);
+        headerBox.setPadding(new Insets(0, 0, 15, 0));
         
         Button backBtn = new Button("← Back to Hub");
-        backBtn.setStyle("-fx-background-color: transparent; -fx-font-weight: bold; -fx-text-fill: #1E3A5F; -fx-cursor: hand;");
+        backBtn.setStyle("-fx-background-color: transparent; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #475569; -fx-cursor: hand; -fx-font-size: 13px;");
+        backBtn.setOnMouseEntered(e -> backBtn.setStyle("-fx-background-color: transparent; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #1E293B; -fx-cursor: hand; -fx-font-size: 13px;"));
+        backBtn.setOnMouseExited(e -> backBtn.setStyle("-fx-background-color: transparent; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-text-fill: #475569; -fx-cursor: hand; -fx-font-size: 13px;"));
         backBtn.setOnAction(e -> {
             primaryStage.close();
             if (backAction != null) {
@@ -244,24 +245,33 @@ public class CalendarScreen {
         });
         
         Label mainTitle = new Label("Calendar");
-        mainTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 26));
+        mainTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 28));
+        mainTitle.setTextFill(Color.web("#1E293B"));
         
-        HBox navigationBox = new HBox(5);
+        HBox navigationBox = new HBox(15);
         navigationBox.setAlignment(Pos.CENTER);
         
         Button prevMonthBtn = new Button("<");
         Button nextMonthBtn = new Button(">");
         
-        prevMonthBtn.setMinWidth(30);
-        prevMonthBtn.setMaxWidth(30);
-        nextMonthBtn.setMinWidth(30);
-        nextMonthBtn.setMaxWidth(30);
+        String navBtnStyle = "-fx-background-color: #E2E8F0; -fx-background-radius: 6; -fx-font-weight: bold; -fx-text-fill: #475569; -fx-cursor: hand;";
+        String navBtnHover = "-fx-background-color: #CBD5E1; -fx-background-radius: 6; -fx-font-weight: bold; -fx-text-fill: #1E293B; -fx-cursor: hand;";
+        
+        prevMonthBtn.setStyle(navBtnStyle);
+        prevMonthBtn.setOnMouseEntered(e -> prevMonthBtn.setStyle(navBtnHover));
+        prevMonthBtn.setOnMouseExited(e -> prevMonthBtn.setStyle(navBtnStyle));
+        
+        nextMonthBtn.setStyle(navBtnStyle);
+        nextMonthBtn.setOnMouseEntered(e -> nextMonthBtn.setStyle(navBtnHover));
+        nextMonthBtn.setOnMouseExited(e -> nextMonthBtn.setStyle(navBtnStyle));
+        
+        prevMonthBtn.setMinWidth(32); prevMonthBtn.setMaxWidth(32);
+        nextMonthBtn.setMinWidth(32); nextMonthBtn.setMaxWidth(32);
         
         monthTitle = new Label();
         monthTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
-        monthTitle.setPrefWidth(160);
-        monthTitle.setMinWidth(160);
-        monthTitle.setMaxWidth(160);
+        monthTitle.setTextFill(Color.web("#334155"));
+        monthTitle.setPrefWidth(180);
         monthTitle.setAlignment(Pos.CENTER);
         
         prevMonthBtn.setOnAction(e -> {
@@ -288,31 +298,42 @@ public class CalendarScreen {
 
         calendarGrid = new GridPane();
         calendarGrid.setAlignment(Pos.CENTER);
-        calendarGrid.setStyle("-fx-border-color: black; -fx-border-width: 1 0 1 0;");
+        calendarGrid.setHgap(4);
+        calendarGrid.setVgap(4);
+        calendarGrid.setPadding(new Insets(10));
+        calendarGrid.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-color: #E2E8F0; -fx-border-radius: 12; -fx-border-width: 1;");
+        
+        DropShadow gridShadow = new DropShadow(8, Color.web("#000000", 0.04));
+        gridShadow.setOffsetY(2);
+        calendarGrid.setEffect(gridShadow);
 
         VBox bottomBox = new VBox(10);
-        bottomBox.setPadding(new Insets(10, 0, 0, 0));
+        bottomBox.setPadding(new Insets(15, 0, 0, 0));
         
-        Label eventsHeader = new Label("Events");
-        eventsHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        eventsHeader.setStyle("-fx-border-color: black; -fx-border-width: 0 0 1 0;");
+        Label eventsHeader = new Label("Events for the Day");
+        eventsHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        eventsHeader.setTextFill(Color.web("#1E293B"));
         eventsHeader.setMaxWidth(Double.MAX_VALUE);
 
-        eventsContainer = new VBox(5);
+        eventsContainer = new VBox(8);
+        eventsContainer.setPadding(new Insets(2));
         
         ScrollPane eventScrollPane = new ScrollPane(eventsContainer);
         eventScrollPane.setFitToWidth(true);
         eventScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         eventScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         
-        eventScrollPane.setMinHeight(82);   
-        eventScrollPane.setPrefHeight(82);
-        eventScrollPane.setMaxHeight(82); 
-        eventScrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;");
+        eventScrollPane.setMinHeight(110);   
+        eventScrollPane.setPrefHeight(110);
+        eventScrollPane.setMaxHeight(110); 
+        eventScrollPane.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0; -fx-viewport-background-color: transparent;");
 
         HBox btnContainer = new HBox();
         btnContainer.setAlignment(Pos.BOTTOM_RIGHT);
-        Button addEventBtn = new Button("Add Event");
+        Button addEventBtn = new Button("+ Add Event");
+        addEventBtn.setStyle("-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand;");
+        addEventBtn.setOnMouseEntered(e -> addEventBtn.setStyle("-fx-background-color: #2563EB; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand;"));
+        addEventBtn.setOnMouseExited(e -> addEventBtn.setStyle("-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand;"));
         
         addEventBtn.setOnAction(e -> {
             this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), selectedDay);
@@ -322,7 +343,7 @@ public class CalendarScreen {
 
         bottomBox.getChildren().addAll(eventsHeader, eventScrollPane, btnContainer);
         
-        VBox centerContainer = new VBox(10);
+        VBox centerContainer = new VBox(15);
         centerContainer.getChildren().addAll(calendarGrid, bottomBox);
         root.setCenter(centerContainer);
     }
@@ -343,12 +364,10 @@ public class CalendarScreen {
         String[] daysOfWeek = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
         for (int i = 0; i < 7; i++) {
             Label dayLabel = new Label(daysOfWeek[i]);
-            dayLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
-            dayLabel.setPrefSize(50, 25);
-            dayLabel.setMinSize(50, 25);
-            dayLabel.setMaxSize(50, 25);
+            dayLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 11));
+            dayLabel.setTextFill(Color.web("#94A3B8"));
+            dayLabel.setPrefSize(52, 25);
             dayLabel.setAlignment(Pos.CENTER);
-            dayLabel.setStyle("-fx-border-color: black; -fx-border-width: 1;");
             calendarGrid.add(dayLabel, i, 0);
         }
 
@@ -362,42 +381,58 @@ public class CalendarScreen {
             for (int col = 0; col < 7; col++) {
                 if (row == 1 && col < startColumn) {
                     Label emptyLabel = new Label("");
-                    emptyLabel.setPrefSize(50, 40);
-                    emptyLabel.setMinSize(50, 40);
-                    emptyLabel.setMaxSize(50, 40);
-                    emptyLabel.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: #f5f5f5;");
+                    emptyLabel.setPrefSize(52, 45);
+                    emptyLabel.setStyle("-fx-background-color: #F1F5F9; -fx-background-radius: 6;");
                     calendarGrid.add(emptyLabel, col, row);
                 } else if (currentDay <= daysInMonth) {
                     final int day = currentDay;
-                    VBox dayCell = new VBox(2);
-                    dayCell.setPadding(new Insets(2));
-                    dayCell.setPrefSize(50, 40);
-                    dayCell.setMinSize(50, 40);
-                    dayCell.setMaxSize(50, 40);
+                    VBox dayCell = new VBox(4);
+                    dayCell.setPadding(new Insets(4));
+                    dayCell.setPrefSize(52, 45);
+                    dayCell.setAlignment(Pos.TOP_CENTER);
                     
                     if (day == selectedDay) {
-                        dayCell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: #e0f7fa;");
+                        dayCell.setStyle("-fx-background-color: #DBEAFE; -fx-background-radius: 8; -fx-border-color: #3B82F6; -fx-border-radius: 8; -fx-border-width: 1.5; -fx-cursor: hand;");
                     } else {
-                        dayCell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: white;");
+                        dayCell.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-cursor: hand;");
+                        dayCell.setOnMouseEntered(e -> dayCell.setStyle("-fx-background-color: #E2E8F0; -fx-background-radius: 8; -fx-cursor: hand;"));
+                        dayCell.setOnMouseExited(e -> dayCell.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-cursor: hand;"));
                     }
                     
                     Label dayNum = new Label(String.valueOf(day));
-                    dayNum.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 11));
-                    HBox dotsBox = new HBox(2);
-                    dotsBox.setAlignment(Pos.CENTER_LEFT);
+                    dayNum.setFont(Font.font("Segoe UI", day == selectedDay ? FontWeight.BOLD : FontWeight.NORMAL, 12));
+                    dayNum.setTextFill(day == selectedDay ? Color.web("#1E40AF") : Color.web("#334155"));
                     
+                    HBox dotsBox = new HBox(2);
+                    dotsBox.setAlignment(Pos.CENTER);
+                    
+                    // Φιλτράρισμα και ταξινόμηση βάσει ώρας για να συμβαδίζουν απόλυτα με τη λίστα
                     List<Event> dayEvents = calendar.getEvents().stream()
                             .filter(e -> e.getDate() == day 
                                       && e.getMonth() == currentLocalDate.getMonthValue() 
                                       && e.getYear() == currentLocalDate.getYear())
+                            .sorted((e1, e2) -> Integer.compare(e1.getTime(), e2.getTime()))
                             .collect(Collectors.toList());
+                    
+                    // ΔΙΟΡΘΩΣΗ: Εμφάνιση των 3 πρώτων χρωματιστών κύκλων και ένδειξη "+x" αν υπάρχουν παραπάνω
+                    int dotCount = 0;
                     for (Event e : dayEvents) {
-                        Circle dot = new Circle(3);
-                        if (e.getType().equals("BILL")) dot.setFill(Color.DARKRED);
-                        else if (e.getType().equals("ISSUE")) dot.setFill(Color.BLUE);
-                        else if (e.getIsAccepted() == 1) dot.setFill(Color.GREEN);
-                        else dot.setFill(Color.LIGHTGREEN);
-                        dotsBox.getChildren().add(dot);
+                        if (dotCount < 3) {
+                            Circle dot = new Circle(3);
+                            if (e.getType().equals("BILL")) dot.setFill(Color.web("#EF4444"));
+                            else if (e.getType().equals("ISSUE")) dot.setFill(Color.web("#3B82F6"));
+                            else if (e.getIsAccepted() == 1) dot.setFill(Color.web("#10B981"));
+                            else dot.setFill(Color.web("#34D399"));
+                            dotsBox.getChildren().add(dot);
+                        }
+                        dotCount++;
+                    }
+                    
+                    if (dotCount > 3) {
+                        Label plusLabel = new Label("+" + (dotCount - 3));
+                        plusLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 9));
+                        plusLabel.setTextFill(Color.web("#64748B")); // Διακριτικό γκρι-μπλε χρώμα
+                        dotsBox.getChildren().add(plusLabel);
                     }
 
                     dayCell.getChildren().addAll(dayNum, dotsBox);
@@ -416,10 +451,8 @@ public class CalendarScreen {
                     currentDay++;
                 } else {
                     Label emptyLabel = new Label("");
-                    emptyLabel.setPrefSize(50, 40);
-                    emptyLabel.setMinSize(50, 40);
-                    emptyLabel.setMaxSize(50, 40);
-                    emptyLabel.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: #f5f5f5;");
+                    emptyLabel.setPrefSize(52, 45);
+                    emptyLabel.setStyle("-fx-background-color: #F1F5F9; -fx-background-radius: 6;");
                     calendarGrid.add(emptyLabel, col, row);
                 }
             }
@@ -441,23 +474,23 @@ public class CalendarScreen {
         }
 
         for (Event ev : dayEvents) {
-            HBox eventRow = new HBox(10);
+            HBox eventRow = new HBox(12);
             eventRow.setAlignment(Pos.CENTER_LEFT);
-            eventRow.setPadding(new Insets(5));
-            eventRow.setStyle("-fx-border-color: #ccc; -fx-border-width: 1;");
+            eventRow.setPadding(new Insets(8, 12, 8, 12));
+            eventRow.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-border-color: #E2E8F0; -fx-border-radius: 8; -fx-border-width: 1;");
 
-            Label timeAndTitle = new Label(ev.getTimeFormatted() + " | " + ev.getName());
-            timeAndTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
+            Label timeAndTitle = new Label(ev.getTimeFormatted() + "  |  " + ev.getName());
+            timeAndTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
             timeAndTitle.setStyle("-fx-cursor: hand;"); 
             
             if (ev.getType().equals("BILL")) {
-                timeAndTitle.setTextFill(Color.DARKRED);
+                timeAndTitle.setTextFill(Color.web("#B91C1C"));
             } else if (ev.getType().equals("ISSUE")) {
-                timeAndTitle.setTextFill(Color.BLUE); 
+                timeAndTitle.setTextFill(Color.web("#1D4ED8")); 
             } else if (ev.getIsAccepted() == 0) {
-                timeAndTitle.setTextFill(Color.ORANGE); 
+                timeAndTitle.setTextFill(Color.web("#D97706")); 
             } else if (ev.getIsAccepted() == 1) {
-                timeAndTitle.setTextFill(Color.GREEN); 
+                timeAndTitle.setTextFill(Color.web("#047857")); 
             }
 
             timeAndTitle.setOnMouseClicked(e -> viewEvent(ev));
@@ -472,12 +505,26 @@ public class CalendarScreen {
             if (!isBillOrIssue) {
                 if (isCreator) {
                     Button deleteBtn = new Button("Delete");
+                    deleteBtn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 4 8; -fx-cursor: hand;");
+                    deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 4 8; -fx-cursor: hand;"));
+                    deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 4 8; -fx-cursor: hand;"));
                     deleteBtn.setOnAction(e -> deleteEvent(ev));
                     eventRow.getChildren().add(deleteBtn);
                 } else if (ev.getIsAccepted() == 0) {
                     if (!hasUserVoted(ev.getEventId(), currentUserId)) {
                         Button voteYesBtn = new Button("✓");
                         Button voteNoBtn = new Button("✕");
+                        
+                        String voteYesStyle = "-fx-background-color: #D1FAE5; -fx-text-fill: #10B981; -fx-font-weight: bold; -fx-background-radius: 4; -fx-cursor: hand;";
+                        String voteNoStyle = "-fx-background-color: #FEE2E2; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-background-radius: 4; -fx-cursor: hand;";
+                        
+                        voteYesBtn.setStyle(voteYesStyle);
+                        voteYesBtn.setOnMouseEntered(e -> voteYesBtn.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-cursor: hand;"));
+                        voteYesBtn.setOnMouseExited(e -> voteYesBtn.setStyle(voteYesStyle));
+
+                        voteNoBtn.setStyle(voteNoStyle);
+                        voteNoBtn.setOnMouseEntered(e -> voteNoBtn.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-cursor: hand;"));
+                        voteNoBtn.setOnMouseExited(e -> voteNoBtn.setStyle(voteNoStyle));
                         
                         final int finalRoomId = currentRoomId;
                         final int finalUserId = currentUserId;
@@ -497,7 +544,7 @@ public class CalendarScreen {
                         eventRow.getChildren().addAll(voteYesBtn, voteNoBtn);
                     } else {
                         Label votedLbl = new Label("Voted");
-                        votedLbl.setFont(Font.font("Segoe UI", 11));
+                        votedLbl.setFont(Font.font("Segoe UI", 12));
                         votedLbl.setTextFill(Color.GRAY);
                         eventRow.getChildren().add(votedLbl);
                     }
