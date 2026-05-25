@@ -1,66 +1,83 @@
 package entities;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.IntegerProperty;
 
-public class Bill {
-    private final SimpleStringProperty type;
-    private final SimpleDoubleProperty amount;
-    private final SimpleStringProperty date;
-    private final SimpleStringProperty payers;
-    private final SimpleStringProperty status; // "Pending" or "Paid"
-    private final SimpleStringProperty approvalStatus;
-    
+public class Issue {
+   
+    private int id;
+    private final StringProperty type;
+    private final StringProperty reportedBy;
+    private final StringProperty payers;
+    private final StringProperty date;
+    private final StringProperty status = new SimpleStringProperty("Pending");
+    private final StringProperty approvalStatus;
+
     // 🌟 Added Option A fields to track vote counts persistently from DB
-    private final SimpleIntegerProperty approveVotes;
-    private final SimpleIntegerProperty rejectVotes;
-    
-    // Purely internal Java tracker — no database column needed!
-    private String creatorUsername = ""; 
+    private final IntegerProperty approveVotes;
+    private final IntegerProperty rejectVotes;
 
-    public Bill(String type, double amount, String date, String payers, String status, String approvalStatus) {
+    // --- Constructor: Με ID (Χρησιμοποιείται κατά το διάβασμα από τη Βάση) ---
+    public Issue(int id, String type, String reportedBy, String payers, String date, String approvalStatus) {
+        this.id = id;
         this.type = new SimpleStringProperty(type);
-        this.amount = new SimpleDoubleProperty(amount);
-        this.date = new SimpleStringProperty(date);
+        this.reportedBy = new SimpleStringProperty(reportedBy);
         this.payers = new SimpleStringProperty(payers);
-        this.status = new SimpleStringProperty(status);
+        this.date = new SimpleStringProperty(date);
+        this.approvalStatus = new SimpleStringProperty(approvalStatus);
+        this.approveVotes = new SimpleIntegerProperty(0);
+        this.rejectVotes = new SimpleIntegerProperty(0);
+    }
+    
+    // --- Constructor: Χωρίς ID (Χρησιμοποιείται κατά τη δημιουργία) ---
+    public Issue(String type, String reportedBy, String payers, String date, String approvalStatus) {
+        this.id = 0; 
+        this.type = new SimpleStringProperty(type);
+        this.reportedBy = new SimpleStringProperty(reportedBy);
+        this.payers = new SimpleStringProperty(payers);
+        this.date = new SimpleStringProperty(date);
         this.approvalStatus = new SimpleStringProperty(approvalStatus);
         this.approveVotes = new SimpleIntegerProperty(0);
         this.rejectVotes = new SimpleIntegerProperty(0);
     }
 
+    // --- JavaFX Property Methods ---
+    public StringProperty typeProperty() { return type; }
+    public StringProperty reportedByProperty() { return reportedBy; }
+    public StringProperty payersProperty() { return payers; }
+    public StringProperty dateProperty() { return date; }
+    public StringProperty statusProperty() { return status; }
+    public StringProperty approvalStatusProperty() { return approvalStatus; }
+    
+    // 🌟 Option A Properties
+    public IntegerProperty approveVotesProperty() { return approveVotes; }
+    public IntegerProperty rejectVotesProperty() { return rejectVotes; }
+
+    // --- Standard Getters ---
+    public int getId() { return id; }
     public String getType() { return type.get(); }
-    public SimpleStringProperty typeProperty() { return type; }
-
-    public double getAmount() { return amount.get(); }
-    public SimpleDoubleProperty amountProperty() { return amount; }
-
-    public String getDate() { return date.get(); }
-    public SimpleStringProperty dateProperty() { return date; }
-
+    public String getReportedBy() { return reportedBy.get(); }
     public String getPayers() { return payers.get(); }
-    public SimpleStringProperty payersProperty() { return payers; }
-
+    public String getDate() { return date.get(); }
     public String getStatus() { return status.get(); }
-    public SimpleStringProperty statusProperty() { return status; }
-    
     public String getApprovalStatus() { return approvalStatus.get(); }
-    public SimpleStringProperty approvalStatusProperty() { return approvalStatus; }
-
-    // 🌟 Option A Getters/Setters/Properties for votes tracking
-    public int getApproveVotes() { return approveVotes.get(); }
-    public SimpleIntegerProperty approveVotesProperty() { return approveVotes; }
-    public void setApproveVotes(int votes) { this.approveVotes.set(votes); }
-
-    public int getRejectVotes() { return rejectVotes.get(); }
-    public SimpleIntegerProperty rejectVotesProperty() { return rejectVotes; }
-    public void setRejectVotes(int votes) { this.rejectVotes.set(votes); }
     
-    public String getCreatorUsername() { return creatorUsername; }
-    public void setCreatorUsername(String creatorUsername) { this.creatorUsername = creatorUsername; }
-
+    // 🌟 Option A Getters
+    public int getApproveVotes() { return approveVotes.get(); }
+    public int getRejectVotes() { return rejectVotes.get(); }
+    
+    // --- Standard Setters ---
+    public void setId(int id) { this.id = id; }
+    public void setType(String value) { this.type.set(value); }
+    public void setReportedBy(String value) { this.reportedBy.set(value); }
+    public void setPayers(String value) { this.payers.set(value); }
+    public void setDate(String value) { this.date.set(value); }
     public void setStatus(String status) { this.status.set(status); }
-    public void setApprovalStatus(String approvalStatus) { this.approvalStatus.set(approvalStatus); }
-    public void setDate(String date) { this.date.set(date); }
+    public void setApprovalStatus(String value) { this.approvalStatus.set(value); }
+    
+    // 🌟 Option A Setters
+    public void setApproveVotes(int votes) { this.approveVotes.set(votes); }
+    public void setRejectVotes(int votes) { this.rejectVotes.set(votes); }
 }
