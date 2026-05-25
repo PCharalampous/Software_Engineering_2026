@@ -109,6 +109,9 @@ public class NotificationsScreen {
             System.out.println("[NAV DEBUG] Redirecting to Home issue report Module...");
             main.HOMYApp.openIssues();
         }
+        else if(cleanTarget.contains("PROFILE")) {
+        	main.HOMYApp.openProfile();
+        }
     }
 
     // Βοηθητική μέθοδος για να κλείνουμε το Stage των Notifications απ' έξω
