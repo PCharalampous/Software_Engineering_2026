@@ -2,7 +2,7 @@ package issues;
 
 import util.DatabaseManager;
 import entities.Issue;
-import entities.Authentication; // ← ΠΡΟΣΘΗΚΗ
+import entities.Authentication; 
 import ui.ConfirmationScreen;
 import ui.ErrorScreen;
 import javafx.collections.FXCollections;
@@ -15,15 +15,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HomeIssueScreen extends VBox {
 
     private TableView<Issue> pendingIssuesTable;
     private TableView<Issue> issuesHistoryTable;
     private Label activeCountLabel;
+
+    // Internal tracker to remember which specific issues the current logged-in user has voted on
+    private final Set<String> votedIssueKeys = new HashSet<>();
 
     public static final ObservableList<Issue> allIssues = FXCollections.observableArrayList();
 
@@ -44,7 +49,6 @@ public class HomeIssueScreen extends VBox {
     }
 
     private void buildUI() {
-        // --- 1. Header Section ---
         HBox header = new HBox(15);
         header.setAlignment(Pos.CENTER_LEFT);
         header.setPadding(new Insets(15, 20, 15, 20));
@@ -52,9 +56,7 @@ public class HomeIssueScreen extends VBox {
         
         Button backBtn = new Button("←");
         backBtn.setStyle("-fx-background-color: transparent; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;");
-        backBtn.setOnAction(e -> {
-            if (onBackToHub != null) onBackToHub.run();
-        });
+        backBtn.setOnAction(e -> { if (onBackToHub != null) onBackToHub.run(); });
 
         Label titleLabel = new Label("Home Issue Report");
         titleLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
@@ -62,7 +64,6 @@ public class HomeIssueScreen extends VBox {
         header.getChildren().addAll(backBtn, titleLabel);
         this.getChildren().add(header);
 
-        // --- 2. Workspace Layout ---
         HBox workspace = new HBox(20);
         workspace.setPadding(new Insets(25));
         VBox.setVgrow(workspace, Priority.ALWAYS);
@@ -80,7 +81,6 @@ public class HomeIssueScreen extends VBox {
 
         leftColumn.getChildren().addAll(pendingBox, historyBox);
 
-        // Right Metric Sidebar
         VBox rightColumn = new VBox(15);
         rightColumn.setPadding(new Insets(20));
         rightColumn.setPrefWidth(260);
@@ -99,7 +99,6 @@ public class HomeIssueScreen extends VBox {
         workspace.getChildren().addAll(leftColumn, rightColumn);
         this.getChildren().add(workspace);
 
-        // --- 3. Bottom Tray Bar ---
         HBox bottomTray = new HBox(15);
         bottomTray.setAlignment(Pos.CENTER_RIGHT);
         bottomTray.setPadding(new Insets(15, 25, 15, 25));
@@ -142,29 +141,166 @@ public class HomeIssueScreen extends VBox {
         dateCol.setCellValueFactory(cell -> cell.getValue().dateProperty());
 
         table.getColumns().addAll(typeCol, reportedCol, payersCol, dateCol);
+
+        if (isPending) {
+            TableColumn<Issue, Void> actionCol = new TableColumn<>("Voting Actions");
+            actionCol.setMinWidth(160);
+            actionCol.setCellFactory(param -> new TableCell<>() {
+                private final Button btnCheck = new Button("✓");
+                private final Button btnCross = new Button("✕");
+                private final HBox pane = new HBox(10, btnCheck, btnCross);
+                private final StackPane centerContainer = new StackPane();
+
+                {
+                    btnCheck.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 4 10; -fx-background-radius: 4;");
+                    btnCross.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 4 10; -fx-background-radius: 4;");
+                    pane.setAlignment(Pos.CENTER);
+                    centerContainer.setAlignment(Pos.CENTER);
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        Issue issue = getTableRow().getItem();
+                        String currentUsername = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getUsername() : "";
+                        
+                        if ("Pending_Approval".equalsIgnoreCase(issue.getApprovalStatus())) {
+                            if (currentUsername.equalsIgnoreCase(issue.getReportedBy())) {
+                                Label lbl = new Label("Awaiting Roommates");
+                                lbl.setStyle("-fx-text-fill: #f97316; -fx-font-style: italic; -fx-font-weight: bold;");
+                                centerContainer.getChildren().setAll(lbl);
+                                setGraphic(centerContainer);
+                                return;
+                            }
+
+                            // Generate a distinct internal tracking key for this unique issue
+                            String issueKey = String.valueOf(issue.getId());
+
+                            if (votedIssueKeys.contains(issueKey)) {
+                                Label lbl = new Label("Awaiting Roommates");
+                                lbl.setStyle("-fx-text-fill: #f97316; -fx-font-style: italic; -fx-font-weight: bold;");
+                                centerContainer.getChildren().setAll(lbl);
+                                setGraphic(centerContainer);
+                            } else {
+                                btnCheck.setOnAction(e -> {
+                                    votedIssueKeys.add(issueKey);
+                                    handleVote(issue, true);
+                                });
+                                btnCross.setOnAction(e -> {
+                                    votedIssueKeys.add(issueKey);
+                                    handleVote(issue, false);
+                                });
+                                centerContainer.getChildren().setAll(pane);
+                                setGraphic(centerContainer); 
+                            }
+                        } else {
+                            Label statusLbl = new Label(issue.getApprovalStatus());
+                            statusLbl.setStyle("-fx-text-fill: #475569; -fx-font-weight: bold;");
+                            centerContainer.getChildren().setAll(statusLbl);
+                            setGraphic(centerContainer);
+                        }
+                    }
+                }
+            });
+            table.getColumns().add(actionCol);
+        }
         return table;
     }
 
     private void setupDataBindings() {
-        FilteredList<Issue> pendingFilteredList = new FilteredList<>(allIssues, issue -> 
-            "Pending".equals(issue.getStatus())
-        );
-
-        FilteredList<Issue> historyFilteredList = new FilteredList<>(allIssues, issue -> 
-            "Resolved".equals(issue.getStatus())
-        );
+        FilteredList<Issue> pendingFilteredList = new FilteredList<>(allIssues, issue -> "Pending".equals(issue.getStatus()));
+        FilteredList<Issue> historyFilteredList = new FilteredList<>(allIssues, issue -> "Resolved".equals(issue.getStatus()));
 
         pendingIssuesTable.setItems(pendingFilteredList);
         issuesHistoryTable.setItems(historyFilteredList);
 
-        activeCountLabel.textProperty().bind(
-            javafx.beans.binding.Bindings.size(pendingFilteredList).asString()
-        );
+        activeCountLabel.textProperty().bind(javafx.beans.binding.Bindings.size(pendingFilteredList).asString());
     }
 
-    public void setupTableDataRefresh() {
-        pendingIssuesTable.refresh();
-        issuesHistoryTable.refresh();
+    private void handleVote(Issue issue, boolean approved) {
+        int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
+        String currentUsername = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getUsername() : "";
+
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false);
+
+            if (approved) {
+                String updateVoteSql = "UPDATE issues SET approve_votes = approve_votes + 1 WHERE room_id = ? AND issue_id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(updateVoteSql)) {
+                    pstmt.setInt(1, currentRoomId);
+                    pstmt.setInt(2, issue.getId());
+                    pstmt.executeUpdate();
+                }
+
+                int totalRoommates = 1;
+                String countRoommatesSql = "SELECT COUNT(*) FROM users WHERE room_id = ?";
+                try (PreparedStatement pstmtCount = conn.prepareStatement(countRoommatesSql)) {
+                    pstmtCount.setInt(1, currentRoomId);
+                    try (ResultSet rs = pstmtCount.executeQuery()) {
+                        if (rs.next()) totalRoommates = rs.getInt(1);
+                    }
+                }
+
+                int currentApproveVotes = 0;
+                String checkVotesSql = "SELECT approve_votes FROM issues WHERE issue_id = ?";
+                try (PreparedStatement pstmtVotes = conn.prepareStatement(checkVotesSql)) {
+                    pstmtVotes.setInt(1, issue.getId());
+                    try (ResultSet rs = pstmtVotes.executeQuery()) {
+                        if (rs.next()) currentApproveVotes = rs.getInt(1);
+                    }
+                }
+
+                if (currentApproveVotes >= (totalRoommates - 1)) {
+                    String finalizeSql = "UPDATE issues SET approval_status = 'Accepted' WHERE issue_id = ?";
+                    try (PreparedStatement pstmtFinal = conn.prepareStatement(finalizeSql)) {
+                        pstmtFinal.setInt(1, issue.getId());
+                        pstmtFinal.executeUpdate();
+                    }
+
+                    String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 1200, 'ISSUE')";
+                    try (PreparedStatement pstmtCal = conn.prepareStatement(calendarSql)) {
+                        pstmtCal.setInt(1, currentRoomId);
+                        pstmtCal.setString(2, "Issue: " + issue.getType());
+                        pstmtCal.setString(3, "Reported by: " + issue.getReportedBy());
+                        pstmtCal.setString(4, issue.getDate());
+                        pstmtCal.executeUpdate();
+                    }
+                }
+            } else {
+                String rejectSql = "UPDATE issues SET reject_votes = reject_votes + 1, approval_status = 'Declined' WHERE issue_id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(rejectSql)) {
+                    pstmt.setInt(1, issue.getId());
+                    pstmt.executeUpdate();
+                }
+
+                String findCreatorSql = "SELECT user_id FROM users WHERE username = ? AND room_id = ?";
+                // EXACT REPLICA OF THE REQUESTED USER SCREENSHOT DESIGN
+                String alertSql = "INSERT INTO notifications (user_id, room_id, category, notification_text, detail, target_screen, tag_color, is_read) VALUES (?, ?, 'HOME ISSUE REPORT', 'Issue Request Rejected', ?, 'ISSUES', '#ef4444', 0)";
+                int targetUser = 0;
+
+                try (PreparedStatement psFind = conn.prepareStatement(findCreatorSql)) {
+                    psFind.setString(1, issue.getReportedBy());
+                    psFind.setInt(2, currentRoomId);
+                    try (ResultSet rs = psFind.executeQuery()) { if (rs.next()) targetUser = rs.getInt("user_id"); }
+                }
+                if (targetUser > 0) {
+                    try (PreparedStatement psAlert = conn.prepareStatement(alertSql)) {
+                        psAlert.setInt(1, targetUser);
+                        psAlert.setInt(2, currentRoomId);
+                        psAlert.setString(3, "Roommate '" + currentUsername + "' declined your request for: " + issue.getType());
+                        psAlert.executeUpdate();
+                    }
+                }
+            }
+
+            conn.commit();
+            loadIssuesFromDatabase(); 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void handleResolutionAction() {
@@ -177,6 +313,11 @@ public class HomeIssueScreen extends VBox {
         Issue selected = pendingIssuesTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             ErrorScreen.show("Please select an unpaid issue from the 'Pending Issues' table above to finalize payment.");
+            return;
+        }
+
+        if ("Pending_Approval".equalsIgnoreCase(selected.getApprovalStatus())) {
+            ErrorScreen.show("This issue cannot be resolved yet because it hasn't passed unanimous voting!");
             return;
         }
 
@@ -227,21 +368,16 @@ public class HomeIssueScreen extends VBox {
         return hbox;
     }
   
-    private void loadIssuesFromDatabase() {
-       
-       
+    public void loadIssuesFromDatabase() {
         allIssues.clear(); 
-
-        // ΔΥΝΑΜΙΚΟ: Λήψη του room_id του τρέχοντος συνδεδεμένου χρήστη
         int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
 
-        System.out.println("DEBUG: Fetching issues for Room ID: " + currentRoomId);
-        String query = "SELECT * FROM issues WHERE room_id = ? AND approval_status = 'Accepted'";        
+        String query = "SELECT * FROM issues WHERE room_id = ? AND (approval_status = 'Accepted' OR approval_status = 'Pending_Approval')";        
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             
             pstmt.setInt(1, currentRoomId);
-            try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+            try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Issue issue = new Issue(
                         rs.getInt("issue_id"),
