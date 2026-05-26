@@ -31,6 +31,7 @@ public class HomeScreenLeftPanel {
 	private Separator separator;
 	private Button joinBtn;
 	private TextField roomIdSect;
+	private VBox roommatesBox;
 	
 	public HomeScreenLeftPanel(Stage stage, boolean inRoom, String labelMessage) {
         
@@ -71,39 +72,26 @@ public class HomeScreenLeftPanel {
             
             this.leftBox.getChildren().add(btnGetRoomId);
             
+            Button btnRefresh = new Button("Refresh Room's Roomates List");
+            btnRefresh.setMaxWidth(Double.MAX_VALUE);
+            btnRefresh.setStyle("-fx-background-color: #1E3A5F; -fx-text-fill: white; "
+                    + "-fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 12px; "
+                    + "-fx-background-radius: 6; -fx-padding: 6 12;");
+            
+            // Set action to refresh the list dynamically from the database
+            btnRefresh.setOnAction(e -> updateRoommatesList(activeRoomId));
+            this.leftBox.getChildren().add(btnRefresh);
+            
             // Separator Line
             Separator sep = new Separator();
             this.leftBox.getChildren().add(sep);
 
             // 3. Room Occupants Panel Frame
-            VBox roommatesBox = new VBox(8);
-            Label lblTitle = new Label("ROOMMATES");
-            lblTitle.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;");
-            roommatesBox.getChildren().add(lblTitle);
-            
-            // Fetch names of people currently sharing this specific room ID
-            if (activeRoomId > 0) {
-                String sql = "SELECT username FROM users WHERE room_id = ?";
-                try (Connection conn = DatabaseManager.getConnection();
-                     PreparedStatement stmt = conn.prepareStatement(sql)) {
-                    
-                    stmt.setInt(1, activeRoomId);
-                    try (ResultSet rs = stmt.executeQuery()) {
-                        while (rs.next()) {
-                            Label lblUser = new Label("• " + rs.getString("username"));
-                            lblUser.setStyle("-fx-font-size: 13px; -fx-text-fill: #334155;");
-                            roommatesBox.getChildren().add(lblUser);
-                        }
-                    }
-                } catch (SQLException e) {
-                    System.err.println("Error pulling room elements layout configuration profile list:");
-                    e.printStackTrace();
-                }
-            } else {
-                roommatesBox.getChildren().add(new Label("No roommates detected."));
-            }
-            
+            roommatesBox = new VBox(8);
             this.leftBox.getChildren().add(roommatesBox);
+            
+            // Initial dynamic load of roommates
+            updateRoommatesList(activeRoomId);
         }
     }
 	
@@ -123,6 +111,40 @@ public class HomeScreenLeftPanel {
 		    
 		return joinRoom;
 	}
+	
+	//----------
+	private void updateRoommatesList(int activeRoomId) {
+		// 1. Clear old data
+		roommatesBox.getChildren().clear();
+		
+		// 2. Re-add header title
+		Label lblTitle = new Label("ROOMMATES");
+        lblTitle.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;");
+        roommatesBox.getChildren().add(lblTitle);
+        
+        // 3. Fetch names from DB
+        if (activeRoomId > 0) {
+            String sql = "SELECT username FROM users WHERE room_id = ?";
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                
+                stmt.setInt(1, activeRoomId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Label lblUser = new Label("• " + rs.getString("username"));
+                        lblUser.setStyle("-fx-font-size: 13px; -fx-text-fill: #334155;");
+                        roommatesBox.getChildren().add(lblUser);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error pulling room elements layout configuration profile list:");
+                e.printStackTrace();
+            }
+        } else {
+            roommatesBox.getChildren().add(new Label("No roommates detected."));
+        }
+	}
+	//----------
 	
 	private void buttonsFunctiability() {
 		
