@@ -37,6 +37,12 @@ public class NotificationsScreen {
         this.primaryStage = new Stage();
         this.primaryStage.setTitle("HOMY - Notifications");
         this.primaryStage.setResizable(false);
+        
+        primaryStage.setOnCloseRequest(e -> {
+            if (backAction != null) {
+                backAction.run();
+            }
+        });
 
         // 1. ΑΡΧΙΚΟΠΟΙΗΣΗ ΠΡΩΤΑ: Δημιουργούμε το VBox πριν το βάλουμε στο Scene/Scroll
         notifListVBox = new VBox(6);
@@ -94,11 +100,9 @@ public class NotificationsScreen {
             main.HOMYApp.openChores();
         }
         else if (cleanTarget.contains("SHOPPING")) {
-            System.out.println("[NAV DEBUG] Redirecting to Shopping List Module...");
             main.HOMYApp.openShopping();
         }
         else if (cleanTarget.contains("CALENDAR")) {
-            System.out.println("[NAV DEBUG] Redirecting to Calendar Module...");
             main.HOMYApp.openCalendar();
         }
         else if (cleanTarget.contains("FINANCES")) {

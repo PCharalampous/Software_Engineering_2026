@@ -79,14 +79,17 @@ public class ShoppingListScreen {
             e.printStackTrace();
         }
         
-//        if (roommateNames.isEmpty()) {
-//            roommateNames.addAll(List.of("Giannis", "Manos", "Makis"));
-//        }
     }
 
     public void display() {
         this.primaryStage = new Stage();
         primaryStage.setTitle("HOMY - Shopping List");
+        
+        primaryStage.setOnCloseRequest(e -> {
+            if (backAction != null) {
+                backAction.run();
+            }
+        });
 
         loadItemsFromDatabase();
 
@@ -169,13 +172,13 @@ public class ShoppingListScreen {
         receiptBox.setOnMouseEntered(e -> receiptBox.setStyle("-fx-border-color: #3B82F6; -fx-border-style: dashed; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #EFF6FF; -fx-cursor: hand;"));
         receiptBox.setOnMouseExited(e -> receiptBox.setStyle("-fx-border-color: #CBD5E1; -fx-border-style: dashed; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: #ffffff; -fx-cursor: hand;"));
 
-        Label bigPlus = new Label("+ Upload Invoice Image");
+        Label bigPlus = new Label("+ Upload Image");
         bigPlus.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 14)); 
         bigPlus.setTextFill(Color.web("#64748B"));
         receiptBox.getChildren().add(bigPlus);
         receiptBox.setOnMouseClicked(e -> addReceipt());
 
-        Label historyTitle = new Label("History & Allocations");
+        Label historyTitle = new Label("History");
         historyTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
         historyTitle.setTextFill(Color.web("#1E293B"));
         HBox historyHeader = new HBox(historyTitle);
@@ -466,7 +469,7 @@ public class ShoppingListScreen {
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(primaryStage);
-        stage.setTitle("Προβολή Απόδειξης");
+        stage.setTitle("Receipt");
 
         try {
             Image img = new Image(alloc.getImageFile().toURI().toString());

@@ -56,8 +56,14 @@ public class CalendarScreen {
         primaryStage.setTitle("HOMY - Calendar");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        primaryStage.show();
         
+        primaryStage.setOnCloseRequest(e -> {
+            if (backAction != null) {
+                backAction.run();
+            }
+        });
+        
+        primaryStage.show();
         returnCalendar();
     }
 
@@ -310,7 +316,7 @@ public class CalendarScreen {
         VBox bottomBox = new VBox(10);
         bottomBox.setPadding(new Insets(15, 0, 0, 0));
         
-        Label eventsHeader = new Label("Events for the Day");
+        Label eventsHeader = new Label("Events");
         eventsHeader.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
         eventsHeader.setTextFill(Color.web("#1E293B"));
         eventsHeader.setMaxWidth(Double.MAX_VALUE);
@@ -352,7 +358,6 @@ public class CalendarScreen {
         this.selectedDay = day;
         this.prefilledDateForForm = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonthValue(), day);
         returnCalendar(); 
-        returnEvent();
     }
 
     public void returnCalendar() {
@@ -555,10 +560,6 @@ public class CalendarScreen {
         }
     }
 
-    public void returnEvent() {
-        System.out.println("returnEvent() executed: UI Elements updated for Day " + selectedDay);
-    }
-
     public void addEvent() {
         EventScreen eventScreen = new EventScreen(calendar, this, prefilledDateForForm);
         eventScreen.show();
@@ -580,10 +581,6 @@ public class CalendarScreen {
             }
         );
         confirmationScreen.show();
-    }
-
-    public void goBack() {
-        System.out.println("goBack() executed: Context returned smoothly.");
     }
 
     public BorderPane getRoot() { return root; }

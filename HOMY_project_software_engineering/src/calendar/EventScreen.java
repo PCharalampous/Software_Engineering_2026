@@ -56,7 +56,7 @@ public class EventScreen {
         stage.initModality(Modality.APPLICATION_MODAL);
         
         boolean isViewMode = (eventToView != null);
-        stage.setTitle(isViewMode ? "View Event Details" : "Add Event");
+        stage.setTitle(isViewMode ? "Event Details" : "Event");
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(15));
@@ -81,7 +81,7 @@ public class EventScreen {
         }
         row++;
         
-        grid.add(new Label(isViewMode ? "Day:" : "Day (DD/MM/YYYY):"), 0, row);
+        grid.add(new Label(isViewMode ? "Date:" : "Date (DD/MM/YYYY):"), 0, row);
         if (isViewMode) {
             String formattedDate = String.format("%02d/%02d/%04d", eventToView.getDate(), eventToView.getMonth(), eventToView.getYear());
             Label dayLabel = new Label(formattedDate);
@@ -368,7 +368,7 @@ public class EventScreen {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            ErrorScreen errorScreen = new ErrorScreen("Λανθασμένα στοιχεία εισαγωγής συμβάντος!", () -> goBack());
+            ErrorScreen errorScreen = new ErrorScreen("Wrong input!", () -> goBack());
             errorScreen.show();
         }
     }

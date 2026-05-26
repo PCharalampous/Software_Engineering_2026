@@ -37,7 +37,7 @@ public class SplitScreen {
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(owner);
-        stage.setTitle("Οθόνη Split");
+        stage.setTitle("Split");
 
         VBox root = new VBox(15);
         root.setPadding(new Insets(15));
@@ -112,7 +112,7 @@ public class SplitScreen {
             String selectedReceiver = receiverComboBox.getValue();
             
             if (selectedReceiver == null || selectedReceiver.equals("-")) {
-                ErrorScreen.show("Παρακαλώ επιλέξτε ποιος πλήρωσε!");
+                ErrorScreen.show("Please choose a receiver!");
                 return;
             }
             
@@ -120,7 +120,7 @@ public class SplitScreen {
                 double totalAmt = Double.parseDouble(totalAmountField.getText());
                 
                 if (totalAmt < 0) {
-                    ErrorScreen.show("Το συνολικό ποσό δεν μπορεί να είναι αρνητικό!");
+                    ErrorScreen.show("Total amount can not be negative!");
                     return;
                 }
 
@@ -132,7 +132,7 @@ public class SplitScreen {
                     double amount = Double.parseDouble(entry.getValue().getText());
                     
                     if (amount < 0) {
-                        ErrorScreen.show("Το ποσό για τον συγκατοίκο " + name + " δεν μπορεί να είναι αρνητικό!");
+                        ErrorScreen.show("The amount for " + name + " can not be negative!");
                         return;
                     }
                     
@@ -141,7 +141,7 @@ public class SplitScreen {
                 }
 
                 if (othersSum > totalAmt) {
-                    ErrorScreen.show("Το άθροισμα των ποσών των συγκατοίκων ξεπερνά το συνολικό ποσό της απόδειξης!");
+                    ErrorScreen.show("The sum of the payers amounts can not be higher than the total amount!");
                     return;
                 }
 
@@ -204,7 +204,7 @@ public class SplitScreen {
 
                 stage.close();
             } catch (NumberFormatException ex) {
-                ErrorScreen.show("Εισάγετε έγκυρα ποσά!");
+                ErrorScreen.show("Wrong input!");
             }
         });
         root.getChildren().add(confirmBtn);

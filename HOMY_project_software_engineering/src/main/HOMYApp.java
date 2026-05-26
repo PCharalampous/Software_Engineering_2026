@@ -121,7 +121,7 @@ public class HOMYApp extends Application {
         HBox row2 = new HBox(15);
         row2.setAlignment(Pos.CENTER);
         VBox notificationsCard = createMenuCard("🔔 Notifications", "View alerts.", "#EF4444", () -> openNotifications());
-        VBox calendarCard = createMenuCard("📅 Calendar & Events", "Schedule house meetings.", "#06B6D4", () -> openCalendar());
+        VBox calendarCard = createMenuCard("📅 Calendar", "Schedule house meetings.", "#06B6D4", () -> openCalendar());
         VBox financesCard = createMenuCard("💶 Finances & Bills", "Track utilities.", "#14B8A6", () -> openFinances());
         VBox issuesCard = createMenuCard("⚠️ House Issues", "Report broken maintenance objects.", "#F97316", () -> openIssues());
         row2.getChildren().addAll(notificationsCard, calendarCard, financesCard, issuesCard);

@@ -30,7 +30,7 @@ public class AddItemScreen {
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(owner);
-        stage.setTitle("Στοιχεία Προϊόντος");
+        stage.setTitle("Item");
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(15));
@@ -43,16 +43,16 @@ public class AddItemScreen {
         Spinner<Integer> qtySpinner = new Spinner<>(1, 9999, defaultQty);
         qtySpinner.setEditable(true);
 
-        grid.add(new Label("Όνομα προϊόντος:"), 0, 0);
+        grid.add(new Label("Name:"), 0, 0);
         grid.add(nameField, 1, 0);
-        grid.add(new Label("Ποσότητα:"), 0, 1);
+        grid.add(new Label("Quantity:"), 0, 1);
         grid.add(qtySpinner, 1, 1);
 
         Button confirmBtn = new Button("Confirm");
         confirmBtn.setOnAction(e -> {
             String name = nameField.getText().trim();
             if (name.isEmpty()) {
-                ErrorScreen.show("Παρακαλώ συμπληρώστε το όνομα του προϊόντος!");
+                ErrorScreen.show("Please insert the name of the product!");
                 return;
             }
 
