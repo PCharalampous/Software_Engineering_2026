@@ -74,12 +74,22 @@ public class MyApplicationScreen {
 
         // --- Floating Button (Κάτω Δεξιά) ---
         Button addButton = new Button("+ ADD");
-        addButton.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 10 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);");
         
-        addButton.setOnAction(e -> {
-            currentStage.close(); 
-            new NewApplicationScreen(profileScreen).fillForm(); 
-        });
+        // ΕΛΕΓΧΟΣ: Αν ο χρήστης είναι ήδη σε δωμάτιο, απενεργοποιούμε το κουμπί
+        boolean hasRoom = Application.checkIfUserHasRoom(currentUserId);
+        
+        if (hasRoom) {
+            addButton.setDisable(true);
+            addButton.setText("Locked (Already in a Room)");
+            addButton.setStyle("-fx-background-color: #9CA3AF; -fx-text-fill: #E5E7EB; -fx-font-weight: bold; -fx-font-size: 13px; -fx-background-radius: 20; -fx-padding: 10 20;");
+        } else {
+            addButton.setStyle("-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 10 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);");
+            
+            addButton.setOnAction(e -> {
+                currentStage.close(); 
+                new NewApplicationScreen(profileScreen).fillForm(); 
+            });
+        }
 
         StackPane centerStack = new StackPane();
         centerStack.getChildren().addAll(scrollPane, addButton);
