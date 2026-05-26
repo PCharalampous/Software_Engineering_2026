@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -24,7 +25,7 @@ public class LogInPanel extends GridPane {
     private Label useremailLabel;
     private Label psswdLabel;
     private TextField useremail, dispFirstnameTxt, dispSecondnameTxt, userNameTxt;
-    private TextField password;
+    private PasswordField password;
     private Button login, signup;
     private Stage stage;
     private String userEmailBuffer;
@@ -35,7 +36,8 @@ public class LogInPanel extends GridPane {
     private Label usernameLabel;
     
     private String dispFirstnameTxtBuffer, dispSecondnameTxtBuffer, userNameTxtBuffer;
-    private TextField userSignUpemail, passwordSignUp;
+    private TextField userSignUpemail;
+    private PasswordField passwordSignUp;
 
     @SuppressWarnings("exports")
     public LogInPanel(Stage stage) {
@@ -47,7 +49,7 @@ public class LogInPanel extends GridPane {
         useremailLabel = new Label("User Email");
         psswdLabel = new Label("Password");
         useremail = new TextField();
-        password = new TextField();
+        password = new PasswordField();
         login = new Button("log in");
         signup = new Button("sign up");
         
@@ -58,7 +60,7 @@ public class LogInPanel extends GridPane {
         dispSecondnameTxt = new TextField();
         userNameTxt = new TextField();
         userSignUpemail = new TextField();
-        passwordSignUp = new TextField();
+        passwordSignUp = new PasswordField();
         
         credenInput.add(useremailLabel, 0, 0);
         credenInput.add(blockSpaces(useremail), 1, 0);
