@@ -240,9 +240,7 @@ public class Application {
             stmt.setString(7, this.description);
             stmt.setString(8, this.status);
             
-            stmt.executeUpdate();
-            System.out.println("Η νέα αίτηση αποθηκεύτηκε επιτυχώς στη βάση!");
-            
+            stmt.executeUpdate();            
         } catch (SQLException e) {
             System.err.println("Σφάλμα κατά την αποθήκευση της αίτησης:");
             e.printStackTrace();
