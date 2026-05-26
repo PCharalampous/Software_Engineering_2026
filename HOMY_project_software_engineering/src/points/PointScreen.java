@@ -58,6 +58,14 @@ public class PointScreen extends VBox {
         }
         return 1; // Fallback ιδανικό για τα test περιβάλλοντα
     }
+    
+    public int getCurrentUserId() {
+        entities.User sessionUser = Authentication.getCurrentUser();
+        if (sessionUser != null) {
+            return sessionUser.getId(); // Υποθέτοντας ότι το User entity σου έχει getUserId()
+        }
+        return 1; // Fallback για το test περιβάλλον (όπως έχεις κάνει και στο room)
+    }
 
     private void buildSections() {
         HBox headerBox = new HBox(10);

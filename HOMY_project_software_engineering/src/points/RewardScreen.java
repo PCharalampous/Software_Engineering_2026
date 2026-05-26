@@ -57,6 +57,8 @@ public class RewardScreen extends VBox {
         String currentUsername = pointSidebar.getCurrentUser().trim();
         int roomId = pointSidebar.getCurrentRoomId();
         
+        // Φορτώνουμε μόνο τις ψήφους APPROVE και REJECT. 
+        // Ο έλεγχος για το αν είναι CREATOR γίνεται πλέον απευθείας από το ID στη createCard!
         String query = "SELECT description FROM chore_reports WHERE room_id = ? AND (title = ? OR title = ?)";
         
         try (Connection conn = DatabaseManager.getConnection();
@@ -86,7 +88,6 @@ public class RewardScreen extends VBox {
     }
 
     private void updateRoommatesCount() {
-        // ΔΙΟΡΘΩΣΗ: Χρήση του getCurrentRoomId() για σίγουρη ανάκτηση
         int roomId = pointSidebar.getCurrentRoomId();
         String query = "SELECT COUNT(*) as total FROM users WHERE room_id = ?";
         
@@ -96,7 +97,6 @@ public class RewardScreen extends VBox {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int count = rs.getInt("total");
-                    // Αν δεν βρει χρήστες, βάζουμε 1 για να μην έχουμε διαίρεση με το μηδέν
                     this.totalRoommatesCount = (count > 0) ? count : 1;
                     System.out.println("[DEBUG] Roommates count for Room " + roomId + ": " + this.totalRoommatesCount);
                 }
@@ -109,19 +109,21 @@ public class RewardScreen extends VBox {
     private void loadRewardsFromDatabase() {
         container.getChildren().clear();
         updateRoommatesCount(); 
-        loadVotesFromDatabase(); // <-- ΠΡΟΣΘΗΚΗ ΕΔΩ: Φρεσκάρει τις κλειδωμένες ψήφους από τη βάση
+        loadVotesFromDatabase(); 
 
         List<Reward> tempRewards = new ArrayList<>();
-        // Φιλτράρουμε τα rewards ΜΟΝΟ για το τρέχον δωμάτιο
-        String query = "SELECT * FROM rewards WHERE room_id = ?";
+        // ΔΙΟΡΘΩΣΗ: Επιλέγουμε ΚΑΙ το user_id από τη βάση
+        String query = "SELECT reward_id, room_id, user_id, reward_name, cost, is_available, ui_color, approve_votes, reject_votes FROM rewards WHERE room_id = ?";
         
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, pointSidebar.getCurrentRoomId());
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    // ΠΡΟΣΟΧΗ: Πρόσθεσε το rs.getInt("user_id") στον Constructor του Reward entity σου
                     Reward r = new Reward(
                         rs.getInt("reward_id"),
+                        rs.getInt("user_id"), // <-- Νέο πεδίο στο Entity
                         rs.getString("reward_name"),
                         rs.getInt("cost"),
                         rs.getBoolean("is_available"),
@@ -158,22 +160,9 @@ public class RewardScreen extends VBox {
         Pane spacer = new Pane(); HBox.setHgrow(spacer, Priority.ALWAYS);
         card.getChildren().addAll(icon, txt, spacer);
 
-        String currentUsername = pointSidebar.getCurrentUser().trim();
-
-        // --- ΔΗΛΩΣΗ ΤΗΣ ΜΕΤΑΒΛΗΤΗΣ ΕΔΩ (ΕΞΩ ΑΠΟ ΤΑ BLOCKS) ΓΙΑ ΝΑ ΕΙΝΑΙ ΠΑΝΤΟΥ ΟΡΑΤΗ ---
-        boolean isCreator = false;
-        String checkCreatorSql = "SELECT COUNT(*) FROM chore_reports WHERE title = ? AND description = ?";
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement ps = conn.prepareStatement(checkCreatorSql)) {
-            ps.setString(1, "REWARD_CREATOR_" + currentUsername);
-            ps.setString(2, "RewardID:" + r.getRewardId());
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    isCreator = true;
-                }
-            }
-        } catch (Exception ex) { ex.printStackTrace(); }
-        // ----------------------------------------------------------------------------
+        // ΑΣΦΑΛΕΙΑ & ΤΑΧΥΤΗΤΑ: Ο έλεγχος αν ο χρήστης είναι creator γίνεται ακαριαία στη μνήμη!
+        int currentUserId = pointSidebar.getCurrentUserId(); 
+        boolean isCreator = (r.getUserId() == currentUserId);
 
         if (r.isAvailable()) {
             Button buyBtn = new Button("BUY");
@@ -199,7 +188,7 @@ public class RewardScreen extends VBox {
             Button noBtn = new Button("✕");
             noBtn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #DC2626; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;");
 
-            // Τώρα το `isCreator` αναγνωρίζεται κανονικά εδώ χωρίς error!
+            // Κλείδωμα αν έχει ψηφίσει ήδη Ή αν είναι ο δημιουργός της πρότασης
             if (votedRewardIdsInSession.contains(r.getRewardId()) || isCreator) {
                 yesBtn.setDisable(true);
                 noBtn.setDisable(true);
@@ -272,7 +261,6 @@ public class RewardScreen extends VBox {
         
         System.out.println("[PURCHASE DEBUG] Buyer Username/Name: [" + user + "] | Reward Cost: " + r.getCost());
 
-        // Έλεγχος επάρκειας πόντων
         if (!model.checkPoints(user, r.getCost())) {
             ErrorScreen.show("Your current point balance is too low to buy this reward.");
             return;
@@ -320,9 +308,8 @@ public class RewardScreen extends VBox {
 
     private void handleVote(Reward r, boolean approve) {
         String currentUsername = pointSidebar.getCurrentUser().trim();
-        int roomId = pointSidebar.getCurrentRoomId(); // Ανάκτηση του σωστού room ID
+        int roomId = pointSidebar.getCurrentRoomId(); 
 
-        // ΔΙΟΡΘΩΘΗΚΕ: Προσθήκη room_id στο INSERT
         String logVoteSql = "INSERT INTO chore_reports (chore_id, room_id, title, description) " +
                             "VALUES ((SELECT chore_id FROM chores WHERE room_id = ? LIMIT 1), ?, ?, ?)";
                             
@@ -334,8 +321,8 @@ public class RewardScreen extends VBox {
             conn.setAutoCommit(false);
 
             try (PreparedStatement psLog = conn.prepareStatement(logVoteSql)) {
-                psLog.setInt(1, roomId); // Για το subquery του chore_id ώστε να βρει chore του σωστού δωματίου
-                psLog.setInt(2, roomId); // ΔΙΟΡΘΩΣΗ: Το room_id για το report
+                psLog.setInt(1, roomId); 
+                psLog.setInt(2, roomId); 
                 psLog.setString(3, (approve ? "REWARD_APPROVE_" : "REWARD_REJECT_") + currentUsername);
                 psLog.setString(4, "RewardID:" + r.getRewardId()); 
                 psLog.executeUpdate();
@@ -343,7 +330,7 @@ public class RewardScreen extends VBox {
 
             try (PreparedStatement psUpdate = conn.prepareStatement(updateRewardSql)) {
                 psUpdate.setInt(1, r.getRewardId());
-                psUpdate.setInt(2, roomId); // Ασφάλεια εδώ!
+                psUpdate.setInt(2, roomId); 
                 psUpdate.executeUpdate();
             }
             conn.commit();
@@ -368,15 +355,10 @@ public class RewardScreen extends VBox {
                     int rej = rs.getInt("reject_votes");
                     int totalVotesLogged = app + rej;
 
-                    // Οι ενεργοί ψηφοφόροι είναι όλοι οι συγκάτοικοι ΜΕΙΟΝ ο δημιουργός της πρότασης
                     int activeVotersCount = totalRoommatesCount - 1;
-
-                    // Αν το δωμάτιο έχει μόνο 1 άτομο συνολικά, αφήνουμε το activeVotersCount = 1 για ασφάλεια
                     if (activeVotersCount <= 0) activeVotersCount = 1;
 
-                    // Το αποτέλεσμα κλειδώνει όταν ψηφίσουν όλοι οι ενεργοί ψηφοφόροι
                     if (totalVotesLogged >= activeVotersCount) {
-                        // Υπολογισμός πλειοψηφίας επί των ενεργών ψηφοφόρων
                         int majorityNeeded = (activeVotersCount / 2) + 1; 
 
                         if (app >= majorityNeeded) {
@@ -384,7 +366,7 @@ public class RewardScreen extends VBox {
                             try (PreparedStatement psApp = conn.prepareStatement(approveSql)) {
                                 psApp.setInt(1, rewardId);
                                 psApp.executeUpdate();
-                                System.out.println("Reward approved by majority of active voters (" + app + "/" + activeVotersCount + ")!");
+                                System.out.println("Reward approved by majority (" + app + "/" + activeVotersCount + ")!");
                             }
                             votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                             
@@ -397,7 +379,7 @@ public class RewardScreen extends VBox {
                                 psDel.executeUpdate();
                                 psLogs.setString(1, "RewardID:" + rewardId);
                                 psLogs.executeUpdate();
-                                System.out.println("Reward proposal failed and was deleted automatically.");
+                                System.out.println("Reward proposal failed and deleted.");
                             }
                             votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                         }
@@ -412,11 +394,12 @@ public class RewardScreen extends VBox {
         String chosenColor = colors[(int) (Math.random() * colors.length)];
 
         int roomId = pointSidebar.getCurrentRoomId(); 
+        int currentUserId = pointSidebar.getCurrentUserId(); // <-- Χρήση του ID πλέον
         String currentUsername = pointSidebar.getCurrentUser().trim();
 
-        String query = "INSERT INTO rewards (room_id, reward_name, cost, is_available, approve_votes, reject_votes, ui_color) VALUES (?, ?, ?, FALSE, 0, 0, ?)";
+        // ΔΙΟΡΘΩΣΗ: Προσθήκη της στήλης user_id στο INSERT query
+        String query = "INSERT INTO rewards (room_id, user_id, reward_name, cost, is_available, approve_votes, reject_votes, ui_color) VALUES (?, ?, ?, ?, FALSE, 0, 0, ?)";
         
-        // Log query για τον δημιουργό (συνδέουμε ένα εικονικό ή υπαρκτό chore_id, χρησιμοποιούμε το ίδιο subquery όπως στο handleVote)
         String logCreatorSql = "INSERT INTO chore_reports (chore_id, room_id, title, description) " +
                                "VALUES ((SELECT chore_id FROM chores WHERE room_id = ? LIMIT 1), ?, ?, ?)";
 
@@ -426,9 +409,10 @@ public class RewardScreen extends VBox {
             int generatedRewardId = -1;
             try (PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, roomId);
-                ps.setString(2, name);
-                ps.setInt(3, cost);
-                ps.setString(4, chosenColor);
+                ps.setInt(2, currentUserId); // <-- Εισαγωγή του user_id
+                ps.setString(3, name);
+                ps.setInt(4, cost);
+                ps.setString(5, chosenColor);
                 ps.executeUpdate();
                 
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -438,7 +422,6 @@ public class RewardScreen extends VBox {
                 }
             }
 
-            // Αν πήραμε επιτυχώς το ID, καταγράφουμε ποιος το έφτιαξε
             if (generatedRewardId != -1) {
                 try (PreparedStatement psLog = conn.prepareStatement(logCreatorSql)) {
                     psLog.setInt(1, roomId);
@@ -450,7 +433,7 @@ public class RewardScreen extends VBox {
             }
 
             conn.commit();
-            System.out.println("[DB] New reward proposal and creator log inserted for room: " + roomId);
+            System.out.println("[DB] New reward proposal inserted with user_id: " + currentUserId);
             loadRewardsFromDatabase(); 
         } catch (Exception e) { 
             System.err.println("Database error during insertProposalIntoDatabase:");
