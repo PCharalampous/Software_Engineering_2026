@@ -190,18 +190,24 @@ CREATE TABLE user_points (
 -- -----------------------------------------------------
 CREATE TABLE rewards (
     reward_id INT AUTO_INCREMENT,
-    room_id INT NOT NULL,                           -- Ανταμοιβές ανά δωμάτιο/σπίτι
-    reward_name VARCHAR(150) NOT NULL,              -- Όνομα ανταμοιβής
-    cost INT NOT NULL DEFAULT 0,                    -- Κόστος σε πόντους
-    is_available BOOLEAN NOT NULL DEFAULT TRUE,     -- Διαθεσιμότητα για ψηφοφορία
-    approve_votes INT NOT NULL DEFAULT 0,           -- Ψήφοι έγκρισης ολοκλήρωσης
-    reject_votes INT NOT NULL DEFAULT 0,            -- Ψήφοι απόρριψης ολοκλήρωσης
-    ui_color VARCHAR(20) NULL,                      -- Χρώμα για το UI αναπαράστασης
+    room_id INT NOT NULL,
+    user_id INT NOT NULL,                           -- Η νέα στήλη
+    reward_name VARCHAR(150) NOT NULL,
+    cost INT NOT NULL DEFAULT 0,
+    is_available BOOLEAN NOT NULL DEFAULT TRUE,
+    approve_votes INT NOT NULL DEFAULT 0,
+    reject_votes INT NOT NULL DEFAULT 0,
+    ui_color VARCHAR(20) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (reward_id),
     CONSTRAINT fk_rewards_rooms
         FOREIGN KEY (room_id)
         REFERENCES rooms (room_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_rewards_users                     -- Το νέο foreign key
+        FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
