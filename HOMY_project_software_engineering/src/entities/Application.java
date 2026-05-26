@@ -176,7 +176,7 @@ public class Application {
             try (PreparedStatement createStmt = conn.prepareStatement(createRoomSql, Statement.RETURN_GENERATED_KEYS)) {
                 createStmt.setString(1, generatedCode);
                 createStmt.setString(2, this.title);
-                createStmt.setInt(3, this.roommates);
+                createStmt.setInt(3, this.roommates + 1);
                 createStmt.setDouble(4, this.rent);
                 createStmt.executeUpdate();
 
