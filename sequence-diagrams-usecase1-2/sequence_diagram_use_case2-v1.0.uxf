@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>showConfirmationScreen()// Uncomment the following line to change the fontsize and font:
+// fontsize=14
+// fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Welcome to UMLet!
+//
+// Double-click on elements to add them to the diagram, or to copy them
+// Edit elements by modifying the text in this panel
+// Hold Ctrl to select multiple elements
+// Use Ctrl+mouse to select via lasso
+//
+// Use +/- or Ctrl+mouse wheel to zoom
+// Drag a whole relation at its central square icon
+//
+// Press Ctrl+C to copy the whole diagram to the system clipboard (then just paste it to, eg, Word)
+// Edit the files in the "palettes" directory to create your own element palettes
+//
+// Select "Custom Elements &gt; New..." to create new element types
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// This text will be stored with each diagram;  use it for notes.</help_text>
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>35</x>
+      <y>0</y>
+      <w>49</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>210</x>
+      <y>0</y>
+      <w>105</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>Candidate Roomamte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>56</x>
+      <y>42</y>
+      <w>21</w>
+      <h>1134</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1600.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>42</y>
+      <w>21</w>
+      <h>1141</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1610.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>406</x>
+      <y>56</y>
+      <w>21</w>
+      <h>1127</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1590.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>581</x>
+      <y>175</y>
+      <w>21</w>
+      <h>1001</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>63</y>
+      <w>21</w>
+      <h>1148</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1620.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1274</x>
+      <y>357</y>
+      <w>21</w>
+      <h>861</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1106</x>
+      <y>1008</y>
+      <w>21</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>735</x>
+      <y>63</y>
+      <w>21</w>
+      <h>1127</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1590.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>350</x>
+      <y>581</y>
+      <w>847</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>alt 1
+--
+[joinedSuccessfully = true]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[joinedSuccessfully = false]
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>574</x>
+      <y>203</y>
+      <w>28</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>56</x>
+      <y>217</y>
+      <w>532</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return roomID</panel_attributes>
+    <additional_attributes>10.0;20.0;740.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>56</x>
+      <y>245</y>
+      <w>532</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+closeWindow()</panel_attributes>
+    <additional_attributes>740.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>273</y>
+      <w>168</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return</panel_attributes>
+    <additional_attributes>10.0;20.0;220.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>56</x>
+      <y>301</y>
+      <w>224</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+sends code to candidate roomamte</panel_attributes>
+    <additional_attributes>300.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>322</y>
+      <w>658</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+enters code &amp; transferToTheRoom(roomID)</panel_attributes>
+    <additional_attributes>920.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>903</x>
+      <y>336</y>
+      <w>28</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>469</y>
+      <w>154</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+transferToTheRoom()</panel_attributes>
+    <additional_attributes>10.0;40.0;70.0;40.0;70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>336</y>
+      <w>329</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>450.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1267</x>
+      <y>378</y>
+      <w>28</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>819</x>
+      <y>448</y>
+      <w>504</w>
+      <h>448</h>
+    </coordinates>
+    <panel_attributes>alt 2
+--
+[usersApprove() = true]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[usersApprove() = false]
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>399</y>
+      <w>1022</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+interacts &amp; usersApprove()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;1440.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>371</y>
+      <w>357</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+display(confirmMsg)
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;490.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>504</y>
+      <w>532</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+joinRoomInstantly(targetRoomID)</panel_attributes>
+    <additional_attributes>740.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>420</y>
+      <w>357</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+return</panel_attributes>
+    <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>672</y>
+      <w>497</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+redirect canditate roommate &amp; display()</panel_attributes>
+    <additional_attributes>10.0;20.0;690.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>399</x>
+      <y>686</y>
+      <w>28</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>728</x>
+      <y>721</y>
+      <w>28</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>707</y>
+      <w>322</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+createNotificationToRoom()</panel_attributes>
+    <additional_attributes>440.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>903</x>
+      <y>980</y>
+      <w>28</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>987</y>
+      <w>161</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>210.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1099</x>
+      <y>1036</y>
+      <w>28</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>1022</y>
+      <w>189</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+display(errorMsg)</panel_attributes>
+    <additional_attributes>250.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>1043</y>
+      <w>854</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+clicks ok &amp; closeWindow()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;1200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>903</x>
+      <y>812</y>
+      <w>28</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>833</y>
+      <w>175</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+redirect Canditate Roomate</panel_attributes>
+    <additional_attributes>10.0;50.0;60.0;50.0;60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>364</x>
+      <y>28</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>RoomScreen
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>546</x>
+      <y>147</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>RoomIdScreen
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>693</x>
+      <y>35</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Notification
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>868</x>
+      <y>35</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>HomeScreen
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1239</x>
+      <y>329</y>
+      <w>91</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ConfirmatioinScreen
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1071</x>
+      <y>980</y>
+      <w>91</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ErrorScreen
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1407</x>
+      <y>28</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>User
+bg=TRANSPARENT</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>98</y>
+      <w>1036</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+getCurrentUser().getRoomId</panel_attributes>
+    <additional_attributes>1460.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1449</x>
+      <y>56</y>
+      <w>21</w>
+      <h>1169</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1650.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1442</x>
+      <y>112</y>
+      <w>28</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>427</x>
+      <y>119</y>
+      <w>1029</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return</panel_attributes>
+    <additional_attributes>10.0;20.0;1450.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>189</y>
+      <w>168</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+display(roomID)</panel_attributes>
+    <additional_attributes>220.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>154</y>
+      <w>140</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>399</x>
+      <y>91</y>
+      <w>28</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>56</x>
+      <y>77</y>
+      <w>357</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+cliocks Show Room ID</panel_attributes>
+    <additional_attributes>490.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1442</x>
+      <y>518</y>
+      <w>28</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>539</y>
+      <w>532</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return joinedSuccessfully</panel_attributes>
+    <additional_attributes>10.0;20.0;740.0;20.0</additional_attributes>
+  </element>
+</diagram>
