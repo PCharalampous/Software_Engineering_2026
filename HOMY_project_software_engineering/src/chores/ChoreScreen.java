@@ -73,7 +73,6 @@ public class ChoreScreen extends VBox {
         }
 
         int userId = sessionUser.getId(); 
-        System.out.println("[DEBUG] Initializing ChoreScreen for UserID: " + userId);
 
         String roomQuery = "SELECT room_id FROM users WHERE user_id = ?";
         try (Connection conn = DatabaseManager.getConnection();
@@ -82,7 +81,6 @@ public class ChoreScreen extends VBox {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     this.currentRoomId = rs.getInt("room_id");
-                    System.out.println("[DEBUG] Found RoomID: " + this.currentRoomId);
                 } else {
                     System.err.println("[DEBUG] No room assigned to this user.");
                 }
@@ -198,7 +196,6 @@ public class ChoreScreen extends VBox {
                     votedChoreIdsInSession.add(rs.getInt("chore_id"));
                 }
             }
-            System.out.println("[DEBUG] Loaded " + votedChoreIdsInSession.size() + " existing votes for " + currentUsername);
         } catch (Exception e) { e.printStackTrace(); }
     }
     
@@ -450,7 +447,6 @@ public class ChoreScreen extends VBox {
                 ps2.executeUpdate();
                 
                 conn.commit();
-                System.out.println("[DEBUG] Chore reset transaction committed successfully.");
             } catch (Exception ex) {
                 conn.rollback();
                 throw ex;
@@ -474,7 +470,6 @@ public class ChoreScreen extends VBox {
                 // Αποστολή ειδοποίησης αν βρέθηκε ο χρήστης
                 if (targetUserId != -1) {
                     Notification.createNotification(connNotif, targetUserId, "CHORES", "Chore Reset", message, "chores screen", "#D1FAE5");
-                    System.out.println("[DEBUG] Notification sent successfully via standalone connection to user ID: " + targetUserId);
                 } else {
                     System.err.println("[WARNING] Could not find user_id for assignee: " + savedAssignee);
                 }
@@ -628,13 +623,11 @@ public class ChoreScreen extends VBox {
                 int currentTotalVotes = currentDbApprove + currentDbReject;
                 
                 if (currentDbReject >= majorityNeeded) {
-                    System.out.println("\t --> IN IF ELSE SECTION: Majority reached!");
                     // Μήνυμα για ξεκάθαρη απόρριψη από την πλειοψηφία
                     resetChoreToPending(chore, "Chore was rejected by the majority and reset to pending.");
                     return; 
                     
                 } else if (currentTotalVotes >= totalExpectedVoters) {
-                    System.out.println("\t --> IN: else if (currentTotalVotes >= totalExpectedVoters)");
                     
                     if (currentDbApprove > currentDbReject) {
                         archiveChoreToHistory(chore);
@@ -691,7 +684,6 @@ public class ChoreScreen extends VBox {
                     
                     if (foundUserId != -1) {
                         Notification.createNotification(connection, foundUserId, "CHORES", "Chore Assigned", "New chore for " + duty, "chores screen", "#D1FAE5");
-                        System.out.println("[DEBUG] New chore notification sent to user ID: " + foundUserId);
                     } else {
                         System.err.println("[WARNING] Could not find user_id for newly assigned chore to: " + duty);
                     }

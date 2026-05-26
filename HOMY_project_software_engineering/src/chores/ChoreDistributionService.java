@@ -48,7 +48,6 @@ public class ChoreDistributionService {
             // Αν βρέθηκαν chores που εκκρεμούν, ρωτάμε τον χρήστη αν θέλει Force Redistribution
          // Αν βρέθηκαν chores που εκκρεμούν, εμφανίζουμε Alert με OK και σταματάμε
             if (!dynamicProceed) {
-                System.out.println("Cannot shuffle! Not all chores are completed yet.");
                 
                 javafx.application.Platform.runLater(() -> {
                     Alert alert = new Alert(
@@ -74,7 +73,6 @@ public class ChoreDistributionService {
             }
 
             if (choreIds.isEmpty()) {
-                System.out.println("No chores to distribute for room: " + roomId);
                 javafx.application.Platform.runLater(() -> {
                     Alert alert = new Alert(
                         Alert.AlertType.INFORMATION,
@@ -99,14 +97,12 @@ public class ChoreDistributionService {
             try (PreparedStatement psDelHistory = conn.prepareStatement(deleteHistorySql)) {
                 psDelHistory.setInt(1, roomId);
                 psDelHistory.executeUpdate();
-                System.out.println("[HOMY DB] Chore history cleared for room: " + roomId);
             }
             
             // ΚΡΙΣΙΜΟ: Διαγραφή όλων των καταγεγραμμένων ψήφων του δωματίου στη βάση
             try (PreparedStatement psDelVotes = conn.prepareStatement(deleteVotesSql)) {
                 psDelVotes.setInt(1, roomId);
                 psDelVotes.executeUpdate();
-                System.out.println("[HOMY DB] All old chore votes cleared from database reports for room: " + roomId);
             }
             
             List<String> shuffledMembers = new ArrayList<>(members);
@@ -137,7 +133,6 @@ public class ChoreDistributionService {
                 psNotify.executeBatch();
                 conn.commit();
     	        
-                System.out.println("Chores successfully redistributed among real house members!");
             } catch (Exception ex) {
                 conn.rollback();
                 throw ex;
