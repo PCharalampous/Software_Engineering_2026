@@ -81,7 +81,6 @@ public class RewardScreen extends VBox {
                     }
                 }
             }
-            System.out.println("[DEBUG] Loaded " + votedRewardIdsInSession.size() + " existing reward votes for " + currentUsername);
         } catch (Exception e) { 
             e.printStackTrace(); 
         }
@@ -98,7 +97,6 @@ public class RewardScreen extends VBox {
                 if (rs.next()) {
                     int count = rs.getInt("total");
                     this.totalRoommatesCount = (count > 0) ? count : 1;
-                    System.out.println("[DEBUG] Roommates count for Room " + roomId + ": " + this.totalRoommatesCount);
                 }
             }
         } catch (Exception e) { 
@@ -259,7 +257,6 @@ public class RewardScreen extends VBox {
         Point model = pointSidebar.getPointModel();
         String user = pointSidebar.getCurrentUser().trim(); 
         
-        System.out.println("[PURCHASE DEBUG] Buyer Username/Name: [" + user + "] | Reward Cost: " + r.getCost());
 
         if (!model.checkPoints(user, r.getCost())) {
             ErrorScreen.show("Your current point balance is too low to buy this reward.");
@@ -292,7 +289,6 @@ public class RewardScreen extends VBox {
                         ps2.setString(2, user);
                         ps2.setString(3, user);
                         int rowsUpdated = ps2.executeUpdate();
-                        System.out.println("[PURCHASE] Points deducted. Rows affected: " + rowsUpdated);
                     }
                     
                     conn.commit();
@@ -366,7 +362,6 @@ public class RewardScreen extends VBox {
                             try (PreparedStatement psApp = conn.prepareStatement(approveSql)) {
                                 psApp.setInt(1, rewardId);
                                 psApp.executeUpdate();
-                                System.out.println("Reward approved by majority (" + app + "/" + activeVotersCount + ")!");
                             }
                             votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                             
@@ -379,7 +374,6 @@ public class RewardScreen extends VBox {
                                 psDel.executeUpdate();
                                 psLogs.setString(1, "RewardID:" + rewardId);
                                 psLogs.executeUpdate();
-                                System.out.println("Reward proposal failed and deleted.");
                             }
                             votedRewardIdsInSession.remove(Integer.valueOf(rewardId));
                         }
@@ -433,7 +427,6 @@ public class RewardScreen extends VBox {
             }
 
             conn.commit();
-            System.out.println("[DB] New reward proposal inserted with user_id: " + currentUserId);
             loadRewardsFromDatabase(); 
         } catch (Exception e) { 
             System.err.println("Database error during insertProposalIntoDatabase:");
