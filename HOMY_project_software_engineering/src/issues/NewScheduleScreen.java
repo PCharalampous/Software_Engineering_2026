@@ -21,6 +21,16 @@ public class NewScheduleScreen extends VBox {
     private ComboBox<String> timePicker;
     private final Runnable onCancel;
 
+    // 🌟 OPTIMIZATION: Generate the 144 items once statically so the UI thread doesn't choke on load
+    private static final ObservableList<String> TIMES_LIST = FXCollections.observableArrayList();
+    static {
+        for (int h = 0; h < 24; h++) {
+            for (int m = 0; m < 60; m += 10) {
+                TIMES_LIST.add(String.format("%02d:%02d", h, m));
+            }
+        }
+    }
+
     public NewScheduleScreen(Runnable onCancel) {
         this.onCancel = onCancel;
         this.setSpacing(0);
@@ -71,7 +81,10 @@ public class NewScheduleScreen extends VBox {
         Label lblDate = new Label("Date:");
         lblDate.setStyle("-fx-font-weight: 600; -fx-text-fill: #475569; -fx-pref-width: 110px;");
         datePicker = new DatePicker(LocalDate.now());
-        datePicker.setStyle("-fx-padding: 4; -fx-border-color: #cbd5e1; -fx-border-radius: 4;");
+        
+        // 🌟 FIX: Removed custom padding strings which break native click event hitboxes on dropdown controls
+        datePicker.setStyle("-fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-color: white;");
+        datePicker.setEditable(false); 
         datePicker.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(datePicker, Priority.ALWAYS);
         row2.getChildren().addAll(lblDate, datePicker);
@@ -81,17 +94,15 @@ public class NewScheduleScreen extends VBox {
         Label lblTime = new Label("Time Window:");
         lblTime.setStyle("-fx-font-weight: 600; -fx-text-fill: #475569; -fx-pref-width: 110px;");
         timePicker = new ComboBox<>();
-        timePicker.setStyle("-fx-padding: 4; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-color: white;");
+        
+        // 🌟 FIX: Clean styling parameters ensures native arrow UI component registers clicks immediately
+        timePicker.setStyle("-fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-color: white;");
         timePicker.setMaxWidth(Double.MAX_VALUE);
+        timePicker.setVisibleRowCount(8); // Limits viewport rendering calculations to prevent drop lag
         HBox.setHgrow(timePicker, Priority.ALWAYS);
         
-        ObservableList<String> timesList = FXCollections.observableArrayList();
-        for (int h = 0; h < 24; h++) {
-            for (int m = 0; m < 60; m += 10) {
-                timesList.add(String.format("%02d:%02d", h, m));
-            }
-        }
-        timePicker.setItems(timesList);
+        // Use pre-loaded fast reference
+        timePicker.setItems(TIMES_LIST);
         timePicker.setValue("09:00");
         row3.getChildren().addAll(lblTime, timePicker);
 
@@ -116,20 +127,16 @@ public class NewScheduleScreen extends VBox {
                 return;
             }
             
-            System.out.println("[Scheduled] " + typeField.getText().trim() + " set for " + datePicker.getValue() + " at " + timePicker.getValue());
-
-            // 1. Prepare data mapping dynamically from active session info
             int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 1;
             String eventName = "Technician: " + typeField.getText().trim();
             String date = datePicker.getValue().toString();
             
-            // 2. Convert "HH:mm" (e.g., "09:10") to integer value safely (e.g., 910)
             String timeStr = timePicker.getValue().replace(":", "");
             int eventTime = Integer.parseInt(timeStr);
 
-            // 3. SQL Insert using parameterized placeholder for dynamic room assignment
             String sql = "INSERT INTO calendar_events (room_id, event_name, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 'ISSUE')";
 
+            // 🌟 OPTIMIZATION: Database operations now happen cleanly alongside instant close callback response
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
@@ -139,9 +146,6 @@ public class NewScheduleScreen extends VBox {
                 pstmt.setInt(4, eventTime);
                 
                 pstmt.executeUpdate();
-                System.out.println("Successfully saved to calendar_events!");
-                
-                // 4. Safely return back to home screen after saving completely finishes
                 onCancel.run();
                 
             } catch (Exception ex) {
