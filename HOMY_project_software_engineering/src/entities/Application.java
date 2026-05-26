@@ -262,4 +262,24 @@ public class Application {
             return false;
         }
     }
+    
+    public static boolean checkIfUserHasRoom(int userId) {
+        String sql = "SELECT room_id FROM users WHERE user_id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int roomId = rs.getInt("room_id");
+                    // Αν το room_id δεν είναι null και είναι μεγαλύτερο του 0, ο χρήστης έχει δωμάτιο
+                    return !rs.wasNull() && roomId > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Σφάλμα κατά τον έλεγχο αν ο χρήστης έχει δωμάτιο:");
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
