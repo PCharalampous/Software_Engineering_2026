@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>260</x>
+      <y>216</y>
+      <w>460</w>
+      <h>116</h>
+    </coordinates>
+    <panel_attributes>alt4
+--
+[Most agree]
+
+
+
+
+
+
+-.
+[Most disagree]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>240</x>
+      <y>44</y>
+      <w>720</w>
+      <h>592</h>
+    </coordinates>
+    <panel_attributes>alt
+--
+[Chore determination/completion]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[Chore addition]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+[Chore delete]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>136</x>
+      <y>12</y>
+      <w>28</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>884</x>
+      <y>472</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ConfirmationScreen</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>420</x>
+      <y>12</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Chore</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>576</x>
+      <y>244</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Point</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>644</x>
+      <y>128</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Notification</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>140</x>
+      <y>52</y>
+      <w>16</w>
+      <h>588</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;1450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>20</y>
+      <w>16</w>
+      <h>624</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;1540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>444</x>
+      <y>20</y>
+      <w>16</w>
+      <h>624</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;1540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>252</y>
+      <w>16</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;960.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>668</x>
+      <y>136</y>
+      <w>12</w>
+      <h>504</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1240.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>280</x>
+      <y>8</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ChoreScreen</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>904</x>
+      <y>480</y>
+      <w>16</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;390.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>52</y>
+      <w>92</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+selectChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>304</x>
+      <y>52</y>
+      <w>8</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>80</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+getChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>76</y>
+      <w>8</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>372</x>
+      <y>112</y>
+      <w>80</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+returnChore()</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>744</x>
+      <y>372</y>
+      <w>48</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>NewChoreScreen</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>188</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+completeChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>192</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+renewChoreStatus()</panel_attributes>
+    <additional_attributes>350.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>204</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+vote()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>244</y>
+      <w>276</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>670.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>236</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+archiveChoreToHistory()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>236</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>364</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+selectAddChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>304</x>
+      <y>364</y>
+      <w>8</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>668</x>
+      <y>316</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>312</y>
+      <w>368</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+createNotification()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;900.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>380</y>
+      <w>16</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;630.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>368</y>
+      <w>444</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>1090.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>756</x>
+      <y>388</y>
+      <w>8</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>384</y>
+      <w>620</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fillForm()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;1530.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>400</y>
+      <w>8</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>408</y>
+      <w>144</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return()</panel_attributes>
+    <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>208</x>
+      <y>8</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>RoomScreen</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>20</y>
+      <w>16</w>
+      <h>620</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;1530.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>228</x>
+      <y>52</y>
+      <w>8</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>60</y>
+      <w>80</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+display()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>668</x>
+      <y>144</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>284</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+completionRejection()</panel_attributes>
+    <additional_attributes>350.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>604</x>
+      <y>260</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>464</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+selectDeleteChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>304</x>
+      <y>460</y>
+      <w>8</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>472</y>
+      <w>580</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>1430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>280</x>
+      <y>488</y>
+      <w>676</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>alt5.1
+--
+[Yes]
+
+
+
+
+
+-.
+[No]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>908</x>
+      <y>500</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>452</x>
+      <y>500</y>
+      <w>464</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+delete()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>1140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>500</y>
+      <w>8</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>508</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return()</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>908</x>
+      <y>548</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>304</x>
+      <y>548</y>
+      <w>8</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>548</y>
+      <w>608</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+return()</panel_attributes>
+    <additional_attributes>10.0;20.0;1500.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>192</y>
+      <w>8</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>200</y>
+      <w>148</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+returnChore()</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>288</y>
+      <w>8</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>292</y>
+      <w>152</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+returnChore()</panel_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>452</x>
+      <y>400</y>
+      <w>312</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+addChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>760.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>304</x>
+      <y>136</y>
+      <w>372</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+createNotification()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;910.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>340</x>
+      <y>28</y>
+      <w>68</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ChoreDistributionService</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>368</x>
+      <y>112</y>
+      <w>8</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>124</y>
+      <w>68</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+returnChore()</panel_attributes>
+    <additional_attributes>10.0;20.0;150.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>36</y>
+      <w>16</w>
+      <h>608</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;1500.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>668</x>
+      <y>412</y>
+      <w>8</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>452</x>
+      <y>408</y>
+      <w>224</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+createNotification()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;540.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>72</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+selectDistributeChore()
+fg=BLACK
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;20.0;400.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>448</x>
+      <y>156</y>
+      <w>8</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>156</y>
+      <w>352</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>860.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>796</x>
+      <y>160</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>ErrorScreen</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>820</x>
+      <y>168</y>
+      <w>16</w>
+      <h>472</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;1160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>820</x>
+      <y>176</y>
+      <w>8</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>
+bg=BLUE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>172</y>
+      <w>520</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+returnWithoutChore()</panel_attributes>
+    <additional_attributes>10.0;20.0;1280.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>256</x>
+      <y>92</y>
+      <w>612</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>alt4
+--
+
+
+[All Chores Completed]
+
+
+
+
+-.
+[Available Chores For Completion]</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
