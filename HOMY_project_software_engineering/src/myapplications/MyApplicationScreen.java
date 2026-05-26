@@ -168,7 +168,6 @@ public class MyApplicationScreen {
                 }
 
                 if (success) {
-                    System.out.println("Επιτυχής ακύρωση/διαγραφή.");
                     StatusScreen.show("CANCELED");
                     
                     // 1. Ανανεώνουμε το ProfileScreen στο υπόβαθρο για να αλλάξει ο counter π.χ. (MY APPLICATIONS (2))
