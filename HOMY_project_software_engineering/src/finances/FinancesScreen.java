@@ -378,6 +378,15 @@ public class FinancesScreen extends VBox {
                         pstmtCal.setString(4, bill.getDate());
                         pstmtCal.executeUpdate();
                     }
+                    
+                    entities.Notification.createNotificationToRoom(
+                            conn, 
+                            "CALENDAR", 
+                            "Νέο event στο ημερολόγιο", 
+                            "Προστέθηκε ο λογαριασμός: '" + bill.getType() + "' για τις " + bill.getDate() + ".", 
+                            "CALENDAR_SCREEN", 
+                            "#06B6D4"
+                        );
                 }
             } else {
                 String rejectSql = "UPDATE bills SET reject_votes = reject_votes + 1, approval_status = 'Declined' WHERE room_id = ? AND bill_type = ? AND bill_date = ?";
