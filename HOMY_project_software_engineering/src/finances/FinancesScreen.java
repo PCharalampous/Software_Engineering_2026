@@ -370,7 +370,7 @@ public class FinancesScreen extends VBox {
                         pstmtFinal.executeUpdate();
                     }
 
-                    String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 1200, 'BILL')";
+                    String calendarSql = "INSERT INTO calendar_events (room_id, event_name, event_description, event_date, event_time, event_type) VALUES (?, ?, ?, ?, 2359, 'BILL')";
                     try (PreparedStatement pstmtCal = conn.prepareStatement(calendarSql)) {
                         pstmtCal.setInt(1, currentRoomId);
                         pstmtCal.setString(2, "Bill: " + bill.getType());

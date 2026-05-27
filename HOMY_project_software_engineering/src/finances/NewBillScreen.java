@@ -221,6 +221,16 @@ public class NewBillScreen extends VBox {
                         pstmt2.setString(4, date);
                         pstmt2.executeUpdate();
                     }
+                    
+                    entities.Notification.createNotificationToRoom(
+                            conn, 
+                            "CALENDAR", 
+                            "Νέο event στο ημερολόγιο", 
+                            "Προστέθηκε ο λογαριασμός: '" + type + "' για τις " + date + ".", 
+                            "CALENDAR_SCREEN", 
+                            "#06B6D4"
+                        );
+                    
                 } else {
                     String creator = currentUsername.isEmpty() ? "A roommate" : currentUsername;
                     List<Integer> targetUserIds = new ArrayList<>();

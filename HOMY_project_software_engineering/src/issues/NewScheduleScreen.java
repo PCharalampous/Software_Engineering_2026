@@ -146,6 +146,16 @@ public class NewScheduleScreen extends VBox {
                 pstmt.setInt(4, eventTime);
                 
                 pstmt.executeUpdate();
+                
+                entities.Notification.createNotificationToRoom(
+                        conn, 
+                        "CALENDAR", 
+                        "Νέο event στο ημερολόγιο", 
+                        "Προστέθηκε ο τεχνικός: '" + typeField.getText().trim() + "' για τις " + date + ".", 
+                        "CALENDAR_SCREEN", 
+                        "#06B6D4"
+                    );
+                
                 onCancel.run();
                 
             } catch (Exception ex) {
