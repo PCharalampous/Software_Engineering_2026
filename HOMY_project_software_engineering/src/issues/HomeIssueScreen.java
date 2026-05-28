@@ -65,7 +65,8 @@ public class HomeIssueScreen extends VBox {
         HBox.setHgrow(leftSection, Priority.ALWAYS);
         leftSection.getChildren().addAll(
             createTableCard("Active Issues", "#f97316", pendingIssuesTable),
-            createTableCard("Resolved History", "#10b981", resolvedIssuesTable)
+            // 🌟 CHANGED: Title renamed to "Issues History"
+            createTableCard("Issues History", "#10b981", resolvedIssuesTable)
         );
 
         mainLayout.getChildren().add(leftSection);
@@ -79,7 +80,6 @@ public class HomeIssueScreen extends VBox {
         btnPayIssue.setStyle("-fx-background-color: #0284c7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;");
         btnPayIssue.setOnAction(e -> handlePaySelectedIssueFee());
 
-        // 🌟 CHANGED: Background color turned to Slate Gray (#64748b)
         Button scheduleBtn = new Button("🔧 Schedule Technician");
         scheduleBtn.setStyle("-fx-background-color: #64748b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;");
         scheduleBtn.setOnAction(e -> { if (onNavigateToSchedule != null) onNavigateToSchedule.run(); });
