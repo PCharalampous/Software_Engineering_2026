@@ -75,16 +75,20 @@ public class HomeIssueScreen extends VBox {
         bottomArea.setAlignment(Pos.CENTER_RIGHT);
         bottomArea.setStyle("-fx-background-color: #f8fafc; -fx-border-color: #e2e8f0 transparent transparent transparent;");
 
+        Button btnPayIssue = new Button("💳 Pay Selected Issue Fee");
+        btnPayIssue.setStyle("-fx-background-color: #0284c7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;");
+        btnPayIssue.setOnAction(e -> handlePaySelectedIssueFee());
+
+        // 🌟 CHANGED: Background color turned to Slate Gray (#64748b)
         Button scheduleBtn = new Button("🔧 Schedule Technician");
-        scheduleBtn.setStyle("-fx-background-color: #0284c7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;");
+        scheduleBtn.setStyle("-fx-background-color: #64748b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand;");
         scheduleBtn.setOnAction(e -> { if (onNavigateToSchedule != null) onNavigateToSchedule.run(); });
 
-        // 🌟 FIXED: Color reverted from purple to the identical emerald green (#10b981)
         Button navigateCreateBtn = new Button("+ Report New Issue");
         navigateCreateBtn.setStyle("-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 24; -fx-background-radius: 6; -fx-cursor: hand;");
         navigateCreateBtn.setOnAction(e -> { if (onNavigateToCreate != null) onNavigateToCreate.run(); });
 
-        bottomArea.getChildren().addAll(scheduleBtn, navigateCreateBtn);
+        bottomArea.getChildren().addAll(btnPayIssue, scheduleBtn, navigateCreateBtn);
         this.getChildren().addAll(header, mainLayout, bottomArea);
     }
 
@@ -247,6 +251,37 @@ public class HomeIssueScreen extends VBox {
         }
     }
 
+    private void handlePaySelectedIssueFee() {
+        Issue selectedIssue = pendingIssuesTable.getSelectionModel().getSelectedItem();
+        if (selectedIssue == null) {
+            ErrorScreen.show("Please select an active issue from the list first.");
+            return;
+        }
+
+        if ("Pending_Approval".equalsIgnoreCase(selectedIssue.getApprovalStatus())) {
+            ErrorScreen.show("This issue cannot be resolved yet because it is still pending roommate approval.");
+            return;
+        }
+
+        int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
+        String updateSql = "UPDATE issues SET approval_status = 'Resolved' WHERE room_id = ? AND issue_id = ?";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
+            
+            pstmt.setInt(1, currentRoomId);
+            pstmt.setInt(2, selectedIssue.getId());
+            pstmt.executeUpdate();
+            
+            System.out.println("[Issues Log] Successfully paid/resolved issue item!");
+            loadDataFromDatabase(); 
+            
+        } catch (SQLException ex) {
+            ErrorScreen.show("Error shifting issue item status: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
     private void handleVote(Issue issue, boolean approved) {
         int currentRoomId = (Authentication.getCurrentUser() != null) ? Authentication.getCurrentUser().getRoomId() : 0;
 
@@ -279,8 +314,6 @@ public class HomeIssueScreen extends VBox {
                     String[] targetedUsers = payersStr.split(",");
                     requiredApproveVotes = targetedUsers.length;
 
-                    // 🌟 FIX: If the reporter explicitly included themselves in the text list,
-                    // subtract 1 because reporters are blocked from voting.
                     String reporter = issue.getReportedBy() != null ? issue.getReportedBy().toLowerCase().trim() : "";
                     for (String user : targetedUsers) {
                         if (user.toLowerCase().trim().equalsIgnoreCase(reporter)) {
