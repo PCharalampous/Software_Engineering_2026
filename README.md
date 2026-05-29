@@ -55,7 +55,7 @@
   <h2>Running The Application</h2>
   <h3>Requirements</h3>
   <ul style="display: inline-block; text-align: left;">
-    <li>Java 21 or higher (<a href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html" target="_blank">Download Java 21 </a>)</li>
+    <li>Java 21 or higher (<a href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html" target="_blank">Download Java 21</a>)</li>
     <li>JavaFx 21 or higher (<a href="https://www.oracle.com/java/technologies/downloads/javafx/#javafx21" target="_blank">Download JavaFX 21</a>)</li>
   </ul>
   <h3>Installation</h3>
