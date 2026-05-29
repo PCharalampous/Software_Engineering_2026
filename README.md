@@ -85,7 +85,7 @@
    ```bash
     java --class-path "bin:lib/*" main.HOMYApp
 
-## Running The Application
+## Running The Application (without code)
 
 1. Go to the Releases Section on the right side of Git Hub.
 
