@@ -45,7 +45,7 @@
 
 ---
 
-## Running The Application
+## Running The Code
 
 ### Requirements
 * Java 21 or higher ([Download Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html))
@@ -84,4 +84,6 @@
     Via Terminal: Run the following command from the root folder:
    ```bash
     java --class-path "bin:lib/*" main.HOMYApp
-   
+
+## Running The Application
+
