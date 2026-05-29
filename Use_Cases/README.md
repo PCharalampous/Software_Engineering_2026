@@ -1,1 +1,1 @@
-The complete history of commits appears in Use_Cases branch.
+The complete history of commits appears in use_cases branch.
