@@ -51,7 +51,16 @@
 * Java 21 or higher ([Download Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html))
 * JavaFX 21 or higher ([Download JavaFX 21](https://www.oracle.com/java/technologies/downloads/javafx/#javafx21))
 
-### Installation
+
+## Running The Application (Without code)
+
+1. Go to the Releases Section on the right side of Git Hub.
+
+2. Select the Latest Version.
+
+3. Follow the instructions.
+
+## Running The Application (With the code)
 
 1. **Clone the repository:**
    ```bash
@@ -85,10 +94,3 @@
    ```bash
     java --class-path "bin:lib/*" main.HOMYApp
 
-## Running The Application (without code)
-
-1. Go to the Releases Section on the right side of Git Hub.
-
-2. Select the Latest Version.
-
-3. Follow the instructions.
