@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text>Οθόνη Προνομίων// Uncomment the following line to change the fontsize and font:
+// fontsize=14
+// fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Welcome to UMLet!
+//
+// Double-click on elements to add them to the diagram, or to copy them
+// Edit elements by modifying the text in this panel
+// Hold Ctrl to select multiple elements
+// Use Ctrl+mouse to select via lasso
+//
+// Use +/- or Ctrl+mouse wheel to zoom
+// Drag a whole relation at its central square icon
+//
+// Press Ctrl+C to copy the whole diagram to the system clipboard (then just paste it to, eg, Word)
+// Edit the files in the "palettes" directory to create your own element palettes
+//
+// Select "Custom Elements &gt; New..." to create new element types
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// This text will be stored with each diagram;  use it for notes.</help_text>
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>399</x>
+      <y>322</y>
+      <w>70</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει 
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>315</x>
+      <y>266</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Οθόνη Πόντων
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>147</x>
+      <y>266</y>
+      <w>49</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>Χρήστης</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>588</x>
+      <y>266</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+	    Πόντοι
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>518</x>
+      <y>546</y>
+      <w>147</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>182</x>
+      <y>280</y>
+      <w>154</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+μεταβαίνει στην ενότητα Πόντοι</panel_attributes>
+    <additional_attributes>30.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>315</x>
+      <y>336</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+Οθόνη Προνομίων
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>371</x>
+      <y>294</y>
+      <w>98</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>497</x>
+      <y>385</y>
+      <w>140</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Επαρκές υπόλοιπο πόντων; 
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>294</y>
+      <w>119</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>357</y>
+      <w>63</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>245</x>
+      <y>546</y>
+      <w>126</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Παράθυρο Επιβεβαίωσης
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>189</x>
+      <y>315</y>
+      <w>140</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+επιλέγει προνόμιο</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>455</x>
+      <y>462</y>
+      <w>182</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφάνιση παράθυρου επιβεβαίωσης
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>532</x>
+      <y>308</y>
+      <w>84</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>100.0;10.0;30.0;30.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>427</y>
+      <w>42</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+ναι</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>448</x>
+      <y>518</y>
+      <w>175</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     	Αφαιρεί τους πόντους της αγοράς 
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>315</y>
+      <w>154</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;300.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>497</y>
+      <w>189</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>250.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>791</x>
+      <y>427</y>
+      <w>217</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Οθόνη με προειδοποιητικό μήνυμα υπολοίπου
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>91</x>
+      <y>336</y>
+      <w>168</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+επιβεβαιώνει την αγορά;</panel_attributes>
+    <additional_attributes>126.0;10.0;10.0;250.0;220.0;310.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>546</y>
+      <w>168</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+ναι</panel_attributes>
+    <additional_attributes>10.0;40.0;220.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>637</x>
+      <y>532</y>
+      <w>203</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Καταγράφει τη συναλλαγή και ενημερώνει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>637</x>
+      <y>392</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>539</x>
+      <y>399</y>
+      <w>126</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+όχι
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;20.0;160.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>686</x>
+      <y>427</y>
+      <w>126</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>301</x>
+      <y>574</y>
+      <w>91</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+όχι
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>378</y>
+      <w>161</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+αγοράζει προνόμιο</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>581</x>
+      <y>581</y>
+      <w>105</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>539</x>
+      <y>623</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>392</y>
+      <w>203</w>
+      <h>266</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>270.0;360.0;90.0;220.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>448</x>
+      <y>259</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Ελέγχει 
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>308</y>
+      <w>70</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>50.0;10.0;80.0;70.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>378</x>
+      <y>567</y>
+      <w>196</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Δεν αφαιρεί τους πόντους της αγοράς 
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>238</y>
+      <w>105</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>581</x>
+      <y>210</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Entity Element
+	    Προνόμιο
+	      
+_umletcode=
+// Entity Symbol
+drawCircle(50, 50, 20)
+drawLine(30, 70, 70, 70)
+	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>238</y>
+      <w>231</w>
+      <h>329</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>90.0;450.0;310.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>154</y>
+      <w>203</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+επιλέγει το κουμπί εισαγωγής Προνομίου
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;270.0;10.0;180.0;20.0;100.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>588</x>
+      <y>112</y>
+      <w>98</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Boundary Element
+	  Φόρμα εισαγωγής
+customelement=
+// Boundary Symbol
+drawCircle(50, 50, 20)
+drawLine(20, 50, 30, 50)
+drawLine(20, 30, 20, 70)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>448</x>
+      <y>112</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>140</y>
+      <w>112</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>182</x>
+      <y>56</y>
+      <w>441</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+συμπληρώνει τη φόρμα
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;310.0;100.0;150.0;520.0;10.0;610.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>196</x>
+      <y>378</y>
+      <w>161</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+ψηφίζει
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>147</x>
+      <y>441</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+Συμφωνεί η πλειοψηφία;
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>371</y>
+      <w>161</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+ναι, εμφανίζει με το νέο προνόμιο
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>30.0;100.0;90.0;40.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>385</y>
+      <w>126</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;120.0;60.0;100.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>413</x>
+      <y>371</y>
+      <w>70</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+συνεχίζει
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>20.0;300.0;50.0;270.0;10.0;120.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>378</y>
+      <w>56</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>273</x>
+      <y>476</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>518</y>
+      <w>35</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+
+
+
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>30.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>455</x>
+      <y>336</y>
+      <w>357</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+συνεχίζει 
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>490.0;140.0;340.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>182</x>
+      <y>567</y>
+      <w>84</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+
+
+
+
+
+
+
+
+
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>100.0;30.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>385</y>
+      <w>147</w>
+      <h>196</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+
+όχι, δεν αφαιρεί προνόμιο
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;260.0;120.0;160.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>504</x>
+      <y>175</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Εμφανίζει
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>553</x>
+      <y>161</y>
+      <w>77</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>90.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>378</x>
+      <y>217</y>
+      <w>161</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>322</x>
+      <y>434</y>
+      <w>50</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+επιλέγει delete σε ένα Προνόμιο
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+    y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>217</x>
+      <y>462</y>
+      <w>64</w>
+      <h>57</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+όχι, δεν εμφανίζει το νέο προνόμιο
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+    y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>196</x>
+      <y>595</y>
+      <w>64</w>
+      <h>29</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+ναι, αφαιρεί προνόμιο
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+    y += printLeft(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>133</x>
+      <y>546</y>
+      <w>70</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>// Control Element
+	     Αφαιρεί
+customelement=
+// Control Symbol
+drawCircle(50, 50, 20)
+drawLine(44, 31, 54, 21)
+drawLine(44, 31, 54, 41)
+	
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>182</x>
+      <y>392</y>
+      <w>175</w>
+      <h>245</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bg=RED
+fg=RED</panel_attributes>
+    <additional_attributes>10.0;240.0;150.0;120.0;230.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>203</x>
+      <y>525</y>
+      <w>64</w>
+      <h>22</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+επιστρέφει
+fg=RED
+bg=RED</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//This is an element with activated wordwrap
+//If a line would exceed the elements border, instead
+//the exceeding part is written into the next line
+
+int y=textHeight();
+
+
+setWordWrap(true);
+
+for(String textline : textlines) {
+    y += printLeft(textline,y);
+}</custom_code>
+  </element>
+</diagram>
