@@ -5,61 +5,83 @@
   <p>HOMY is a comprehensive roommate management platform designed to eliminate daily frictions and ensure a harmonious co-living experience.</p>
 </div>
 
-<div>
-  <h2>Team Members</h2>
-  <ul style="display: inline-block; text-align: left;">
-    <li>ΔΗΜΗΤΡΙΟΥ-ΜΑΣΓΑΛΑΣ ΙΩΑΝΝΗΣ/ idimitrioumasgalas (ΑΜ: 1108382)</li>
-    <li>ΕΥΘΥΜΙΟΥ ΓΕΩΡΓΙΟΣ/ gefth (ΑΜ: 1108319)</li>
-    <li>ΚΑΝΑΚΗΣ ΣΠΥΡΙΔΩΝ/ animemios (ΑΜ: 1108318)</li>
-    <li>ΜΠΑΛΑΤΣΟΥΡΑΣ ΟΔΥΣΣΕΑΣ-ΜΑΡΙΟΣ/ OdysseasBal (ΑΜ: 1112107)</li>
-    <li>ΧΑΡΑΛΑΜΠΟΥΣ ΠΑΝΑΓΙΩΤΗΣ/ PCharalampous (ΑΜ: 1103475)</li>
-  </ul>
-</div>
+---
 
-<div>
-  <h2>Tehnologies</h2>
-  <ul style="display: inline-block; text-align: left;">
-    <li>Java Development Kit (JDK)</li>
-    <li>JavaFx (GUI)</li>
-    <li>MySql (Application Database)</li>
-    <li>Hosting Service For Database (clever.cloud)</li>
-    <li>JDBC (Java Database Connectivity)</li>
-  </ul>
-</div>  
+## Team Members
+* ΔΗΜΗΤΡΙΟΥ-ΜΑΣΓΑΛΑΣ ΙΩΑΝΝΗΣ/ idimitrioumasgalas (ΑΜ: 1108382)
+* ΕΥΘΥΜΙΟΥ ΓΕΩΡΓΙΟΣ/ gefth (ΑΜ: 1108319)
+* ΚΑΝΑΚΗΣ ΣΠΥΡΙΔΩΝ/ animemios (ΑΜ: 1108318)
+* ΜΠΑΛΑΤΣΟΥΡΑΣ ΟΔΥΣΣΕΑΣ-ΜΑΡΙΟΣ/ OdysseasBal (ΑΜ: 1112107)
+* ΧΑΡΑΛΑΜΠΟΥΣ ΠΑΝΑΓΙΩΤΗΣ/ PCharalampous (ΑΜ: 1103475)
 
-<div>
-  <h2>Features</h2>
-  <ul style="display: inline-block; text-align: left;">
-    <li>Authentication & Account Management</li>
-    <li>Room Search</li>
-    <li>Room Management</li>
-    <li>Expense Management & Bill Splitting</li>
-    <li>Chores & Fair Distribution System</li>
-    <li>In-App Rewards & Points System</li>
-    <li>Shopping List & Bill Splitting</li>
-    <li>Home Issue Reporting & Maintenance</li>
-    <li>Shared Calendar</li>
-    <li>Notifications System</li>
-    <li>User Profiles & Application Management</li>
-  </ul>
-</div>
+---
 
-<div>
-  <h2>Supported Platfroms</h2>
-  <ul style="display: inline-block; text-align: left;">
-    <li>Windows</li>
-  </ul>
-</div>
+## Technologies
+* Java Development Kit (JDK)
+* JavaFX (GUI)
+* MySQL (Application Database)
+* Hosting Service For Database (clever.cloud)
+* JDBC (Java Database Connectivity)
 
-<div>
-  <h2>Running The Application</h2>
-  <h3>Requirements</h3>
-  <ul style="display: inline-block; text-align: left;">
-    <li>Java 21 or higher (<a href="https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html" target="_blank">Download Java 21</a>)</li>
-    <li>JavaFx 21 or higher (<a href="https://www.oracle.com/java/technologies/downloads/javafx/#javafx21" target="_blank">Download JavaFX 21</a>)</li>
-  </ul>
-  <h3>Installation</h3>
-  <ol>
-    <li></li>
-  </οl>
-</div>
+---
+
+## Features
+* Authentication & Account Management
+* Room Search
+* Room Management
+* Expense Management & Bill Splitting
+* Chores & Fair Distribution System
+* In-App Rewards & Points System
+* Shopping List & Bill Splitting
+* Home Issue Reporting & Maintenance
+* Shared Calendar
+* Notifications System
+* User Profiles & Application Management
+
+---
+
+## Supported Platforms
+* Windows
+
+---
+
+## Running The Application
+
+### Requirements
+* Java 21 or higher ([Download Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html))
+* JavaFX 21 or higher ([Download JavaFX 21](https://www.oracle.com/java/technologies/downloads/javafx/#javafx21))
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd <your-repository-folder>
+2. **Add the database JAR connector:**
+   ```bash
+   Create a folder named lib in the root of your project directory if it does not exist yet.
+   Place the mysql-connector-j-9.7.0.jar file directly inside that lib folder.
+   ```
+   If using IntelliJ:
+   ```bash
+   Open Project Structure (Ctrl+Alt+Shift+S), go to Libraries, click the + icon, select Java, then navigate and choose the mysql-connector-j-9.7.0.jar.
+      ```
+   If using Eclipse:
+   ```bash
+   Right-click project, go to Build Path, select Configure Build Path..., open the Libraries tab, click Classpath, then select Add JARs... and link the file.
+     ```
+   If using VS Code:
+   ```bash
+   Expand the Java Projects panel in the lower left sidebar, locate Referenced Libraries, click the + icon, then navigate and choose the mysql-connector-j-9.7.0.jar.
+
+3. **Run the app:**
+
+    Via IDE:
+   ```bash
+    Open the project folder, navigate to src/main/HOMYApp.java, right-click, and select Run.
+      ```
+
+    Via Terminal: Run the following command from the root folder:
+   ```bash
+    java --class-path "bin:lib/*" main.HOMYApp
+   
