@@ -87,3 +87,8 @@
 
 ## Running The Application
 
+1. Go to the Releases Section on the right side of Git Hub.
+
+2. Select the Latest Version.
+
+3. Follow the instructions.
